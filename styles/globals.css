@@ -1,3 +1,13 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans&family=Roboto+Slab&family=Roboto:wght@700&family=Rubik:wght@500&family=Ubuntu&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer components{
+    .link{
+        @apply font-medium hover:underline-offset-2 text-sm md:text-lg hover:underline hover:text-blue-800;
+    }
+}

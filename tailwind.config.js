@@ -6,6 +6,12 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    fontFamily: {
+      ubuntu: "Ubuntu",
+      roboto: "Roboto",
+      rubik: "Rubik",
+      worksans: "Roboto Slab",
+    },
   },
   plugins: [],
 };
