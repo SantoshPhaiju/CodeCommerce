@@ -18,6 +18,11 @@ const Tshirts = () => {
             <ProductCard image="/tshirt6.jpg" />
             <ProductCard image="/tshirt.png" />
             <ProductCard image="/tshirt.png" />
+            <ProductCard image="/tshirt6.jpg" />
+            <ProductCard image="/tshirt.png" />
+            <ProductCard image="/tshirt5.jpg" />
+            <ProductCard image="/tshirt.png" />
+            <ProductCard image="/tshirt6.jpg" />
           </div>
         </div>
       </section>
