@@ -18,7 +18,7 @@ const dancingscript = Dancing_Script();
 
 const Navbar = () => {
   return (
-    <div className="flex flex-col justify-center items-center gap-2 md:flex-row md:justify-between">
+    <div className="flex flex-col justify-center items-center gap-2 md:flex-row md:justify-between shadow-lg">
       <Link href={"/"}>
         <div className="logo flex items-center text-lg font-mono text-blue-800 font-semibold ml-4">
           <Image
@@ -48,6 +48,9 @@ const Navbar = () => {
           </Link>
           <Link href={"/hoodies"} className={`link ${firasans.className}`}>
             <li>Hoodies</li>
+          </Link>
+          <Link href={"/books"} className={`link ${firasans.className}`}>
+            <li>Books</li>
           </Link>
         </ul>
       </nav>

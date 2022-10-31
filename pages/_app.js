@@ -1,16 +1,17 @@
-import Footer from '../components/Footer'
-import Navbar from '../components/Navbar'
-import '../styles/globals.css'
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
+import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
-  
   return (
     <>
-    <Navbar />
-  <Component {...pageProps} />
-  <Footer />
+      <Navbar />
+      <div className='min-h-[40vh]'>
+      <Component {...pageProps} />
+      </div>
+      <Footer />
     </>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;
