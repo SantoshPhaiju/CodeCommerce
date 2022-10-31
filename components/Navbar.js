@@ -1,20 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import {
-  Dancing_Script,
-  Fira_Sans,
-  Kanit,
-  Roboto,
-  Ubuntu,
-} from "@next/font/google";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { MdOutlineAccountCircle } from "react-icons/md";
 
-const firasans = Fira_Sans({
-  weight: "400",
-});
-const dancingscript = Dancing_Script();
 
 const Navbar = () => {
   return (
@@ -29,7 +18,7 @@ const Navbar = () => {
             height={60}
           />
           <h2
-            className={`${dancingscript.className} font-bold text-2xl md:3xl ml-2`}
+            className={`font-ubuntu font-bold text-xl md:2xl ml-2`}
           >
             CodeCommerce.Com
           </h2>
@@ -37,19 +26,19 @@ const Navbar = () => {
       </Link>
       <nav className="flex items-center">
         <ul className="flex items-center justify-center space-x-5">
-          <Link href={"/"} className={`link ${firasans.className}`}>
+          <Link href={"/"} className={`link font-firasans`}>
             <li>Home</li>
           </Link>
-          <Link href={"/tshirts"} className={`link ${firasans.className}`}>
+          <Link href={"/tshirts"} className={`link font-firasans`}>
             <li>Tshirts</li>
           </Link>
-          <Link href={"/mugs"} className={`link ${firasans.className}`}>
+          <Link href={"/mugs"} className={`link font-firasans`}>
             <li>Mugs</li>
           </Link>
-          <Link href={"/hoodies"} className={`link ${firasans.className}`}>
+          <Link href={"/hoodies"} className={`link font-firasans`}>
             <li>Hoodies</li>
           </Link>
-          <Link href={"/books"} className={`link ${firasans.className}`}>
+          <Link href={"/books"} className={`link font-firasans`}>
             <li>Books</li>
           </Link>
         </ul>

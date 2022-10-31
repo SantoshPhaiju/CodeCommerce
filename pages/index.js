@@ -15,6 +15,10 @@ export default function Home() {
           name="keywords"
           content="codeWear Code clothing shope ecommerce wearcode coding clothes"
         />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Fira+Sans&family=Roboto+Slab&family=Roboto:wght@700&family=Rubik:wght@500&family=Ubuntu&display=swap"
+          rel="stylesheet"
+        />
       </Head>
 
       <div className="">
@@ -34,7 +38,9 @@ export default function Home() {
               Buy the Code Wearings with CodeCommerce.Com
             </h1>
             <p className="lg:w-1/2 w-full leading-relaxed text-gray-500">
-              Wear whatever code you want? Wanna Buy the Coding Books? then why not to try codecommerce? Your one and only goto application for all coding stuffs all over Nepal!!!!!
+              Wear whatever code you want? Wanna Buy the Coding Books? then why
+              not to try codecommerce? Your one and only goto application for
+              all coding stuffs all over Nepal!!!!!
             </p>
           </div>
           <div className="flex flex-wrap -m-4">
@@ -186,7 +192,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-          
         </div>
       </section>
     </div>
