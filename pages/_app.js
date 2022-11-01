@@ -6,7 +6,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Navbar />
-      <div className='min-h-[40vh]'>
+      <div className='min-h-[40vh] overflow-x-hidden'>
       <Component {...pageProps} />
       </div>
       <Footer />
