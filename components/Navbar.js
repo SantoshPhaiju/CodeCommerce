@@ -3,8 +3,9 @@ import Link from "next/link";
 import React, { useRef, useState } from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { MdOutlineAccountCircle } from "react-icons/md";
-import { AiFillCloseCircle } from "react-icons/ai";
+import { AiFillCloseCircle, AiFillDelete } from "react-icons/ai";
 import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
+import {BsFillBagCheckFill} from "react-icons/bs"
 
 const Navbar = () => {
   const ref = useRef();
@@ -78,7 +79,31 @@ const Navbar = () => {
           </span>
           <ol className="list-decimal">
             <li>
-              <div className="item flex my-3 font-ubuntu text-pink-900 2xl:text-xl">
+              <div className="item flex my-3 font-ubuntu text-black 2xl:text-xl">
+                <div className="w-2/3 font-semibold">
+                  Tshirt - Wear the Code Lorem ipsum dolor sit amet
+                </div>
+                <div className="w-1/3 font-semibold flex items-center justify-center gap-3 text-lg">
+                  <AiFillPlusCircle className="text-xl text-pink-600 cursor-pointer" />
+                  <span>1</span>
+                  <AiFillMinusCircle className="text-xl text-pink-600 cursor-pointer" />
+                </div>
+              </div>
+            </li>
+            <li>
+              <div className="item flex my-3 font-ubuntu text-black 2xl:text-xl">
+                <div className="w-2/3 font-semibold">
+                  Tshirt - Wear the Code Lorem ipsum dolor
+                </div>
+                <div className="w-1/3 font-semibold flex items-center justify-center gap-3 text-lg">
+                  <AiFillPlusCircle className="text-xl text-pink-600 cursor-pointer" />
+                  <span>1</span>
+                  <AiFillMinusCircle className="text-xl text-pink-600 cursor-pointer" />
+                </div>
+              </div>
+            </li>
+            <li>
+              <div className="item flex my-3 font-ubuntu text-black 2xl:text-xl">
                 <div className="w-2/3 font-semibold">
                   Tshirt - Wear the Code
                 </div>
@@ -90,7 +115,7 @@ const Navbar = () => {
               </div>
             </li>
             <li>
-              <div className="item flex my-3 font-ubuntu text-pink-900 2xl:text-xl">
+              <div className="item flex my-3 font-ubuntu text-black 2xl:text-xl">
                 <div className="w-2/3 font-semibold">
                   Tshirt - Wear the Code
                 </div>
@@ -102,7 +127,7 @@ const Navbar = () => {
               </div>
             </li>
             <li>
-              <div className="item flex my-3 font-ubuntu text-pink-900 2xl:text-xl">
+              <div className="item flex my-3 font-ubuntu text-black 2xl:text-xl">
                 <div className="w-2/3 font-semibold">
                   Tshirt - Wear the Code
                 </div>
@@ -114,31 +139,7 @@ const Navbar = () => {
               </div>
             </li>
             <li>
-              <div className="item flex my-3 font-ubuntu text-pink-900 2xl:text-xl">
-                <div className="w-2/3 font-semibold">
-                  Tshirt - Wear the Code
-                </div>
-                <div className="w-1/3 font-semibold flex items-center justify-center gap-3 text-lg">
-                  <AiFillPlusCircle className="text-xl text-pink-600 cursor-pointer" />
-                  <span>1</span>
-                  <AiFillMinusCircle className="text-xl text-pink-600 cursor-pointer" />
-                </div>
-              </div>
-            </li>
-            <li>
-              <div className="item flex my-3 font-ubuntu text-pink-900 2xl:text-xl">
-                <div className="w-2/3 font-semibold">
-                  Tshirt - Wear the Code
-                </div>
-                <div className="w-1/3 font-semibold flex items-center justify-center gap-3 text-lg">
-                  <AiFillPlusCircle className="text-xl text-pink-600 cursor-pointer" />
-                  <span>1</span>
-                  <AiFillMinusCircle className="text-xl text-pink-600 cursor-pointer" />
-                </div>
-              </div>
-            </li>
-            <li>
-              <div className="item flex my-3 font-ubuntu text-pink-900 2xl:text-xl">
+              <div className="item flex my-3 font-ubuntu text-black 2xl:text-xl">
                 <div className="w-2/3 font-semibold">
                   Tshirt - Wear the Code
                 </div>
@@ -150,9 +151,15 @@ const Navbar = () => {
               </div>
             </li>
           </ol>
-          <div className="button flex justify-center items-center my-10">
-
-          <button className="font-firasans bg-blue-500 py-1 text-lg px-8 text-white font-medium text-center rounded-md shadow-lg shadow-gray-700/60 hover:bg-blue-700">CheckOut</button>
+          <div className="button flex flex-col lg:flex-row gap-4 justify-center items-center my-10 lg:space-x-3">
+            <button className="font-firasans bg-pink-500 py-1 text-lg px-8 md:px-5 text-blue-100 font-medium text-center rounded-md shadow-lg shadow-gray-700/60 hover:bg-pink-700 flex items-center justify-center space-x-3">
+              <BsFillBagCheckFill />
+              <span>CheckOut</span>
+            </button>
+            <button className="font-firasans bg-red-600 py-1 text-lg px-8 md:px-5 text-blue-100 font-medium text-center rounded-md shadow-lg shadow-gray-700/60 hover:bg-red-800 flex items-center justify-center space-x-3">
+              <AiFillDelete />
+              <span>Clear Cart</span>
+            </button>
           </div>
         </div>
       </div>
