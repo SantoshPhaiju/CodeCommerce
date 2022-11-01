@@ -10,7 +10,11 @@ const Tshirts = () => {
       <section className="text-gray-600 body-font">
         <div className="container py-24 sm:w-[50%] md:w-[90%] lg:w-[95%] w-[90%] mx-auto">
           <div className="flex flex-wrap justify-center gap-4">
-            <ProductCard image="/tshirt.png" />
+            <ProductCard
+              image="/tshirt.png"
+              title="I Fell in Love with an Nepali T-Shirt"
+              brand="Teeburon"
+            />
             <ProductCard image="/tshirt2.jpg" />
             <ProductCard image="/tshirt3.jpg" />
             <ProductCard image="/tshirt4.jpg" />

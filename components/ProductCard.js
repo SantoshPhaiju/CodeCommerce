@@ -7,7 +7,7 @@ const ProductCard = (props) => {
     <>
       <div className="xl:w-[24%] lg:w-[30%] md:w-[45%] pt-0 p-4 w-full border shadow-md rounded-md">
         <Link
-          href={"/products/tshirts"}
+          href={`/products/tshirts`}
           className="block relative rounded overflow-hidden"
         >
           <Image

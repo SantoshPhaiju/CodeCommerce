@@ -1,9 +1,35 @@
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { useState } from "react";
 
 const Slug = () => {
   const router = useRouter();
   const { slug } = router.query;
+
+  const [pin, setPin] = useState();
+  const [service, setService] = useState(null);
+
+  const checkServiceability = async () => {
+    let pins = await fetch("http://localhost:3000/api/pincode");
+    let pinJson = await pins.json();
+    console.log(pinJson);
+    console.log(Number(pin));
+    if (pinJson.includes(Number(pin))) {
+      setService(true);
+      setTimeout(() => {
+        setService(null)
+      }, 5000);
+    } else {
+      setService(false);
+      setTimeout(() => {
+        setService(null);
+      }, 5000);
+    }
+  };
+
+  const onChangePin = (e) => {
+    setPin(e.target.value);
+  };
 
   return (
     <>
@@ -22,7 +48,7 @@ const Slug = () => {
                 BRAND NAME
               </h2>
               <h1 className="text-gray-900 text-3xl title-font font-medium mb-1 font-robotoslab">
-                The Catcher in the Rye
+                {slug}
               </h1>
               <div className="flex mb-4">
                 <span className="flex items-center">
@@ -182,6 +208,34 @@ const Slug = () => {
                   </svg>
                 </button>
               </div>
+              <div className="pin mt-6 flex space-x-2 text-base">
+                <input
+                  type="number"
+                  name="pincode"
+                  className="border-2 border-gray-400 px-2 rounded-md outline-gray-400"
+                  id="pincode"
+                  placeholder="Check Your Pincode"
+                  value={pin}
+                  onChange={onChangePin}
+                />
+                <button
+                  className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-3 sm:px-6 focus:outline-none hover:bg-pink-600 rounded font-firasans font-medium"
+                  onClick={checkServiceability}
+                >
+                  Check
+                </button>
+              </div>
+              {service === false && service !== null && (
+                <div className="text-red-700 font-firasans my-3 text-sm">
+                  Sorry! We do not deliver to this pincode yet
+                </div>
+              )}
+
+              {service && service !== null && (
+                <div className="text-green-700 font-firasans my-3 text-sm">
+                  Yay! This pincode is serviceable
+                </div>
+              )}
             </div>
           </div>
         </div>
