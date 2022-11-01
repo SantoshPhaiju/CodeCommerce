@@ -31,7 +31,9 @@ const Navbar = () => {
               width={60}
               height={60}
             />
-            <h2 className={`font-ubuntu font-bold text-xl md:2xl ml-2`}>
+            <h2
+              className={`font-firasans text-base 2xl:text-lg font-normal font-bold txl ml-2`}
+            >
               CodeCommerce.Com
             </h2>
           </div>
@@ -67,7 +69,7 @@ const Navbar = () => {
         </Link> */}
         </div>
         <div
-          className="sidebar fixed top-0 right-0 bg-pink-200 px-6 py-10 transition-all transform translate-x-full duration-300 w-72 md:w-96 2xl:w-[27vw] h-[100vh] shadow-lg shadow-gray-500 z-20"
+          className="sidebar fixed top-0 right-0 bg-pink-200 px-6 py-10 transition-all transform translate-x-full duration-300 w-72 md:w-96 2xl:w-[27vw] h-[100vh] shadow-lg shadow-gray-500 z-20 font-medium"
           ref={ref}
         >
           <h2 className="font-bold text-xl text-center mb-2 font-roboto text-blue-800 xl:text-2xl 2xl:text-3xl">
@@ -78,7 +80,7 @@ const Navbar = () => {
           </span>
           <ol className="list-decimal">
             <li>
-              <div className="item flex my-3 font-ubuntu text-black 2xl:text-xl">
+              <div className="item flex my-3 font-firasans text-base 2xl:text-lg font-normal text-black">
                 <div className="w-2/3 font-semibold">
                   Tshirt - Wear the Code Lorem ipsum dolor sit amet
                 </div>
@@ -90,7 +92,7 @@ const Navbar = () => {
               </div>
             </li>
             <li>
-              <div className="item flex my-3 font-ubuntu text-black 2xl:text-xl">
+              <div className="item flex my-3 font-firasans text-base 2xl:text-lg font-normal text-black ">
                 <div className="w-2/3 font-semibold">
                   Tshirt - Wear the Code Lorem ipsum dolor
                 </div>
@@ -102,7 +104,7 @@ const Navbar = () => {
               </div>
             </li>
             <li>
-              <div className="item flex my-3 font-ubuntu text-black 2xl:text-xl">
+              <div className="item flex my-3 font-firasans text-base 2xl:text-lg font-normal text-black ">
                 <div className="w-2/3 font-semibold">
                   Tshirt - Wear the Code
                 </div>
@@ -114,7 +116,7 @@ const Navbar = () => {
               </div>
             </li>
             <li>
-              <div className="item flex my-3 font-ubuntu text-black 2xl:text-xl">
+              <div className="item flex my-3 font-firasans text-base 2xl:text-lg font-normal text-black ">
                 <div className="w-2/3 font-semibold">
                   Tshirt - Wear the Code
                 </div>
@@ -126,7 +128,7 @@ const Navbar = () => {
               </div>
             </li>
             <li>
-              <div className="item flex my-3 font-ubuntu text-black 2xl:text-xl">
+              <div className="item flex my-3 font-firasans text-base 2xl:text-lg font-normal text-black ">
                 <div className="w-2/3 font-semibold">
                   Tshirt - Wear the Code
                 </div>
@@ -138,7 +140,7 @@ const Navbar = () => {
               </div>
             </li>
             <li>
-              <div className="item flex my-3 font-ubuntu text-black 2xl:text-xl">
+              <div className="item flex my-3 font-firasans text-base 2xl:text-lg font-normal text-black ">
                 <div className="w-2/3 font-semibold">
                   Tshirt - Wear the Code
                 </div>

@@ -6,14 +6,12 @@ const Slug = () => {
   const router = useRouter();
   const { slug } = router.query;
 
-  const [pin, setPin] = useState();
+  const [pin, setPin] = useState("");
   const [service, setService] = useState(null);
 
   const checkServiceability = async () => {
     let pins = await fetch("http://localhost:3000/api/pincode");
     let pinJson = await pins.json();
-    console.log(pinJson);
-    console.log(Number(pin));
     if (pinJson.includes(Number(pin))) {
       setService(true);
       setTimeout(() => {
@@ -208,6 +206,9 @@ const Slug = () => {
                   </svg>
                 </button>
               </div>
+                <button className="flex my-2 text-white shadow-lg shadow-gray-800/50 bg-green-700 border-0 py-2 px-8 sm:px-10 focus:outline-none hover:bg-green-900 rounded font-firasans font-medium">
+                  Buy Now
+                </button>
               <div className="pin mt-6 flex space-x-2 text-base">
                 <input
                   type="number"
