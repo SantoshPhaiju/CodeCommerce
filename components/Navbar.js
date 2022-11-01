@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useRef, useState } from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import { MdOutlineAccountCircle } from "react-icons/md";
+// import { MdOutlineAccountCircle } from "react-icons/md";
 import { AiFillCloseCircle, AiFillDelete } from "react-icons/ai";
 import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 import {BsFillBagCheckFill} from "react-icons/bs"
@@ -32,7 +32,7 @@ const Navbar = () => {
               height={60}
             />
             <h2
-              className={`font-firasans text-base 2xl:text-lg font-normal font-bold txl ml-2`}
+              className={`font-firasans text-base 2xl:text-lg font-bold txl ml-2`}
             >
               CodeCommerce.Com
             </h2>

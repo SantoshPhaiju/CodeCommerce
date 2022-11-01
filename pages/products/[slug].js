@@ -43,7 +43,7 @@ const Slug = () => {
             />
             <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
               <h2 className="text-sm title-font text-gray-500 tracking-widest font-robotoslab">
-                BRAND NAME
+                CODECOMMERCE
               </h2>
               <h1 className="text-gray-900 text-3xl title-font font-medium mb-1 font-robotoslab">
                 {slug}
@@ -206,9 +206,6 @@ const Slug = () => {
                   </svg>
                 </button>
               </div>
-                <button className="flex my-2 text-white shadow-lg shadow-gray-800/50 bg-green-700 border-0 py-2 px-8 sm:px-10 focus:outline-none hover:bg-green-900 rounded font-firasans font-medium">
-                  Buy Now
-                </button>
               <div className="pin mt-6 flex space-x-2 text-base">
                 <input
                   type="number"
@@ -237,6 +234,12 @@ const Slug = () => {
                   Yay! This pincode is serviceable
                 </div>
               )}
+              <div className="buyNow flex justify-center items-center my-3 md:justify-start">
+
+                <button className="flex my-5 text-white shadow-lg shadow-gray-800/50 bg-green-700 border-0 py-2 px-8 sm:px-10 focus:outline-none hover:bg-green-900 rounded font-firasans font-medium">
+                  Buy Now
+                </button>
+              </div>
             </div>
           </div>
         </div>
