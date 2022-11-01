@@ -89,7 +89,71 @@ const Navbar = () => {
                 </div>
               </div>
             </li>
+            <li>
+              <div className="item flex my-3 font-ubuntu text-pink-900 2xl:text-xl">
+                <div className="w-2/3 font-semibold">
+                  Tshirt - Wear the Code
+                </div>
+                <div className="w-1/3 font-semibold flex items-center justify-center gap-3 text-lg">
+                  <AiFillPlusCircle className="text-xl text-pink-600 cursor-pointer" />
+                  <span>1</span>
+                  <AiFillMinusCircle className="text-xl text-pink-600 cursor-pointer" />
+                </div>
+              </div>
+            </li>
+            <li>
+              <div className="item flex my-3 font-ubuntu text-pink-900 2xl:text-xl">
+                <div className="w-2/3 font-semibold">
+                  Tshirt - Wear the Code
+                </div>
+                <div className="w-1/3 font-semibold flex items-center justify-center gap-3 text-lg">
+                  <AiFillPlusCircle className="text-xl text-pink-600 cursor-pointer" />
+                  <span>1</span>
+                  <AiFillMinusCircle className="text-xl text-pink-600 cursor-pointer" />
+                </div>
+              </div>
+            </li>
+            <li>
+              <div className="item flex my-3 font-ubuntu text-pink-900 2xl:text-xl">
+                <div className="w-2/3 font-semibold">
+                  Tshirt - Wear the Code
+                </div>
+                <div className="w-1/3 font-semibold flex items-center justify-center gap-3 text-lg">
+                  <AiFillPlusCircle className="text-xl text-pink-600 cursor-pointer" />
+                  <span>1</span>
+                  <AiFillMinusCircle className="text-xl text-pink-600 cursor-pointer" />
+                </div>
+              </div>
+            </li>
+            <li>
+              <div className="item flex my-3 font-ubuntu text-pink-900 2xl:text-xl">
+                <div className="w-2/3 font-semibold">
+                  Tshirt - Wear the Code
+                </div>
+                <div className="w-1/3 font-semibold flex items-center justify-center gap-3 text-lg">
+                  <AiFillPlusCircle className="text-xl text-pink-600 cursor-pointer" />
+                  <span>1</span>
+                  <AiFillMinusCircle className="text-xl text-pink-600 cursor-pointer" />
+                </div>
+              </div>
+            </li>
+            <li>
+              <div className="item flex my-3 font-ubuntu text-pink-900 2xl:text-xl">
+                <div className="w-2/3 font-semibold">
+                  Tshirt - Wear the Code
+                </div>
+                <div className="w-1/3 font-semibold flex items-center justify-center gap-3 text-lg">
+                  <AiFillPlusCircle className="text-xl text-pink-600 cursor-pointer" />
+                  <span>1</span>
+                  <AiFillMinusCircle className="text-xl text-pink-600 cursor-pointer" />
+                </div>
+              </div>
+            </li>
           </ol>
+          <div className="button flex justify-center items-center my-10">
+
+          <button className="font-firasans bg-blue-500 py-1 text-lg px-8 text-white font-medium text-center rounded-md shadow-lg shadow-gray-700/60 hover:bg-blue-700">CheckOut</button>
+          </div>
         </div>
       </div>
     </>
