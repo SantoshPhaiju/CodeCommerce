@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import {HiOutlineShoppingCart} from 'react-icons/hi'
 
-const Slug = () => {
+const Slug = ({addToCart}) => {
   const router = useRouter();
   const { slug } = router.query;
 
@@ -191,7 +191,9 @@ const Slug = () => {
                 <span className="title-font font-robotoslab font-medium text-xl lg:text-2xl text-gray-900">
                   NRs.500.00
                 </span>
-                <button className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-3 sm:px-6 focus:outline-none hover:bg-pink-600 rounded font-firasans font-medium">
+                <button className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-3 sm:px-6 focus:outline-none hover:bg-pink-600 rounded font-firasans font-medium" onClick={() => {
+                  addToCart(slug, 1, 500, "Tshirt(XL, Blue)", "XL", "Blue")
+                  }}>
                   Add to Cart
                 </button>
                 <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
