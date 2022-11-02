@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { HiOutlineShoppingCart } from "react-icons/hi";
 
 const ProductCard = (props) => {
   return (
@@ -27,12 +28,13 @@ const ProductCard = (props) => {
           </h2>
           <p className="mt-1 font-robotoslab"> NRs.500.00</p>
           <div className="footerContent block md:flex md:justify-between">
-          <p className="mt-1 font-firasans my-2">S, M, L, XL, XXL</p>
-          <Link href={"/products/tshirt"}>
-          <button className="py-1 px-8 bg-green-800 hover:bg-green-700 hover:shadow-lg hover:shadow-gray-500 text-white font-firasans rounded-sm shadow-md shadow-gray-400">
-            Buy Now
-          </button>
-          </Link>
+            <p className="mt-1 font-firasans my-2">S, M, L, XL, XXL</p>
+            <Link href={"/products/tshirt"}>
+              <button className="py-1 px-8 bg-green-700 hover:bg-green-800 hover:shadow-lg hover:shadow-gray-500 text-white font-firasans rounded-sm shadow-md shadow-gray-400 flex justify-center items-center space-x-1">
+                <HiOutlineShoppingCart className="text-lg -rotate-6" />
+                <span>Buy Now</span>
+              </button>
+            </Link>
           </div>
           {/* रू */}
         </div>

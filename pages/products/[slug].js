@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { useState } from "react";
+import {HiOutlineShoppingCart} from 'react-icons/hi'
 
 const Slug = () => {
   const router = useRouter();
@@ -235,9 +236,9 @@ const Slug = () => {
                 </div>
               )}
               <div className="buyNow flex justify-center items-center my-3 md:justify-start">
-
-                <button className="flex my-5 text-white shadow-lg shadow-gray-800/50 bg-green-700 border-0 py-2 px-8 sm:px-10 focus:outline-none hover:bg-green-900 rounded font-firasans font-medium">
-                  Buy Now
+                <button className="flex my-5 text-white shadow-lg shadow-gray-800/50 bg-green-700 border-0 py-2 px-8 sm:px-10 focus:outline-none hover:bg-green-900 rounded font-firasans font-medium space-x-2 justify-center items-center">
+                  <HiOutlineShoppingCart className="text-xl rotate-12 text-pink-100 font-bold" />
+                  <span>Buy Now</span>
                 </button>
               </div>
             </div>

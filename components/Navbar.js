@@ -5,7 +5,7 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 // import { MdOutlineAccountCircle } from "react-icons/md";
 import { AiFillCloseCircle, AiFillDelete } from "react-icons/ai";
 import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
-import {BsFillBagCheckFill} from "react-icons/bs"
+import { BsFillBagCheckFill } from "react-icons/bs";
 
 const Navbar = () => {
   const ref = useRef();
@@ -61,12 +61,15 @@ const Navbar = () => {
         <div className="buttons flex items-center justify-center md:mr-7 text-xl md:text-3xl space-x-4 mb-3 md:mb-0">
           <span className="font-firasans text-base">Cart</span>
           <AiOutlineShoppingCart
-            className="cursor-pointer"
+            className="cursor-pointer text-2xl"
             onClick={toggleCart}
           />
-          {/* <Link href={"/"}>
-          <MdOutlineAccountCircle />
-        </Link> */}
+          <span
+            class="absolute top-4 right-7 px-2 py-1 translate-x-1/2 -translate-y-1/2 bg-pink-600 rounded-full text-xs text-white cursor-pointer"
+            onClick={toggleCart}
+          >
+            1
+          </span>
         </div>
         <div
           className="sidebar fixed top-0 right-0 bg-pink-200 px-6 py-10 transition-all transform translate-x-full duration-300 w-72 md:w-96 2xl:w-[27vw] h-[100vh] shadow-lg shadow-gray-500 z-20 font-medium"
