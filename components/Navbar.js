@@ -7,7 +7,7 @@ import { AiFillCloseCircle, AiFillDelete } from "react-icons/ai";
 import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 import { BsFillBagCheckFill } from "react-icons/bs";
 
-const Navbar = ({cart, removeFromCart, clearCart, subTotal}) => {
+const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
   // console.log(cart, addToCart, removeFromCart, clearCart, subTotal);
   const ref = useRef();
   const toggleCart = () => {
@@ -22,7 +22,7 @@ const Navbar = ({cart, removeFromCart, clearCart, subTotal}) => {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center gap-2 md:flex-row md:justify-between shadow-lg w-full bg-white">
+      <div className="flex flex-col justify-center items-center gap-2 md:flex-row md:justify-between shadow-lg w-full bg-white sticky top-0 z-20">
         <Link href={"/"}>
           <div className="logo flex items-center text-lg font-mono text-blue-800 font-semibold ml-4">
             <Image
@@ -73,7 +73,11 @@ const Navbar = ({cart, removeFromCart, clearCart, subTotal}) => {
           </span>
         </div>
         <div
-          className="sidebar fixed top-0 right-0 bg-pink-200 px-6 py-10 transition-all transform translate-x-full duration-300 w-72 md:w-96 2xl:w-[25vw] h-[100vh] shadow-lg shadow-gray-500 z-20 font-medium"
+          className={`sidebar absolute top-0 right-0 bg-pink-200 px-6 py-10 transition-all transform ${
+            Object.keys(cart).length !== 0
+              ? "translate-x-0"
+              : "translate-x-full"
+          } duration-300 w-72 md:w-96 2xl:w-[25vw] h-[100vh] shadow-lg shadow-gray-500 z-20 font-medium`}
           ref={ref}
         >
           <h2 className="font-bold text-xl text-center mb-2 font-roboto text-blue-800 xl:text-2xl 2xl:text-3xl">
@@ -83,35 +87,57 @@ const Navbar = ({cart, removeFromCart, clearCart, subTotal}) => {
             <AiFillCloseCircle className="text-2xl cursor-pointer text-pink-500" />
           </span>
           <ol className="list-decimal">
-            {Object.keys(cart).length == 0 && <div className="text-center my-5 font-light font-firasans">
+            {Object.keys(cart).length == 0 && (
+              <div className="text-center my-5 font-light font-firasans">
                 Your cart is Empty ! 😵‍💫
-              </div>}
-            {Object.keys(cart).map((k) =>{
+              </div>
+            )}
+            {Object.keys(cart).map((k) => {
               return (
                 <li key={k}>
                   <div className="item flex my-3 text-base 2xl:text-lg font-firasans font-medium text-black">
                     <div className="w-2/3">{cart[k].name}</div>
-                    <div className="w-1/3 flex items-center justify-center gap-3 text-lg">
-                      <AiFillMinusCircle className="text-xl text-pink-600 cursor-pointer" />
-                      <span>{cart[k].qty}</span>
-                      <AiFillPlusCircle className="text-xl text-pink-600 cursor-pointer" />
+                    <div className="w-1/3 flex items-center justify-center gap-5 text-lg">
+                      <AiFillMinusCircle
+                        onClick={() =>
+                          removeFromCart(
+                            k,
+                            1,
+                            cart[k].price,
+                            cart[k].name,
+                            cart[k].size,
+                            cart[k].variant
+                          )
+                        }
+                        className="text-xl text-pink-600 cursor-pointer"
+                      />
+                      <div>{cart[k].qty}</div>
+                      <AiFillPlusCircle
+                        onClick={() =>
+                          addToCart(k, 1, 500, "Tshirt(XL, Blue)", "XL", "Blue")
+                        }
+                        className="text-xl text-pink-600 cursor-pointer"
+                      />
                     </div>
                   </div>
                 </li>
               );
             })}
-
-            
-
-
-
           </ol>
-          <div className="button flex flex-col lg:flex-row gap-4 justify-center items-center my-10 lg:space-x-3">
-            <button className="font-firasans bg-pink-500 py-1 text-lg px-8 md:px-5 text-blue-100 font-medium text-center rounded-md shadow-lg shadow-gray-700/60 hover:bg-pink-700 flex items-center justify-center space-x-3">
-              <BsFillBagCheckFill />
-              <span>CheckOut</span>
-            </button>
-            <button className="font-firasans bg-red-600 py-1 text-lg px-8 md:px-5 text-blue-100 font-medium text-center rounded-md shadow-lg shadow-gray-700/60 hover:bg-red-800 flex items-center justify-center space-x-3" onClick={clearCart}>
+          <div className="subtotal font-bold font-robotoslab mt-10 ml-2">
+            SubTotal: NRs.{subTotal}
+          </div>
+          <div className="button flex flex-col lg:flex-row gap-4 justify-center items-center my-2 lg:space-x-2">
+            <Link href={"/checkout"}>
+              <button className="font-firasans bg-pink-500 py-1 text-lg px-8 md:px-5 text-blue-100 font-medium text-center rounded-md shadow-lg shadow-gray-700/60 hover:bg-pink-700 flex items-center justify-center space-x-3">
+                <BsFillBagCheckFill />
+                <span>CheckOut</span>
+              </button>
+            </Link>
+            <button
+              className="font-firasans bg-red-600 py-1 text-lg px-8 md:px-5 text-blue-100 font-medium text-center rounded-md shadow-lg shadow-gray-700/60 hover:bg-red-800 flex items-center justify-center space-x-3"
+              onClick={clearCart}
+            >
               <AiFillDelete />
               <span>Clear Cart</span>
             </button>
