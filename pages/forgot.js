@@ -14,7 +14,7 @@ const Forgot = () => {
             <p className="mt-2 text-center text-sm text-gray-600 font-firasans">
               Or&nbsp;
               <Link
-                href={'/login'}
+                href={"/login"}
                 className="font-medium text-blue-600 hover:text-blue-500 hover:underline font-firasans"
               >
                 Login
@@ -34,11 +34,10 @@ const Forgot = () => {
                   type="email"
                   autoComplete="email"
                   required
-                  className="relative block w-full appearance-none rounded-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-pink-500 focus:outline-none focus:ring-pink-500 sm:text-sm"
+                  className="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-pink-500 focus:outline-none focus:ring-pink-500 sm:text-sm"
                   placeholder="Email address"
                 />
               </div>
-              
             </div>
 
             <div>

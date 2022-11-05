@@ -15,10 +15,7 @@ export default function Home() {
           name="keywords"
           content="codeWear Code clothing shope ecommerce wearcode coding clothes"
         />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Fira+Sans&family=Roboto+Slab&family=Roboto:wght@700&family=Rubik:wght@500&family=Ubuntu&display=swap"
-          rel="stylesheet"
-        />
+        
       </Head>
 
       <div className="">
