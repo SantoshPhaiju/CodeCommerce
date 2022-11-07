@@ -100,6 +100,9 @@ const Tshirts = ({ tshirts }) => {
                       {tshirts[product].color.includes("yellow") && (
                         <button className="border-2 border-gray-300 ml-1 bg-yellow-500 rounded-full w-6 h-6 focus:outline-none"></button>
                       )}
+                      {tshirts[product].color.includes("white") && (
+                        <button className="border-2 border-gray-300 ml-1 bg-white rounded-full w-6 h-6 focus:outline-none"></button>
+                      )}
                     </div>
                     {/* रू */}
                   </div>
