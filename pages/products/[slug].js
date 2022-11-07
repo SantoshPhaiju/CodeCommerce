@@ -227,15 +227,15 @@ const Slug = ({ addToCart, product, variants }) => {
                 <span className="title-font font-robotoslab font-medium text-xl lg:text-2xl text-gray-900">
                   NRs.{product.price}
                 </span>
-                <button onClick={(e) => refreshVariant(e.target.color, size)}
-                  className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-3 sm:px-6 focus:outline-none ${color === 'white' ? 'border-black' : 'border-gray-300' hover:bg-pink-600 rounded font-firasans font-medium"
+                <button
+                  className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-3 sm:px-6 focus:outline-none hover:bg-pink-600 rounded font-firasans font-medium"
                   onClick={() => {
                     addToCart(slug, 1, 500, "Pant(XL, Blue)", "XL", "Blue");
                   }}
                 >
                   Add to Cart
                 </button>
-                <button onClick={(e) => refreshVariant(e.target.color, size)} className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
+                <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
                   <svg
                     fill="currentColor"
                     strokeLinecap="round"
@@ -249,7 +249,7 @@ const Slug = ({ addToCart, product, variants }) => {
                 </button>
               </div>
               <div className="buyNow flex justify-center items-center my-3 md:justify-start">
-                <button onClick={(e) => refreshVariant(e.target.color, size)} className="flex my-5 text-white shadow-lg shadow-gray-800/50 bg-green-700 border-0 py-2 px-8 sm:px-10 focus:outline-none ${color === 'white' ? 'border-black' : 'border-gray-300' hover:bg-green-900 rounded font-firasans font-medium space-x-2 justify-center items-center">
+                <button className="flex my-5 text-white shadow-lg shadow-gray-800/50 bg-green-700 border-0 py-2 px-8 sm:px-10 focus:outline-none hover:bg-green-900 rounded font-firasans font-medium space-x-2 justify-center items-center">
                   <HiOutlineShoppingCart className="text-xl rotate-12 text-pink-100 font-bold" />
                   <span>Buy Now</span>
                 </button>
@@ -264,7 +264,7 @@ const Slug = ({ addToCart, product, variants }) => {
                   value={pin}
                   onChange={onChangePin}
                 />
-                <button onClick={(e) => refreshVariant(e.target.color, size)}
+                <button
                   className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-3 sm:px-6 focus:outline-none ${color === 'white' ? 'border-black' : 'border-gray-300' hover:bg-pink-600 rounded font-firasans font-medium"
                   onClick={checkServiceability}
                 >
