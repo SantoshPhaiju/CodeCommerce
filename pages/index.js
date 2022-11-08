@@ -15,7 +15,6 @@ export default function Home() {
           name="keywords"
           content="codeWear Code clothing shope ecommerce wearcode coding clothes"
         />
-        
       </Head>
 
       <div className="">

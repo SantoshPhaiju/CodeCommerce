@@ -9,43 +9,58 @@ const Footer = () => {
         <div className="container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
           <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
             <Link href={"/"}>
-            <Image
-              src={"/logo.png"}
-              width={300}
-              height={100}
-              style={{ height: "auto" }}
-              alt="This is the site logo here"
+              <Image
+                src={"/logo.png"}
+                width={300}
+                height={100}
+                style={{ height: "auto" }}
+                alt="This is the site logo here"
               />
-              </Link>
+            </Link>
             <p className="mt-2 px-4 text-sm text-gray-500">
-              Air plant banjo lyft occupy retro adaptogen indego
+              Be the Great &lt;Coder/&gt;
+            </p>
+            <p className="px-4 text-sm text-gray-500">
+              Premium coding tshirts, hoodies and apparals
             </p>
           </div>
           <div className="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center">
             <div className="lg:w-1/4 md:w-1/2 w-full px-4">
               <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">
-                CATEGORIES
+                SHOP
               </h2>
               <nav className="list-none mb-10">
                 <li>
-                  <a className="text-gray-600 hover:text-gray-800">
-                    First Link
-                  </a>
+                  <Link
+                    href={"/tshirts"}
+                    className="text-gray-600 hover:text-gray-800"
+                  >
+                    Tshirts
+                  </Link>
                 </li>
                 <li>
-                  <a className="text-gray-600 hover:text-gray-800">
-                    Second Link
-                  </a>
+                  <Link
+                    href={"/hoodies"}
+                    className="text-gray-600 hover:text-gray-800"
+                  >
+                    Hoodies
+                  </Link>
                 </li>
                 <li>
-                  <a className="text-gray-600 hover:text-gray-800">
-                    Third Link
-                  </a>
+                  <Link
+                    href={"/mugs"}
+                    className="text-gray-600 hover:text-gray-800"
+                  >
+                    Mugs
+                  </Link>
                 </li>
                 <li>
-                  <a className="text-gray-600 hover:text-gray-800">
-                    Fourth Link
-                  </a>
+                  <Link
+                    href={"/books"}
+                    className="text-gray-600 hover:text-gray-800"
+                  >
+                    Books
+                  </Link>
                 </li>
               </nav>
             </div>
@@ -78,7 +93,7 @@ const Footer = () => {
             </div>
             <div className="lg:w-1/4 md:w-1/2 w-full px-4">
               <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">
-                CATEGORIES
+                ABOUT
               </h2>
               <nav className="list-none mb-10">
                 <li>
@@ -105,7 +120,7 @@ const Footer = () => {
             </div>
             <div className="lg:w-1/4 md:w-1/2 w-full px-4">
               <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">
-                CATEGORIES
+                POLICY
               </h2>
               <nav className="list-none mb-10">
                 <li>
@@ -142,7 +157,7 @@ const Footer = () => {
                 className="text-gray-600 ml-1"
                 target="_blank"
               >
-                @codecommerce.com
+                All rights reserved
               </a>
             </p>
             <span className="inline-flex sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start">

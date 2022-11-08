@@ -74,12 +74,7 @@ const Tshirts = ({ tshirts }) => {
                         )}
                       </div>
 
-                      {/* <Link href={`/products/${tshirts[product].slug}`}>
-                        <button className="py-1 px-8 bg-green-700 hover:bg-green-800 hover:shadow-lg hover:shadow-gray-500 text-white font-firasans rounded-sm shadow-md shadow-gray-400 flex justify-center items-center space-x-1">
-                          <HiOutlineShoppingCart className="text-lg -rotate-6" />
-                          <span>Buy Now</span>
-                        </button>
-                      </Link> */}
+                      
                     </div>
                     <div className="mt-1">
                       {tshirts[product].color.includes("blue") && (

@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }) {
   const [subTotal, setSubTotal] = useState(0);
 
   useEffect(() => {
-    console.log("This is the useeffect from the _app.js");
+    // console.log("This is the useeffect from the _app.js");
 
     try {
       if(localStorage.getItem("cart")){

@@ -17,7 +17,7 @@ const handler = async (req, res) => {
       tshirts[item.title].size.push(item.size);
      }
     }else{
-      console.log(item);
+      // console.log(item);
       tshirts[item.title] = JSON.parse(JSON.stringify(item));
       if(item.availableQty > 0){
         tshirts[item.title].color = [item.color]
