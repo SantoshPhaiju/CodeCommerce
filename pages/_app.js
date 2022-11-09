@@ -1,7 +1,9 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
+ import "react-toastify/dist/ReactToastify.css";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
@@ -75,9 +77,36 @@ const removeFromCart = (itemCode, qty, price, name, size, variant) => {
 
   return (
     <>
-      <Navbar addToCart={addToCart} cart={cart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />
-      <div className='min-h-[40vh] overflow-x-hidden'>
-      <Component buyNow={buyNow} addToCart={addToCart} cart={cart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} {...pageProps} />
+      <Navbar
+        addToCart={addToCart}
+        cart={cart}
+        removeFromCart={removeFromCart}
+        clearCart={clearCart}
+        subTotal={subTotal}
+      />
+      <div className="min-h-[40vh] overflow-x-hidden">
+        <Component
+          buyNow={buyNow}
+          addToCart={addToCart}
+          cart={cart}
+          removeFromCart={removeFromCart}
+          clearCart={clearCart}
+          subTotal={subTotal}
+          {...pageProps}
+        />
+
+        <ToastContainer
+          position="bottom-left"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </div>
       <Footer />
     </>

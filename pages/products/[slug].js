@@ -4,6 +4,7 @@ import { useState } from "react";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import Product from "../../models/Product";
 import mongoose from "mongoose";
+import { toast } from "react-toastify";
 
 const Slug = ({ buyNow, addToCart, product, variants }) => {
   // console.log(product, variants);
@@ -23,11 +24,13 @@ const Slug = ({ buyNow, addToCart, product, variants }) => {
     let pinJson = await pins.json();
     if (pinJson.includes(Number(pin))) {
       setService(true);
+      toast.success("Your pincode is serviceable")
       setTimeout(() => {
         setService(null);
       }, 5000);
     } else {
       setService(false);
+      toast.error("Sorry! Your pincode is not serviceable yet!")
       setTimeout(() => {
         setService(null);
       }, 5000);
@@ -314,6 +317,7 @@ const Slug = ({ buyNow, addToCart, product, variants }) => {
                       product.size,
                       product.color
                     );
+                    toast.success("Item added to cart!")
                   }}
                 >
                   Add to Cart
