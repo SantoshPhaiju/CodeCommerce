@@ -15,6 +15,12 @@ const Tshirts = ({ tshirts }) => {
       <section className="text-gray-600 body-font">
         <div className="container py-24 sm:w-[50%] md:w-[90%] lg:w-[95%] w-[90%] mx-auto">
           <div className="flex flex-wrap justify-center gap-4">
+            {Object.keys(tshirts).length === 0 && (
+              <span>
+                Sorry! All the tshirts are currently out of stock. New Stock coming
+                soon!
+              </span>
+            )}
             {Object.keys(tshirts).map((product) => {
               // console.log(tshirts[product].size);
               return (
