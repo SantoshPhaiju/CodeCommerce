@@ -43,7 +43,7 @@ const Tshirts = ({ tshirts }) => {
                     </h2>
                     <p className="mt-1 font-robotoslab">
                       {" "}
-                      NRs.{tshirts[product].price}
+                      Rs. {tshirts[product].price}
                     </p>
                     <div className="footerContent block md:flex md:justify-between">
                       <div className="mt-1 font-firasans my-2">
@@ -73,8 +73,6 @@ const Tshirts = ({ tshirts }) => {
                           </span>
                         )}
                       </div>
-
-                      
                     </div>
                     <div className="mt-1">
                       {tshirts[product].color.includes("blue") && (

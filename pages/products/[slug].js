@@ -5,7 +5,7 @@ import { HiOutlineShoppingCart } from "react-icons/hi";
 import Product from "../../models/Product";
 import mongoose from "mongoose";
 
-const Slug = ({ addToCart, product, variants }) => {
+const Slug = ({ buyNow, addToCart, product, variants }) => {
   // console.log(product, variants);
   // console.log(variants[1].color);
   const router = useRouter();
@@ -16,6 +16,7 @@ const Slug = ({ addToCart, product, variants }) => {
 
   const [color, setColor] = useState(product.color);
   const [size, setSize] = useState(product.size);
+
 
   const checkServiceability = async () => {
     let pins = await fetch("http://localhost:3000/api/pincode");
@@ -37,6 +38,7 @@ const Slug = ({ addToCart, product, variants }) => {
     setPin(e.target.value);
   };
 
+  
   const refreshVariant = (newColor, newSize) => {
     // console.log("Running refreshVariant function");
     // setColor(newColor);
@@ -45,7 +47,8 @@ const Slug = ({ addToCart, product, variants }) => {
     window.location = url;
     // console.log(variants[newColor][newSize]['slug']);
   };
-
+  
+  
   return (
     <>
       <section className="text-gray-600 body-font overflow-hidden">
@@ -66,8 +69,6 @@ const Slug = ({ addToCart, product, variants }) => {
                 {product.title} ({product.color}/{product.size})
               </h1>
               <div className="flex mb-4">
-
-
                 {/* <span className="flex items-center">
                   <svg
                     fill="currentColor"
@@ -164,9 +165,6 @@ const Slug = ({ addToCart, product, variants }) => {
                     </svg>
                   </a>
                 </span> */}
-
-
-
               </div>
               <p className="leading-relaxed font-firasans">{product.desc}</p>
               <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
@@ -308,7 +306,14 @@ const Slug = ({ addToCart, product, variants }) => {
                 <button
                   className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-3 sm:px-6 focus:outline-none hover:bg-pink-600 rounded font-firasans font-medium"
                   onClick={() => {
-                    addToCart(slug, 1, product.price, product.title, product.size, product.color);
+                    addToCart(
+                      slug,
+                      1,
+                      product.price,
+                      product.title,
+                      product.size,
+                      product.color
+                    );
                   }}
                 >
                   Add to Cart
@@ -327,7 +332,19 @@ const Slug = ({ addToCart, product, variants }) => {
                 </button> */}
               </div>
               <div className="buyNow flex justify-center items-center my-3 md:justify-start">
-                <button className="flex my-5 text-white shadow-lg shadow-gray-800/50 bg-green-700 border-0 py-2 px-8 sm:px-10 focus:outline-none hover:bg-green-900 rounded font-firasans font-medium space-x-2 justify-center items-center">
+                <button
+                  onClick={() =>
+                    buyNow(
+                      slug,
+                      1,
+                      product.price,
+                      product.title,
+                      product.size,
+                      product.color
+                    )
+                  }
+                  className="flex my-5 text-white shadow-lg shadow-gray-800/50 bg-green-700 border-0 py-2 px-8 sm:px-10 focus:outline-none hover:bg-green-900 rounded font-firasans font-medium space-x-2 justify-center items-center"
+                >
                   <HiOutlineShoppingCart className="text-xl rotate-12 text-pink-100 font-bold" />
                   <span>Buy Now</span>
                 </button>

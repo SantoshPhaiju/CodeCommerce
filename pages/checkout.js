@@ -1,9 +1,13 @@
 import Link from "next/link";
 import React from "react";
-import { AiFillDelete, AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
+import {
+  AiFillDelete,
+  AiFillMinusCircle,
+  AiFillPlusCircle,
+} from "react-icons/ai";
 import { BsFillBagCheckFill } from "react-icons/bs";
 
-const Checkout = ({cart, subTotal, addToCart, removeFromCart}) => {
+const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
   return (
     <div className="container mx-auto max-w-[1200px] px-3">
       <h1 className="font-bold text-3xl my-8 text-pink-800 text-center font-roboto">
@@ -128,7 +132,7 @@ const Checkout = ({cart, subTotal, addToCart, removeFromCart}) => {
             return (
               <li key={k}>
                 <div className="item flex my-3 text-base 2xl:text-lg font-firasans font-medium text-black">
-                  <div className="">{cart[k].name}</div>
+                  <div className="">{cart[k].name} ({cart[k].size}/{cart[k].variant})</div>
                   <div className="w-1/3 flex items-center justify-center gap-3 text-lg">
                     <AiFillMinusCircle
                       onClick={() =>
@@ -157,16 +161,17 @@ const Checkout = ({cart, subTotal, addToCart, removeFromCart}) => {
           })}
         </ol>
         <span className="subtotal font-bold font-robotoslab">
-          SubTotal: NRs.{subTotal}
+          SubTotal: रु {subTotal}
         </span>
       </div>
-        <div className="mx-8">
-          <Link href={"/"}>
-            <button className="font-firasans bg-pink-500 py-1 my-2 text-lg px-10 md:px-5 text-blue-100 font-medium text-center rounded-md hover:bg-pink-700">
-              <span>Pay NRs.{subTotal}</span>
-            </button>
-          </Link>
-        </div>
+      <div className="mx-8">
+        <Link href={"/"}>
+          <button className="font-firasans bg-pink-500 py-1 my-2 text-lg px-10 md:px-5 text-blue-100 font-medium text-center rounded-md hover:bg-pink-700 flex items-center justify-center space-x-2">
+            <BsFillBagCheckFill className="text-base" />
+            <span>Pay Rs. {subTotal}</span>
+          </button>
+        </Link>
+      </div>
     </div>
   );
 };

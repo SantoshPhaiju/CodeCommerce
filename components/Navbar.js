@@ -62,8 +62,7 @@ const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
 
         <div className="buttons flex items-center justify-center md:mr-7 text-xl md:text-3xl space-x-4 mb-3 md:mb-0 relative">
           <Link href={"/login"}>
-
-          <MdAccountCircle className="cursor-pointer text-2xl text-pink-700" />
+            <MdAccountCircle className="cursor-pointer text-2xl text-pink-700" />
           </Link>
           <AiOutlineShoppingCart
             className="cursor-pointer text-2xl"
@@ -77,7 +76,7 @@ const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
           </span>
         </div>
         <div
-          className={`sidebar absolute top-0 right-0 bg-pink-200 px-6 py-10 transition-all transform ${
+          className={`sidebar overflow-y-auto absolute top-0 right-0 bg-pink-200 px-6 py-10 transition-all transform ${
             Object.keys(cart).length !== 0
               ? "translate-x-0"
               : "translate-x-full"
@@ -100,7 +99,9 @@ const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
               return (
                 <li key={k}>
                   <div className="item flex my-3 text-base 2xl:text-lg font-firasans font-medium text-black">
-                    <div className="w-2/3">{cart[k].name} ({cart[k].variant}/{cart[k].size})</div>
+                    <div className="w-2/3">
+                      {cart[k].name} ({cart[k].variant}/{cart[k].size})
+                    </div>
                     <div className="w-1/3 flex items-center justify-center gap-5 text-lg">
                       <AiFillMinusCircle
                         onClick={() =>
@@ -129,17 +130,17 @@ const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
             })}
           </ol>
           <div className="subtotal font-bold font-robotoslab mt-10 ml-2">
-            SubTotal: NRs.{subTotal}
+            SubTotal: Rs. {subTotal}
           </div>
-          <div className="button flex flex-col lg:flex-row gap-4 justify-center items-center my-2 lg:space-x-2">
+          <div className="button flex flex-col lg:flex-row gap-1 justify-center items-center my-2 lg:space-x-2">
             <Link href={"/checkout"}>
-              <button className="font-firasans bg-pink-500 py-1 text-lg px-8 md:px-5 text-blue-100 font-medium text-center rounded-md shadow-lg shadow-gray-700/60 hover:bg-pink-700 flex items-center justify-center space-x-3">
+              <button className="font-firasans bg-pink-500 py-1 text-lg px-8 md:px-2 text-blue-100 font-medium text-center rounded-md shadow-lg shadow-gray-700/60 hover:bg-pink-700 flex items-center justify-center space-x-2">
                 <BsFillBagCheckFill />
                 <span>CheckOut</span>
               </button>
             </Link>
             <button
-              className="font-firasans bg-red-600 py-1 text-lg px-8 md:px-5 text-blue-100 font-medium text-center rounded-md shadow-lg shadow-gray-700/60 hover:bg-red-800 flex items-center justify-center space-x-3"
+              className="font-firasans bg-red-600 py-1 text-lg px-8 md:px-2 text-blue-100 font-medium text-center rounded-md shadow-lg shadow-gray-700/60 hover:bg-red-800 flex items-center justify-center space-x-2"
               onClick={clearCart}
             >
               <AiFillDelete />
