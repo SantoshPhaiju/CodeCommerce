@@ -18,7 +18,7 @@ const Signup = () => {
 
   const onSubmit = async (e) =>{
     e.preventDefault();
-    console.log(credentails);
+    // console.log(credentails);
 
     const response = await fetch("http://localhost:3000/api/signup", {
       method: "POST",
@@ -29,6 +29,11 @@ const Signup = () => {
     });
     const data = await response.json();
     if(data.success === true){
+      setCredentails({
+        name: "",
+        email: "",
+        password: "",
+      });
       router.push("/login")
       toast.success("Account created successfully.");
     }else{
