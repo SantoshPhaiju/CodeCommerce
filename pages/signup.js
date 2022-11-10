@@ -1,7 +1,41 @@
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 const Signup = () => {
+  const [credentails, setCredentails] = useState({
+    name: "",
+    email: "",
+    password: ""
+  });
+
+  const router = useRouter();
+
+  const onChange = (e) =>{
+    setCredentails({...credentails, [e.target.name]:e.target.value});
+  }
+
+  const onSubmit = async (e) =>{
+    e.preventDefault();
+    console.log(credentails);
+
+    const response = await fetch("http://localhost:3000/api/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(credentails)
+    });
+    const data = await response.json();
+    if(data.success === true){
+      router.push("/login")
+      toast.success("Account created successfully.");
+    }else{
+      toast.error("User already exists with this email!");
+    }
+  }
+  
   return (
     <div>
       <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -21,7 +55,7 @@ const Signup = () => {
               </Link>
             </p>
           </div>
-          <form className="mt-8 space-y-6 font-firasans">
+          <form className="mt-8 space-y-6 font-firasans" onSubmit={onSubmit}>
             <input type="hidden" name="remember" value="true" />
             <div className="-space-y-px rounded-md shadow-sm">
               <div>
@@ -36,6 +70,8 @@ const Signup = () => {
                   required
                   className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-pink-500 focus:outline-none focus:ring-pink-500 sm:text-sm"
                   placeholder="Username"
+                  value={credentails.name}
+                  onChange={onChange}
                 />
               </div>
               <div>
@@ -50,6 +86,8 @@ const Signup = () => {
                   required
                   className="relative block w-full appearance-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-pink-500 focus:outline-none focus:ring-pink-500 sm:text-sm"
                   placeholder="Email address"
+                  value={credentails.email}
+                  onChange={onChange}
                 />
               </div>
 
@@ -65,6 +103,8 @@ const Signup = () => {
                   required
                   className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-pink-500 focus:outline-none focus:ring-pink-500 sm:text-sm"
                   placeholder="Password"
+                  value={credentails.password}
+                  onChange={onChange}
                 />
               </div>
             </div>
