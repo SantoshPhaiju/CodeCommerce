@@ -1,7 +1,45 @@
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 const Login = () => {
+
+  const [credentails, setCredentails] = useState({
+    email: "",
+    password: "",
+  });
+
+  const router = useRouter();
+
+  const onChange = (e) => {
+    setCredentails({ ...credentails, [e.target.name]: e.target.value });
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    // console.log(credentails);
+
+    const response = await fetch("http://localhost:3000/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(credentails),
+    });
+    const data = await response.json();
+    if (data.success === true) {
+      setCredentails({
+        email: "",
+        password: "",
+      });
+      router.push("/");
+      toast.success("Login successful!");
+    } else {
+      toast.error(data.message);
+      // console.log(data);
+    }
+  };
   return (
     <div>
       <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -14,14 +52,14 @@ const Login = () => {
             <p className="mt-2 text-center text-sm text-gray-600 font-firasans">
               Or&nbsp;
               <Link
-                href={'/signup'}
+                href={"/signup"}
                 className="font-medium text-blue-600 hover:text-blue-500 hover:underline font-firasans"
               >
                 SignUp
               </Link>
             </p>
           </div>
-          <form className="mt-8 space-y-6 font-firasans">
+          <form className="mt-8 space-y-6 font-firasans" onSubmit={onSubmit}>
             <input type="hidden" name="remember" value="true" />
             <div className="-space-y-px rounded-md shadow-sm">
               <div>
@@ -36,6 +74,8 @@ const Login = () => {
                   required
                   className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-pink-500 focus:outline-none focus:ring-pink-500 sm:text-sm"
                   placeholder="Email address"
+                  onChange={onChange}
+                  value={credentails.email}
                 />
               </div>
               <div>
@@ -50,6 +90,8 @@ const Login = () => {
                   required
                   className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-pink-500 focus:outline-none focus:ring-pink-500 sm:text-sm"
                   placeholder="Password"
+                  onChange={onChange}
+                  value={credentails.password}
                 />
               </div>
             </div>
