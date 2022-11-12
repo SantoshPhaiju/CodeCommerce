@@ -29,12 +29,9 @@ const Login = () => {
     });
     const data = await response.json();
     if (data.success === true) {
-      setCredentails({
-        email: "",
-        password: "",
-      });
       router.push("/");
       toast.success("Login successful!");
+      localStorage.setItem("token", data.token);
     } else {
       toast.error(data.message);
       // console.log(data);

@@ -74,6 +74,8 @@ const removeFromCart = (itemCode, qty, price, name, size, variant) => {
   saveCart(newCart);
 };
 
+const cartLength = Object.keys(cart).length || 0;
+
 
   return (
     <>
@@ -83,6 +85,7 @@ const removeFromCart = (itemCode, qty, price, name, size, variant) => {
         removeFromCart={removeFromCart}
         clearCart={clearCart}
         subTotal={subTotal}
+        cartLength={cartLength}
       />
       <div className="min-h-[40vh] overflow-x-hidden">
         <Component
@@ -91,6 +94,7 @@ const removeFromCart = (itemCode, qty, price, name, size, variant) => {
           cart={cart}
           removeFromCart={removeFromCart}
           clearCart={clearCart}
+          cartLength={cartLength}
           subTotal={subTotal}
           {...pageProps}
         />
