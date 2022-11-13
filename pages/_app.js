@@ -9,8 +9,17 @@ import "../styles/globals.css";
 function MyApp({ Component, pageProps }) {
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+    }
+  });
 
   useEffect(() => {
     // console.log("This is the useeffect from the _app.js");
@@ -25,6 +34,11 @@ function MyApp({ Component, pageProps }) {
       localStorage.clear();
     }
   }, []);
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    setLoggedIn(false);
+  };
 
   const saveCart = (myCart) =>{
     localStorage.setItem("cart", JSON.stringify(myCart))
@@ -86,6 +100,8 @@ const cartLength = Object.keys(cart).length || 0;
         clearCart={clearCart}
         subTotal={subTotal}
         cartLength={cartLength}
+        loggedIn={loggedIn}
+        logout={logout}
       />
       <div className="min-h-[40vh] overflow-x-hidden">
         <Component

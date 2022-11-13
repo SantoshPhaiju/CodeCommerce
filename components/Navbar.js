@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 // import { MdOutlineAccountCircle } from "react-icons/md";
 import { AiFillCloseCircle, AiFillDelete } from "react-icons/ai";
@@ -8,7 +8,7 @@ import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 import { BsFillBagCheckFill } from "react-icons/bs";
 import {MdAccountCircle} from 'react-icons/md'
 
-const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal, cartLength }) => {
+const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal, cartLength, loggedIn, logout }) => {
   // console.log(cart, addToCart, removeFromCart, clearCart, subTotal);
   const ref = useRef();
   const toggleCart = () => {
@@ -60,10 +60,12 @@ const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal, cartLeng
           </ul>
         </nav>
 
-        <div className="buttons flex items-center justify-center md:mr-7 text-xl md:text-3xl space-x-4 mb-3 md:mb-0 relative">
-          <Link href={"/login"}>
+       <div className="buttons flex items-center justify-center md:mr-7 text-xl md:text-3xl space-x-4 mb-3 md:mb-0 relative">
+          {!loggedIn && <Link href={"/login"}>
             <MdAccountCircle className="cursor-pointer text-2xl text-pink-700" />
-          </Link>
+          </Link>}
+          {loggedIn && <div className="text-lg font-firasans"> Welcome user </div>}
+          {loggedIn && <button className="btn text-base py-1 px-4 bg-blue-200 rounded-md shadow-md font-firasans" onClick={logout}>Logout</button>}
           <AiOutlineShoppingCart
             className="cursor-pointer text-2xl"
             onClick={toggleCart}
