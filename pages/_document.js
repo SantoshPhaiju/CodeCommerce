@@ -8,7 +8,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html>
+      <Html className="overflow-x-hidden">
         <Head>
           <link
             href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Fira+Sans&family=Roboto+Slab&family=Roboto:wght@700&family=Rubik:wght@500&family=Ubuntu&display=swap"

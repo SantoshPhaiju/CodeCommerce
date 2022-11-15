@@ -19,7 +19,7 @@ function MyApp({ Component, pageProps }) {
     } else {
       setLoggedIn(false);
     }
-  });
+  }, [router.query]);
 
   useEffect(() => {
     // console.log("This is the useeffect from the _app.js");
@@ -36,6 +36,7 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   const logout = () => {
+    router.push("/login")
     localStorage.removeItem("token");
     setLoggedIn(false);
   };
