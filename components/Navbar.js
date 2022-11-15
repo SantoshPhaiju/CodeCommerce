@@ -122,7 +122,7 @@ const Navbar = ({
               >
                 <ul className="flex flex-col">
                   <Link
-                    href={""}
+                    href={"/myaccount"}
                     className={
                       "hover:text-purple-700 hover:underline hover:underline-offset-2"
                     }
@@ -130,7 +130,7 @@ const Navbar = ({
                     <li>My Account</li>
                   </Link>
                   <Link
-                    href={""}
+                    href={"/orders"}
                     className={
                       "hover:text-purple-700 hover:underline hover:underline-offset-2"
                     }
@@ -138,7 +138,7 @@ const Navbar = ({
                     <li>Orders</li>
                   </Link>
                   <Link
-                    href={""}
+                    href={"/login"}
                     className={
                       "hover:text-purple-700 hover:underline hover:underline-offset-2"
                     }

@@ -36,7 +36,6 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   const logout = () => {
-    router.push("/login")
     localStorage.removeItem("token");
     setLoggedIn(false);
   };
