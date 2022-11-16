@@ -14,8 +14,6 @@ const Login = () => {
   useEffect(() => {
     if (localStorage.getItem("token")) {
       router.push("/");
-    } else {
-      router.push("/login");
     }
   }, []);
 
