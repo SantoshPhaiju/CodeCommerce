@@ -3,17 +3,29 @@ import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
- import "react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.css";
+import LoadingBar from "react-top-loading-bar";
 import "../styles/globals.css";
+
+
+
 
 function MyApp({ Component, pageProps }) {
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
   const [loggedIn, setLoggedIn] = useState(false);
 
+  const [progress, setProgress] = useState(0);
+
   const router = useRouter();
 
   useEffect(() => {
+     router.events.on("routeChangeStart", () =>{
+      setProgress(40);
+     });
+     router.events.on("routeChangeComplete", () =>{
+      setProgress(100);
+     });
     if (localStorage.getItem("token")) {
       setLoggedIn(true);
     } else {
@@ -93,6 +105,12 @@ const cartLength = Object.keys(cart).length || 0;
 
   return (
     <>
+      <LoadingBar
+        color="#ec4899"
+        progress={progress}
+        waitingTime={400}
+        onLoaderFinished={() => setProgress(0)}
+      />
       <Navbar
         addToCart={addToCart}
         cart={cart}

@@ -118,7 +118,7 @@ const Navbar = ({
               <div
                 onMouseOver={() => setDropdown(true)}
                 onMouseLeave={() => setDropdown(false)}
-                className="absolute right-24 text-lg bg-pink-300 top-7 py-2 flex px-3 rounded-md font-firasans w-36"
+                className="absolute right-24 text-lg bg-slate-100 shadow-lg shadow-gray-400/30 pl-5 border-2 border-gray-300 top-7 py-2 flex px-3 rounded-md font-firasans w-36"
               >
                 <ul className="flex flex-col">
                   <Link
