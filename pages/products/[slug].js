@@ -20,7 +20,7 @@ const Slug = ({ buyNow, addToCart, product, variants }) => {
 
 
   const checkServiceability = async () => {
-    let pins = await fetch("http://localhost:3000/api/pincode");
+    let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
     let pinJson = await pins.json();
     if (pinJson.includes(Number(pin))) {
       setService(true);
@@ -46,7 +46,7 @@ const Slug = ({ buyNow, addToCart, product, variants }) => {
     // console.log("Running refreshVariant function");
     // setColor(newColor);
     // setSize(newSize);
-    let url = `http://localhost:3000/products/${variants[newColor][newSize]["slug"]}`;
+    let url = `${process.env.NEXT_PUBLIC_HOST}/products/${variants[newColor][newSize]["slug"]}`;
     window.location = url;
     // console.log(variants[newColor][newSize]['slug']);
   };
