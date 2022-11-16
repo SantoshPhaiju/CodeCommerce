@@ -139,11 +139,15 @@ const Navbar = ({
                   </Link>
                   <Link
                     href={"/login"}
+                    onClick={() => {
+                      setDropdown(false)
+                      logout()
+                    }}
                     className={
                       "hover:text-purple-700 hover:underline hover:underline-offset-2"
                     }
                   >
-                    <li onClick={logout}>Logout</li>
+                    <li>Logout</li>
                   </Link>
                 </ul>
               </div>
@@ -169,7 +173,6 @@ const Navbar = ({
           <AiOutlineShoppingCart
             className="cursor-pointer text-2xl"
             onClick={toggleCart}
-           
           />
           <span
             className="absolute top-0 right-0 px-2 py-1 translate-x-1/2 -translate-y-1/2 bg-pink-600 rounded-full text-xs text-white cursor-pointer"

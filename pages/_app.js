@@ -7,9 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 import LoadingBar from "react-top-loading-bar";
 import "../styles/globals.css";
 
-
-
-
 function MyApp({ Component, pageProps }) {
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
@@ -31,7 +28,7 @@ function MyApp({ Component, pageProps }) {
     } else {
       setLoggedIn(false);
     }
-  }, [router.query]);
+  }, [router.route]);
 
   useEffect(() => {
     // console.log("This is the useeffect from the _app.js");
