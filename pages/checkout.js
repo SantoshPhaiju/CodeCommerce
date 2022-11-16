@@ -1,13 +1,22 @@
+import KhaltiCheckout from "khalti-checkout-web";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   AiFillDelete,
   AiFillMinusCircle,
   AiFillPlusCircle,
 } from "react-icons/ai";
 import { BsFillBagCheckFill } from "react-icons/bs";
+import config from "../components/khalti/khaltiConfig";
 
 const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
+  let checkout;
+  if (typeof window !== "undefined") {
+    checkout = new KhaltiCheckout(config);
+    console.log(checkout);
+  }
+
+  const payTotal = subTotal + "00";
   return (
     <div className="container mx-auto max-w-[1200px] px-3">
       <h1 className="font-bold text-3xl my-8 text-pink-800 text-center font-roboto">
@@ -132,7 +141,9 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
             return (
               <li key={k}>
                 <div className="item flex my-3 text-base 2xl:text-lg font-firasans font-medium text-black">
-                  <div className="w-[80%] sm:w-[60%] md:w-[40%]">{cart[k].name} ({cart[k].size}/{cart[k].variant})</div>
+                  <div className="w-[80%] sm:w-[60%] md:w-[40%]">
+                    {cart[k].name} ({cart[k].size}/{cart[k].variant})
+                  </div>
                   <div className="w-1/3 flex items-center justify-center gap-3 text-lg">
                     <AiFillMinusCircle
                       onClick={() =>
@@ -165,12 +176,13 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
         </span>
       </div>
       <div className="mx-8">
-        <Link href={"/"}>
-          <button className="font-firasans bg-pink-500 py-1 my-2 text-lg px-10 md:px-5 text-blue-100 font-medium text-center rounded-md hover:bg-pink-700 flex items-center justify-center space-x-2">
-            <BsFillBagCheckFill className="text-base" />
-            <span>Pay Rs. {subTotal}</span>
-          </button>
-        </Link>
+        <button
+          onClick={() => checkout.show({ amount: Number(payTotal) })}
+          className="font-firasans bg-pink-500 py-1 my-2 text-lg px-10 md:px-5 text-blue-100 font-medium text-center rounded-md hover:bg-pink-700 flex items-center justify-center space-x-2"
+        >
+          <BsFillBagCheckFill className="text-base" />
+          <span>Pay Rs. {subTotal}</span>
+        </button>
       </div>
     </div>
   );
