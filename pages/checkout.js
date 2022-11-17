@@ -1,24 +1,59 @@
 import KhaltiCheckout from "khalti-checkout-web";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AiFillDelete,
   AiFillMinusCircle,
   AiFillPlusCircle,
 } from "react-icons/ai";
-import { BsFillBagCheckFill } from "react-icons/bs";
+// import { BsFillBagCheckFill } from "react-icons/bs";
+import axios from "axios";
 import config from "../components/khalti/khaltiConfig";
 
 const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
+  const [disabled, setDisabled] = useState(true);
+
   let checkout;
   if (typeof window !== "undefined") {
     checkout = new KhaltiCheckout(config);
-    console.log(checkout);
+    // console.log(checkout);
   }
+  const [orderData, setOrderData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    pincode: "",
+    city: "",
+    state: "",
+  });
+
+
+  const handleChange = (e) => {
+    setOrderData({ ...orderData, [e.target.name]: e.target.value });
+    setTimeout(() => {
+      if (
+        orderData.name.length > 3 &&
+        orderData.email.length > 3 &&
+        orderData.address.length > 3 &&
+        orderData.pincode.length > 3 &&
+        orderData.phone.length > 3
+      ) {
+        setDisabled(false);
+      } else {
+        setDisabled(true);
+      }
+    }, 200);
+  };
 
   const payTotal = subTotal + "00";
+
+  const orderId = Math.floor(Math.random() * Date.now());  // Order id needs to be changed
+  // Order should only be placed after the payment
+  // TODO: Needs to populate orders database only after the payment is made
+  const orderDetails = {...orderData, orderId, subTotal, cart}
   return (
-    <div className="container mx-auto max-w-[1200px] px-3">
+    <div className="container mx-auto max-w-[1200px] px-3 mb-20">
       <h1 className="font-bold text-3xl my-8 text-pink-800 text-center font-roboto">
         Checkout
       </h1>
@@ -34,6 +69,9 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
               id="name"
               name="name"
               className="w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              value={orderData.name}
+              onChange={handleChange}
+              required
             />
           </div>
         </div>
@@ -47,6 +85,9 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
               id="email"
               name="email"
               className="w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              value={orderData.email}
+              onChange={handleChange}
+              required
             />
           </div>
         </div>
@@ -59,10 +100,16 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
           <textarea
             name="address"
             id="address"
-            cols="30"
-            rows="3"
+            cols="20"
+            rows="2"
             className="w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            value={orderData.address}
+            onChange={handleChange}
+            required
           ></textarea>
+          <p className="opacity-70 text-sm mt-0 mb-2 text-gray-700 italic">
+            Eg: Ganeshthan, Chabahil
+          </p>
         </div>
       </div>
 
@@ -77,35 +124,9 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
               id="phone"
               name="phone"
               className="w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-            />
-          </div>
-        </div>
-        <div className="px-2 w-1/2">
-          <div className="mb-2">
-            <label htmlFor="city" className="leading-7 text-sm text-gray-600">
-              City
-            </label>
-            <input
-              type="text"
-              id="city"
-              name="city"
-              className="w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="mx-auto flex">
-        <div className="px-2 w-1/2">
-          <div className="mb-2">
-            <label htmlFor="state" className="leading-7 text-sm text-gray-600">
-              State
-            </label>
-            <input
-              type="text"
-              id="state"
-              name="state"
-              className="w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              value={orderData.phone}
+              onChange={handleChange}
+              required
             />
           </div>
         </div>
@@ -122,6 +143,44 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
               id="pincode"
               name="pincode"
               className="w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              value={orderData.pincode}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="mx-auto flex">
+        <div className="px-2 w-1/2">
+          <div className="mb-2">
+            <label htmlFor="state" className="leading-7 text-sm text-gray-600">
+              State
+            </label>
+            <input
+              type="text"
+              id="state"
+              name="state"
+              className="w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              value={orderData.state}
+              required
+              readOnly
+            />
+          </div>
+        </div>
+        <div className="px-2 w-1/2">
+          <div className="mb-2">
+            <label htmlFor="city" className="leading-7 text-sm text-gray-600">
+              City
+            </label>
+            <input
+              type="text"
+              id="city"
+              name="city"
+              value={orderData.city}
+              className="w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              required
+              readOnly
             />
           </div>
         </div>
@@ -175,12 +234,30 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
           SubTotal: रु {subTotal}
         </span>
       </div>
-      <div className="mx-8">
+      <div className="ml-3">
         <button
-          onClick={() => checkout.show({ amount: Number(payTotal) })}
-          className="font-firasans bg-pink-500 py-1 my-2 text-lg px-10 md:px-5 text-blue-100 font-medium text-center rounded-md hover:bg-pink-700 flex items-center justify-center space-x-2"
+          disabled={disabled}
+          onClick={() => {
+            setTimeout(() => {
+              axios
+              .post(`${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`, {
+                data: orderDetails,
+              })
+              .then((response) => {
+                console.log(response);
+              })
+              .catch((error) => console.log(error));
+            }, 500);
+            return checkout.show({ amount: Number(payTotal) });
+          }}
+          className="transition-all duration-300 disabled:bg-pink-200 disabled:shadow-none disabled:text-black font-firasans bg-pink-400 py-1 my-2 text-lg px-10 md:px-5 font-medium text-center rounded-md hover:bg-pink-500 flex items-center justify-center space-x-2 shadow-lg shadow-gray-700/50 text-purple-700"
         >
-          <BsFillBagCheckFill className="text-base" />
+          {/* <BsFillBagCheckFill className="text-base" /> */}
+          <img
+            src="/khalti.png"
+            alt="khalti logo here"
+            className="w-14 h-8 -mx-4"
+          />
           <span>Pay Rs. {subTotal}</span>
         </button>
       </div>
