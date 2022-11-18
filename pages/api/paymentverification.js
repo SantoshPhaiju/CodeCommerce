@@ -30,8 +30,8 @@ const handler = async (req, res) => {
       if (response) {
         console.log(response.data);
         let result = response.data;
-        await Order.findOneAndUpdate({orderId: response.data.product_identity}, {status: "Paid", paymentInfo: response.data})
-        res.status(200).json({ success: true, data: result });
+        let order = await Order.findOneAndUpdate({orderId: response.data.product_identity}, {status: "Paid", paymentInfo: response.data})
+        res.status(200).json({ success: true, data: result, id: order._id });
       }
     } catch (error) {
       console.log(error);

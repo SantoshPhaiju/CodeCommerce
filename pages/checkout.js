@@ -32,11 +32,11 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
             data: payload,
           })
           .then((response) => {
-            // console.log(response.data);
+            console.log(response.data);
             alert("Transaction successfull!");
             localStorage.removeItem("cart");
             clearCart();
-            router.push("/order");
+            router.push("/order?id=" + response.data.id);
           })
           .catch((error) => {
             alert("Transaction failed on server");

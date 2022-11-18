@@ -1,34 +1,71 @@
-import mongoose from 'mongoose';
-import { useRouter } from 'next/router';
-import React, { useEffect } from 'react'
-import Order from '../models/Order'
+import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const Orders = () => {
   const router = useRouter();
+  const [orders, setOrders] = useState([]);
   useEffect(() => {
+    const fetchorders = async () => {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST}/api/fetchuserdata`,
+        { data: token }
+      );
+      console.log(response.data);
+      if (response.data.success === true) {
+        setOrders(response.data.orders);
+      }
+    };
     if (!localStorage.getItem("token")) {
       router.push("/login");
+    } else {
+      fetchorders();
     }
   }, []);
+  console.log(orders);
+
+  const deleteOrder = async (id) =>{
+    if(confirm("Are you sure want to delete this order: ")){
+      setOrders(orders.filter((item) =>{
+        return item._id !== id;
+      }))
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_HOST}/api/deleteorder`, {data: id});
+      console.log(response.data);
+      if(response.data.success === true){
+        toast.success("Order successfully deleted");
+      }
+    }
+  }
   return (
     <div className="container w-[96%] sm:w-[90%] mx-auto">
-      <h1 className="font-roboto text-2xl text-center my-6 text-pink-700">My Orders</h1>
+      <h1 className="font-roboto text-2xl text-center my-6 text-pink-700">
+        My Orders
+      </h1>
 
+      {orders.length === 0 && (
+        <div className=" text-center text-red-900 font-roboto text-lg">
+          {" "}
+          No orders found! 😖{" "}
+        </div>
+      )}
       <div className="overflow-x-auto relative shadow-md shadow-gray-500/30 sm:rounded-lg mb-10">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-base font-firasans text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="py-4 px-6">
-                Product name
+                Order Id
               </th>
               <th scope="col" className="py-4 px-6">
-                Color
+               email
               </th>
               <th scope="col" className="py-4 px-6">
-                Category
+                Amount
               </th>
               <th scope="col" className="py-4 px-6">
-                Price
+                Status
               </th>
               <th scope="col" className="py-4 px-6">
                 Action
@@ -36,83 +73,61 @@ const Orders = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 font-firasans">
-              <th
-                scope="row"
-                className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-              >
-                Apple MacBook Pro 17"
-              </th>
-              <td className="py-4 px-6">Sliver</td>
-              <td className="py-4 px-6">Laptop</td>
-              <td className="py-4 px-6">$2999</td>
-              <td className="py-4 px-6">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+            {orders.map((item) => {
+              return (
+                <tr
+                  key={item?._id}
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 font-firasans"
                 >
-                  Edit
-                </a>
-              </td>
-            </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-              <th
-                scope="row"
-                className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-              >
-                Microsoft Surface Pro
-              </th>
-              <td className="py-4 px-6">White</td>
-              <td className="py-4 px-6">Laptop PC</td>
-              <td className="py-4 px-6">$1999</td>
-              <td className="py-4 px-6">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                >
-                  Edit
-                </a>
-              </td>
-            </tr>
-            <tr className="bg-white dark:bg-gray-800">
-              <th
-                scope="row"
-                className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-              >
-                Magic Mouse 2
-              </th>
-              <td className="py-4 px-6">Black</td>
-              <td className="py-4 px-6">Accessories</td>
-              <td className="py-4 px-6">$99</td>
-              <td className="py-4 px-6">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                >
-                  Edit
-                </a>
-              </td>
-            </tr>
+                    <th
+                      scope="row"
+                      className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white hover:text-blue-500 hover:underline"
+                    >
+                  <Link href={"/order?id=" + item?._id}>
+                      # {item?.orderId}
+                  </Link>
+                    </th>
+                  <td className="py-4 px-6">{item?.email}</td>
+                  <td className="py-4 px-6">Rs.{item?.amount}</td>
+                  <td className="py-4 px-6">{item?.status}</td>
+                  <td className="py-4 px-6 flex space-x-3">
+                    {item?.status === "Pending" && (
+                      <>
+                        {" "}
+                        <button
+                          
+                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                        >
+                          Pay
+                        </button>
+                        <button
+                          onClick={() => deleteOrder(item?._id)}
+                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                        >
+                          Delete
+                        </button>{" "}
+                      </>
+                    )}
+                    {item?.status === "Paid" && (
+                      <>
+                        <Link href={"/order?id=" + item?._id}>
+                          <button
+                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                          >
+                            Details
+                          </button>
+                        </Link>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
     </div>
   );
-}
+};
 
-
-export async function getServerSideProps(context) {
-  if (!mongoose.connections[0].readyState) {
-    mongoose.connect(process.env.MONGO_URI);
-  }
-
-  let orders = await Order.find({  })
-
-  return {
-    props: {
-      orders: orders
-    }, // will be passed to the page component as props
-  };
-}
-
-export default Orders
+export default Orders;
