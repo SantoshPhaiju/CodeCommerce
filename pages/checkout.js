@@ -11,8 +11,41 @@ import axios from "axios";
 import { useRouter } from "next/router";
 
 const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
-  const [disabled, setDisabled] = useState(true);
   const router = useRouter();
+  const [user, setUser] = useState({})
+
+  const[orderData, setOrderData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    pincode: "",
+    city: "",
+    state: "",
+  });
+
+  useEffect(() =>{
+    const fetchuser = async () =>{
+      const token = localStorage.getItem("token");
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_HOST}/api/fetchuserdata`,
+          { data: token }
+        );
+        console.log(response.data);
+        if(response.data){
+          setUser(response.data.user);
+          setOrderData({...orderData, name: response.data.user.name, email: response.data.user.email})
+        }
+    }
+    if(!localStorage.getItem("token")){
+      router.push("/login");
+    }else{
+      fetchuser();
+    }
+
+  }, [])
+  console.log(user);
+  const [disabled, setDisabled] = useState(true);
 
   const orderId = Math.floor(Math.random() * Date.now()); // Order id needs to be changed
 
@@ -67,15 +100,6 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
     checkout = new KhaltiCheckout(config);
     // console.log(checkout);
   }
-  const [orderData, setOrderData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-    pincode: "",
-    city: "",
-    state: "",
-  });
 
   const handleChange = (e) => {
     setOrderData({ ...orderData, [e.target.name]: e.target.value });
@@ -119,6 +143,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
               value={orderData.name}
               onChange={handleChange}
               required
+              readOnly
             />
           </div>
         </div>
@@ -135,6 +160,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
               value={orderData.email}
               onChange={handleChange}
               required
+              readOnly
             />
           </div>
         </div>
@@ -310,6 +336,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
       </div>
     </div>
   );
-};;
+};
+
 
 export default Checkout;

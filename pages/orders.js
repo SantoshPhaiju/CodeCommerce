@@ -11,7 +11,7 @@ const Orders = () => {
     const fetchorders = async () => {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST}/api/fetchuserdata`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/myorders`,
         { data: token }
       );
       console.log(response.data);

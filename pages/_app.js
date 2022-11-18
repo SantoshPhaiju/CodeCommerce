@@ -83,7 +83,7 @@ function MyApp({ Component, pageProps }) {
   const clearCart = () =>{
     setCart({});
     saveCart({});
-    localStorage.clear();
+    localStorage.removeItem("cart");
   }
 
 const removeFromCart = (itemCode, qty, price, name, size, variant) => {
@@ -128,6 +128,7 @@ const cartLength = Object.keys(cart).length || 0;
           clearCart={clearCart}
           cartLength={cartLength}
           subTotal={subTotal}
+          loggedIn={loggedIn}
           {...pageProps}
         />
 
