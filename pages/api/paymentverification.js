@@ -28,8 +28,9 @@ const handler = async (req, res) => {
         config
       );
       if (response) {
-        // console.log(response.data);
+        console.log(response.data);
         let result = response.data;
+        await Order.findOneAndUpdate({orderId: response.data.product_identity}, {status: "Paid", paymentInfo: response.data})
         res.status(200).json({ success: true, data: result });
       }
     } catch (error) {

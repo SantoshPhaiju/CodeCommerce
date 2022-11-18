@@ -20,8 +20,6 @@ const handler = async (req, res) => {
       email, orderId, address, amount: subTotal, products: cart
     })
     await order.save();
-
-
     }
     res.status(200).send("successfull")
 }

@@ -8,10 +8,59 @@ import {
 } from "react-icons/ai";
 // import { BsFillBagCheckFill } from "react-icons/bs";
 import axios from "axios";
-import config from "../components/khalti/khaltiConfig";
+import { useRouter } from "next/router";
 
-const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
+const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
   const [disabled, setDisabled] = useState(true);
+  const router = useRouter();
+
+  const orderId = Math.floor(Math.random() * Date.now()); // Order id needs to be changed
+
+  let config = {
+    // replace this key with yours
+    publicKey: process.env.NEXT_PUBLIC_KHALTI_TEST_PUBLIC_KEY,
+    productIdentity: orderId,
+    productName: "CODE COMMERCE",
+    productUrl: "http://localhost:3000",
+    eventHandler: {
+      onSuccess(payload) {
+        // hit merchant api for initiating verfication
+        console.log(payload);
+
+        axios
+          .post(`${process.env.NEXT_PUBLIC_HOST}/api/paymentverification`, {
+            data: payload,
+          })
+          .then((response) => {
+            // console.log(response.data);
+            alert("Transaction successfull!");
+            localStorage.removeItem("cart");
+            clearCart();
+            router.push("/order");
+          })
+          .catch((error) => {
+            alert("Transaction failed on server");
+            console.log(error);
+          });
+      },
+      // onError handler is optional
+      onError(error) {
+        // handle errors
+        alert("Transaction failed");
+        // console.log(error);
+      },
+      onClose() {
+        console.log("widget is closing");
+      },
+    },
+    paymentPreference: [
+      "KHALTI",
+      "EBANKING",
+      "MOBILE_BANKING",
+      "CONNECT_IPS",
+      "SCT",
+    ],
+  };
 
   let checkout;
   if (typeof window !== "undefined") {
@@ -27,7 +76,6 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
     city: "",
     state: "",
   });
-
 
   const handleChange = (e) => {
     setOrderData({ ...orderData, [e.target.name]: e.target.value });
@@ -48,10 +96,9 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
 
   const payTotal = subTotal + "00";
 
-  const orderId = Math.floor(Math.random() * Date.now());  // Order id needs to be changed
   // Order should only be placed after the payment
   // TODO: Needs to populate orders database only after the payment is made
-  const orderDetails = {...orderData, orderId, subTotal, cart}
+  const orderDetails = { ...orderData, orderId, subTotal, cart };
   return (
     <div className="container mx-auto max-w-[1200px] px-3 mb-20">
       <h1 className="font-bold text-3xl my-8 text-pink-800 text-center font-roboto">
@@ -240,13 +287,13 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
           onClick={() => {
             setTimeout(() => {
               axios
-              .post(`${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`, {
-                data: orderDetails,
-              })
-              .then((response) => {
-                console.log(response);
-              })
-              .catch((error) => console.log(error));
+                .post(`${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`, {
+                  data: orderDetails,
+                })
+                .then((response) => {
+                  console.log(response);
+                })
+                .catch((error) => console.log(error));
             }, 500);
             return checkout.show({ amount: Number(payTotal) });
           }}
@@ -263,6 +310,6 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
       </div>
     </div>
   );
-};
+};;
 
 export default Checkout;
