@@ -31,9 +31,9 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
           `${process.env.NEXT_PUBLIC_HOST}/api/fetchuserdata`,
           { data: token }
         );
-        console.log(response.data);
+        // console.log(response.data);
         if(response.data){
-          setUser(response.data.user);
+          // setUser(response.data.user);
           setOrderData({...orderData, name: response.data.user.name, email: response.data.user.email})
         }
     }
@@ -44,7 +44,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
     }
 
   }, [])
-  console.log(user);
+  // console.log(user);
   const [disabled, setDisabled] = useState(true);
 
   const orderId = Math.floor(Math.random() * Date.now()); // Order id needs to be changed
@@ -65,7 +65,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
             data: payload,
           })
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             alert("Transaction successfull!");
             localStorage.removeItem("cart");
             clearCart();
@@ -317,7 +317,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
                   data: orderDetails,
                 })
                 .then((response) => {
-                  console.log(response);
+                  // console.log(response);
                 })
                 .catch((error) => console.log(error));
             }, 500);

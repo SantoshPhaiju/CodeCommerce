@@ -65,7 +65,7 @@ function MyApp({ Component, pageProps }) {
     if(itemCode in cart){
       newCart[itemCode].qty = newCart[itemCode].qty + qty;
     }else{
-      newCart[itemCode] = {qty: 1, price, name, size, variant};
+      newCart[itemCode] = {qty, price, name, size, variant};
     }
     // console.log(newCart)
     setCart(newCart);

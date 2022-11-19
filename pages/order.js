@@ -3,12 +3,29 @@ import React from "react";
 import Order from "../models/Order";
 import mongoose from "mongoose";
 
-const OrderPage = ({ order }) => {
+const OrderPage = ({ order, addToCart }) => {
   const router = useRouter();
   const orderedProducts = order.products;
   const { id } = router.query;
   // console.log(id, order);
   // console.log(Object.keys(orderedProducts));
+
+  const handlePay = () =>{
+    // console.log(order.products);
+    
+    Object.keys(order.products).map((item) => {
+      // console.log(orderedProducts[item]["qty"]);
+      addToCart(
+        item,
+        order.products[item]["qty"],
+        order.products[item]?.price,
+        order.products[item]?.name,
+        order.products[item]?.size,
+        order.products[item]?.variant
+      );
+    })
+    router.push("/checkout");
+  }
   return (
     <div>
       <section className="text-gray-600 body-font overflow-hidden">
@@ -84,7 +101,7 @@ const OrderPage = ({ order }) => {
                     Track Order
                   </button>
                 ) : (
-                  <button className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-pink-600 rounded">
+                  <button className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-pink-600 rounded" onClick={handlePay}>
                     Pay
                   </button>
                 )}

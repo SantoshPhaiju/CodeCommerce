@@ -51,81 +51,79 @@ const Orders = () => {
           No orders found! 😖{" "}
         </div>
       )}
-      <div className="overflow-x-auto relative shadow-md shadow-gray-500/30 sm:rounded-lg mb-10">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-base font-firasans text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="py-4 px-6">
-                Order Id
-              </th>
-              <th scope="col" className="py-4 px-6">
-               email
-              </th>
-              <th scope="col" className="py-4 px-6">
-                Amount
-              </th>
-              <th scope="col" className="py-4 px-6">
-                Status
-              </th>
-              <th scope="col" className="py-4 px-6">
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((item) => {
-              return (
-                <tr
-                  key={item?._id}
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 font-firasans"
-                >
+
+      {orders.length > 0 && (
+        <div className="overflow-x-auto relative shadow-md shadow-gray-500/30 sm:rounded-lg mb-10">
+          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead className="text-base font-firasans text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" className="py-4 px-6">
+                  Order Id
+                </th>
+                <th scope="col" className="py-4 px-6">
+                  email
+                </th>
+                <th scope="col" className="py-4 px-6">
+                  Amount
+                </th>
+                <th scope="col" className="py-4 px-6">
+                  Status
+                </th>
+                <th scope="col" className="py-4 px-6">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((item) => {
+                return (
+                  <tr
+                    key={item?._id}
+                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 font-firasans"
+                  >
                     <th
                       scope="row"
                       className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white hover:text-blue-500 hover:underline"
                     >
-                  <Link href={"/order?id=" + item?._id}>
-                      # {item?.orderId}
-                  </Link>
+                      <Link href={"/order?id=" + item?._id}>
+                        # {item?.orderId}
+                      </Link>
                     </th>
-                  <td className="py-4 px-6">{item?.email}</td>
-                  <td className="py-4 px-6">Rs.{item?.amount}</td>
-                  <td className="py-4 px-6">{item?.status}</td>
-                  <td className="py-4 px-6 flex space-x-3">
-                    {item?.status === "Pending" && (
-                      <>
-                        {" "}
-                        <button
-                          
-                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                        >
-                          Pay
-                        </button>
-                        <button
-                          onClick={() => deleteOrder(item?._id)}
-                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                        >
-                          Delete
-                        </button>{" "}
-                      </>
-                    )}
-                    {item?.status === "Paid" && (
-                      <>
-                        <Link href={"/order?id=" + item?._id}>
+                    <td className="py-4 px-6">{item?.email}</td>
+                    <td className="py-4 px-6">Rs.{item?.amount}</td>
+                    <td className="py-4 px-6">{item?.status}</td>
+                    <td className="py-4 px-6 flex space-x-3">
+                      {item?.status === "Pending" && (
+                        <>
+                          {" "}
+                          <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                            Pay
+                          </button>
                           <button
+                            onClick={() => deleteOrder(item?._id)}
                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                           >
-                            Details
-                          </button>
-                        </Link>
-                      </>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+                            Delete
+                          </button>{" "}
+                        </>
+                      )}
+                      {item?.status === "Paid" && (
+                        <>
+                          <Link href={"/order?id=" + item?._id}>
+                            <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                              Details
+                            </button>
+                          </Link>
+                        </>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };
