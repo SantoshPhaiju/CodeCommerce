@@ -24,8 +24,9 @@ const OrderPage = ({ order, addToCart }) => {
         order.products[item]?.variant
       );
     })
-    router.push("/checkout");
+    router.push("/checkout?oid=" + order?.orderId + "&id=" + order?._id);
   }
+  
   return (
     <div>
       <section className="text-gray-600 body-font overflow-hidden">

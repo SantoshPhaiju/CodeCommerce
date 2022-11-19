@@ -14,6 +14,8 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
   const router = useRouter();
   const [user, setUser] = useState({})
 
+  const {oid, id} = router.query;
+
   const[orderData, setOrderData] = useState({
     name: "",
     email: "",
@@ -47,7 +49,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
   // console.log(user);
   const [disabled, setDisabled] = useState(true);
 
-  const orderId = Math.floor(Math.random() * Date.now()); // Order id needs to be changed
+  const orderId = oid || Math.floor(Math.random() * Date.now()); // Order id needs to be changed
 
   let config = {
     // replace this key with yours
@@ -122,7 +124,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
 
   // Order should only be placed after the payment
   // TODO: Needs to populate orders database only after the payment is made
-  const orderDetails = { ...orderData, orderId, subTotal, cart };
+  const orderDetails = { ...orderData, orderId, subTotal, cart, id };
   return (
     <div className="container mx-auto max-w-[1200px] px-3 mb-20">
       <h1 className="font-bold text-3xl my-8 text-pink-800 text-center font-roboto">
