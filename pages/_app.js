@@ -17,12 +17,12 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
   useEffect(() => {
-     router.events.on("routeChangeStart", () =>{
+    router.events.on("routeChangeStart", () => {
       setProgress(40);
-     });
-     router.events.on("routeChangeComplete", () =>{
+    });
+    router.events.on("routeChangeComplete", () => {
       setProgress(100);
-     });
+    });
     if (localStorage.getItem("token")) {
       setLoggedIn(true);
     } else {
@@ -34,7 +34,7 @@ function MyApp({ Component, pageProps }) {
     // console.log("This is the useeffect from the _app.js");
 
     try {
-      if(localStorage.getItem("cart")){
+      if (localStorage.getItem("cart")) {
         setCart(JSON.parse(localStorage.getItem("cart")));
         saveCart(JSON.parse(localStorage.getItem("cart")));
       }
@@ -50,27 +50,27 @@ function MyApp({ Component, pageProps }) {
     setLoggedIn(false);
   };
 
-  const saveCart = (myCart) =>{
-    localStorage.setItem("cart", JSON.stringify(myCart))
+  const saveCart = (myCart) => {
+    localStorage.setItem("cart", JSON.stringify(myCart));
     let subt = 0;
-    let keys = Object.keys(myCart)
+    let keys = Object.keys(myCart);
     for (let i = 0; i < keys.length; i++) {
       subt += myCart[keys[i]].price * myCart[keys[i]].qty;
     }
     setSubTotal(subt);
-  }
+  };
 
-  const addToCart = (itemCode, qty, price, name, size, variant) =>{
+  const addToCart = (itemCode, qty, price, name, size, variant) => {
     let newCart = cart;
-    if(itemCode in cart){
+    if (itemCode in cart) {
       newCart[itemCode].qty = newCart[itemCode].qty + qty;
-    }else{
-      newCart[itemCode] = {qty, price, name, size, variant};
+    } else {
+      newCart[itemCode] = { qty, price, name, size, variant };
     }
     // console.log(newCart)
     setCart(newCart);
     saveCart(newCart);
-  }
+  };
 
   const buyNow = (itemCode, qty, price, name, size, variant) => {
     let newCart = {};
@@ -80,26 +80,25 @@ function MyApp({ Component, pageProps }) {
     router.push("/checkout");
   };
 
-  const clearCart = () =>{
+  const clearCart = () => {
     setCart({});
     saveCart({});
     localStorage.removeItem("cart");
-  }
+  };
 
-const removeFromCart = (itemCode, qty, price, name, size, variant) => {
-  let newCart = cart;
-  if (itemCode in cart) {
-    newCart[itemCode].qty = newCart[itemCode].qty - qty;
-  }
-  if(newCart[itemCode]["qty"] <=0){
-    delete newCart[itemCode]; 
-  }
-  setCart(newCart);
-  saveCart(newCart);
-};
+  const removeFromCart = (itemCode, qty, price, name, size, variant) => {
+    let newCart = cart;
+    if (itemCode in cart) {
+      newCart[itemCode].qty = newCart[itemCode].qty - qty;
+    }
+    if (newCart[itemCode]["qty"] <= 0) {
+      delete newCart[itemCode];
+    }
+    setCart(newCart);
+    saveCart(newCart);
+  };
 
-const cartLength = Object.keys(cart).length || 0;
-
+  const cartLength = Object.keys(cart).length || 0;
 
   return (
     <>

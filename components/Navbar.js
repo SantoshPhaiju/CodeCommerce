@@ -25,7 +25,6 @@ const Navbar = ({
   const router = useRouter();
   const [dropdown, setDropdown] = useState(false);
   const [page, setPage] = useState("/");
-  
 
   useEffect(() => {
     // console.log(router.route);
@@ -141,8 +140,8 @@ const Navbar = ({
                   <Link
                     href={"/login"}
                     onClick={() => {
-                      setDropdown(false)
-                      logout()
+                      setDropdown(false);
+                      logout();
                     }}
                     className={
                       "hover:text-purple-700 hover:underline hover:underline-offset-2"

@@ -13,11 +13,11 @@ import { toast } from "react-toastify";
 
 const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
   const router = useRouter();
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState({});
 
-  const {oid, id} = router.query;
+  const { oid, id } = router.query;
 
-  const[orderData, setOrderData] = useState({
+  const [orderData, setOrderData] = useState({
     name: "",
     email: "",
     phone: "",
@@ -27,26 +27,29 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
   });
   const [pincode, setPincode] = useState("");
 
-  useEffect(() =>{
-    const fetchuser = async () =>{
+  useEffect(() => {
+    const fetchuser = async () => {
       const token = localStorage.getItem("token");
-        const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_HOST}/api/fetchuserdata`,
-          { data: token }
-        );
-        // console.log(response.data);
-        if(response.data){
-          // setUser(response.data.user);
-          setOrderData({...orderData, name: response.data.user.name, email: response.data.user.email})
-        }
-    }
-    if(!localStorage.getItem("token")){
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST}/api/fetchuserdata`,
+        { data: token }
+      );
+      // console.log(response.data);
+      if (response.data) {
+        // setUser(response.data.user);
+        setOrderData({
+          ...orderData,
+          name: response.data.user.name,
+          email: response.data.user.email,
+        });
+      }
+    };
+    if (!localStorage.getItem("token")) {
       router.push("/login");
-    }else{
+    } else {
       fetchuser();
     }
-
-  }, [])
+  }, []);
   // console.log(user);
   const [disabled, setDisabled] = useState(true);
 
@@ -106,7 +109,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
 
   const handleChange = async (e) => {
     setOrderData({ ...orderData, [e.target.name]: e.target.value });
-    if(e.target.name === 'pincode'){
+    if (e.target.name === "pincode") {
       setPincode(e.target.value);
       if (e.target.value.length == 5) {
         let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
@@ -360,6 +363,5 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
     </div>
   );
 };
-
 
 export default Checkout;
