@@ -14,7 +14,7 @@ const Orders = () => {
         `${process.env.NEXT_PUBLIC_HOST}/api/myorders`,
         { data: token }
       );
-      console.log(response.data);
+      // console.log(response.data);
       if (response.data.success === true) {
         setOrders(response.data.orders);
       }
@@ -25,7 +25,7 @@ const Orders = () => {
       fetchorders();
     }
   }, []);
-  console.log(orders);
+  // console.log(orders.length);
 
   const deleteOrder = async (id) =>{
     if(confirm("Are you sure want to delete this order: ")){
@@ -58,6 +58,9 @@ const Orders = () => {
             <thead className="text-base font-firasans text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="py-4 px-6">
+                  S.N.
+                </th>
+                <th scope="col" className="py-4 px-6">
                   Order Id
                 </th>
                 <th scope="col" className="py-4 px-6">
@@ -75,12 +78,13 @@ const Orders = () => {
               </tr>
             </thead>
             <tbody>
-              {orders.map((item) => {
+              {orders.map((item, index) => {
                 return (
                   <tr
                     key={item?._id}
                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 font-firasans"
                   >
+                    <td className="py-4 px-6">{index+1}</td>
                     <th
                       scope="row"
                       className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white hover:text-blue-500 hover:underline"
