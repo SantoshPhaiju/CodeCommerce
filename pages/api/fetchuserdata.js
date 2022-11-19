@@ -7,7 +7,7 @@ const handler = async (req, res) => {
     const token = req.body.data;
     console.log(req.body.data);
     const data = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(data);
+    // console.log(data);
     const userdata = await User.findById(data.id).select("-password");
     res.status(200).send({ user: userdata, success: true });
   }

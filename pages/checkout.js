@@ -9,6 +9,7 @@ import {
 // import { BsFillBagCheckFill } from "react-icons/bs";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
   const router = useRouter();
@@ -21,10 +22,10 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
     email: "",
     phone: "",
     address: "",
-    pincode: "",
     city: "",
     state: "",
   });
+  const [pincode, setPincode] = useState("");
 
   useEffect(() =>{
     const fetchuser = async () =>{
@@ -60,7 +61,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
     eventHandler: {
       onSuccess(payload) {
         // hit merchant api for initiating verfication
-        console.log(payload);
+        // console.log(payload);
 
         axios
           .post(`${process.env.NEXT_PUBLIC_HOST}/api/paymentverification`, {
@@ -103,14 +104,34 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
     // console.log(checkout);
   }
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     setOrderData({ ...orderData, [e.target.name]: e.target.value });
+    if(e.target.name === 'pincode'){
+      setPincode(e.target.value);
+      if (e.target.value.length == 5) {
+        let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
+        let pinJson = await pins.json();
+        // console.log(pinJson);
+        if (Object.keys(pinJson).includes(e.target.value)) {
+          setOrderData({
+            ...orderData,
+            city: pinJson[e.target.value][0],
+            state: pinJson[e.target.value][1],
+          });
+        } else {
+          setOrderData({ ...orderData, city: "", state: "" });
+          toast.warning("Pincode is not serviceable yet!");
+        }
+      } else {
+        setOrderData({ ...orderData, city: "", state: "" });
+      }
+    }
     setTimeout(() => {
       if (
         orderData.name.length > 3 &&
         orderData.email.length > 3 &&
         orderData.address.length > 3 &&
-        orderData.pincode.length > 3 &&
+        pincode.length > 3 &&
         orderData.phone.length > 3
       ) {
         setDisabled(false);
@@ -218,7 +239,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
               id="pincode"
               name="pincode"
               className="w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-              value={orderData.pincode}
+              value={pincode}
               onChange={handleChange}
               required
             />
@@ -238,8 +259,8 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
               name="state"
               className="w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               value={orderData.state}
+              onChange={handleChange}
               required
-              readOnly
             />
           </div>
         </div>
@@ -255,7 +276,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
               value={orderData.city}
               className="w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               required
-              readOnly
+              onChange={handleChange}
             />
           </div>
         </div>
