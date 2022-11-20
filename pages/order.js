@@ -5,10 +5,16 @@ import mongoose from "mongoose";
 
 const OrderPage = ({ order, addToCart }) => {
   const router = useRouter();
-  const orderedProducts = order.products;
+  let orderedProducts;
+  if(order.amount !== 0){
+    orderedProducts = order.products;
+  }else{
+    orderedProducts = {};
+  }
   const { id } = router.query;
-  // console.log(id, order);
+  console.log(id, order);
   // console.log(Object.keys(orderedProducts));
+  console.log(orderedProducts);
 
   const handlePay = () =>{
     // console.log(order.products);
@@ -66,32 +72,40 @@ const OrderPage = ({ order, addToCart }) => {
                     </tr>
                   </thead>
                   <tbody className="text-center">
-                    {Object.keys(orderedProducts).map((item) => {
-                      return (
-                        <tr key={item}>
-                          <td className="px-4 py-3">
-                            {orderedProducts[item]?.name}(
-                            {orderedProducts[item]?.size}/
-                            {orderedProducts[item]?.variant})
-                          </td>
-                          <td className="px-4 py-3">
-                            {orderedProducts[item].qty}
-                          </td>
-                          <td className="px-4 py-3">
-                            {orderedProducts[item]?.price}
-                          </td>
-                          <td className="px-4 py-3">
-                            {Number(
-                              orderedProducts[item]?.price *
-                                orderedProducts[item]?.qty
-                            )}
-                          </td>
-                        </tr>
-                      );
-                    })}
+                    {Object.keys(orderedProducts).length !== 0 &&
+                      Object.keys(orderedProducts).map((item) => {
+                        return (
+                          <tr key={item}>
+                            <td className="px-4 py-3">
+                              {orderedProducts[item]?.name}(
+                              {orderedProducts[item]?.size}/
+                              {orderedProducts[item]?.variant})
+                            </td>
+                            <td className="px-4 py-3">
+                              {orderedProducts[item].qty}
+                            </td>
+                            <td className="px-4 py-3">
+                              {orderedProducts[item]?.price}
+                            </td>
+                            <td className="px-4 py-3">
+                              {Number(
+                                orderedProducts[item]?.price *
+                                  orderedProducts[item]?.qty
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })}
                   </tbody>
                 </table>
               </div>
+
+              {Object.keys(orderedProducts).length === 0 && (
+                <div className="my-4 text-center text-red-700 font-firasans font-semibold w-full">
+                  No items are there in your order! Please try deleting the
+                  order!
+                </div>
+              )}
 
               <div className="flex">
                 <span className="title-font font-medium text-2xl text-gray-900">
@@ -102,7 +116,10 @@ const OrderPage = ({ order, addToCart }) => {
                     Track Order
                   </button>
                 ) : (
-                  <button className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-pink-600 rounded" onClick={handlePay}>
+                  <button
+                    className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-pink-600 rounded"
+                    onClick={handlePay}
+                  >
                     Pay
                   </button>
                 )}
@@ -126,6 +143,7 @@ export async function getServerSideProps(context) {
   }
 
   let order = await Order.findById(context.query.id);
+  console.log(order);
 
   return {
     props: {

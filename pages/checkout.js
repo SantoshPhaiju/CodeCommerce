@@ -135,7 +135,8 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
         orderData.email.length > 3 &&
         orderData.address.length > 3 &&
         pincode.length > 3 &&
-        orderData.phone.length > 3
+        orderData.phone.length > 9 &&
+        Object.keys(cart).length !== 0
       ) {
         setDisabled(false);
       } else {
@@ -147,7 +148,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
   const payTotal = subTotal + "00";
 
   // Order should only be placed after the payment
-  // TODO: Needs to populate orders database only after the payment is made
+  // TODO: Needs to populate orders in the database only after the payment is made
   const orderDetails = { ...orderData, orderId, subTotal, cart, id };
   return (
     <div className="container mx-auto max-w-[1200px] px-3 mb-20">
@@ -336,18 +337,20 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
       <div className="ml-3">
         <button
           disabled={disabled}
-          onClick={() => {
-            setTimeout(() => {
-              axios
-                .post(`${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`, {
-                  data: orderDetails,
-                })
-                .then((response) => {
-                  // console.log(response);
-                })
-                .catch((error) => console.log(error));
-            }, 500);
-            return checkout.show({ amount: Number(payTotal) });
+          onClick={async () => {
+            const response = await axios.post(
+              `${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`,
+              {
+                data: orderDetails,
+              }
+            );
+            console.log(response.data);
+            if (response.data.success === false) {
+              toast.error(response.data.error);
+              clearCart();
+            } else {
+              return checkout.show({ amount: Number(payTotal) });
+            }
           }}
           className="transition-all duration-300 disabled:bg-pink-200 disabled:shadow-none disabled:text-black font-firasans bg-pink-400 py-1 my-2 text-lg px-10 md:px-5 font-medium text-center rounded-md hover:bg-pink-500 flex items-center justify-center space-x-2 shadow-lg shadow-gray-700/50 text-purple-700"
         >

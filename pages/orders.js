@@ -39,6 +39,7 @@ const Orders = () => {
       }
     }
   }
+
   return (
     <div className="container w-[96%] sm:w-[90%] mx-auto">
       <h1 className="font-roboto text-2xl text-center my-6 text-pink-700">
@@ -79,12 +80,13 @@ const Orders = () => {
             </thead>
             <tbody>
               {orders.map((item, index) => {
+                // console.log(item);
                 return (
                   <tr
                     key={item?._id}
                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 font-firasans"
                   >
-                    <td className="py-4 px-6">{index+1}</td>
+                    <td className="py-4 px-6">{index + 1}</td>
                     <th
                       scope="row"
                       className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white hover:text-blue-500 hover:underline"
@@ -100,9 +102,12 @@ const Orders = () => {
                       {item?.status === "Pending" && (
                         <>
                           {" "}
-                          <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                            Pay
-                          </button>
+                          <Link
+                            href={"/order?id=" + item?._id}
+                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                          >
+                            Details
+                          </Link>
                           <button
                             onClick={() => deleteOrder(item?._id)}
                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
