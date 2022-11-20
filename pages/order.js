@@ -6,13 +6,13 @@ import mongoose from "mongoose";
 const OrderPage = ({ order, addToCart }) => {
   const router = useRouter();
   let orderedProducts;
+  console.log(order);
   if(order.amount !== 0){
     orderedProducts = order.products;
   }else{
     orderedProducts = {};
   }
   const { id } = router.query;
-  console.log(id, order);
   // console.log(Object.keys(orderedProducts));
   console.log(orderedProducts);
 
