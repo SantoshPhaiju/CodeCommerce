@@ -33,7 +33,7 @@ const Orders = () => {
         return item._id !== id;
       }))
       const response = await axios.delete(`${process.env.NEXT_PUBLIC_HOST}/api/deleteorder`, {data: id});
-      console.log(response.data);
+      // console.log(response.data);
       if(response.data.success === true){
         toast.success("Order successfully deleted");
       }

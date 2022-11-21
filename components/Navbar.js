@@ -31,9 +31,6 @@ const Navbar = ({
     // console.log(router.route);
     setPage(router.route);
   }, [router.route]);
-  useEffect(() =>{
-    console.log("nav", userData);
-  }, [])
 
   const toggleCart = () => {
     if (ref.current.classList.contains("translate-x-full")) {

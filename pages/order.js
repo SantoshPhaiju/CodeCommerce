@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 const OrderPage = ({ order, addToCart }) => {
   const router = useRouter();
   let orderedProducts;
-  console.log(order);
+  // console.log(order);
   if(order.amount !== 0){
     orderedProducts = order.products;
   }else{
@@ -14,7 +14,7 @@ const OrderPage = ({ order, addToCart }) => {
   }
   const { id } = router.query;
   // console.log(Object.keys(orderedProducts));
-  console.log(orderedProducts);
+  // console.log(orderedProducts);
 
   const handlePay = () =>{
     // console.log(order.products);
@@ -143,7 +143,7 @@ export async function getServerSideProps(context) {
   }
 
   let order = await Order.findById(context.query.id);
-  console.log(order);
+  // console.log(order);
 
   return {
     props: {

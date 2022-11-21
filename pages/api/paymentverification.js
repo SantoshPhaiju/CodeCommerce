@@ -6,7 +6,7 @@ import Product from "../../models/Product";
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
-    console.log(req.body.data);
+    // console.log(req.body.data);
 
     const payload = req.body.data;
     let data = {
@@ -29,7 +29,7 @@ const handler = async (req, res) => {
         config
       );
       if (response) {
-        console.log(response.data);
+        // console.log(response.data);
         let result = response.data;
         let order = await Order.findOneAndUpdate(
           { orderId: response.data.product_identity },
