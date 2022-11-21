@@ -342,21 +342,38 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
         </span>
       </div>
       <div className="ml-3 flex space-x-4">
-        <button
-          disabled={disabled}
-          onClick={() => {
-            return checkout.show({ amount: Number(payTotal) });
-          }}
-          className="transition-all duration-300 disabled:bg-pink-200 disabled:shadow-none disabled:text-black font-firasans bg-pink-400 py-1 my-2 text-lg px-10 md:px-5 font-medium text-center rounded-md hover:bg-pink-500 flex items-center justify-center space-x-2 shadow-lg shadow-gray-700/50 text-purple-700"
-        >
-          {/* <BsFillBagCheckFill className="text-base" /> */}
-          <img
-            src="/khalti.png"
-            alt="khalti logo here"
-            className="w-14 h-8 -mx-4"
-          />
-          <span>Pay Rs. {subTotal}</span>
-        </button>
+      <button
+        disabled={disabled}
+        onClick={async () => {
+          const response = await axios.post(
+                `${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`,
+                {
+                  data: orderDetails,
+                }
+              );
+              // console.log(response.data);
+              if (response.data.success === false) {
+                // console.log(response.data);
+                toast.error(response.data.error);
+                clearCart();
+                setDisabled(true);
+              } else if(response.data.success === "check"){
+                toast.error(response.data.error);
+              }else {
+                return checkout.show({ amount: Number(payTotal) });
+              }
+            }
+        }
+        className="transition-all duration-300 disabled:bg-pink-200 disabled:shadow-none disabled:text-black font-firasans bg-pink-400 py-1 my-2 text-lg px-10 md:px-5 font-medium text-center rounded-md hover:bg-pink-500 flex items-center justify-center space-x-2 shadow-lg shadow-gray-700/50 text-purple-700"
+      >
+        {/* <BsFillBagCheckFill className="text-base" /> */}
+        <img
+          src="/khalti.png"
+          alt="khalti logo here"
+          className="w-14 h-8 -mx-4"
+        />
+        <span>Pay Rs. {subTotal}</span>
+      </button>
         {!oid && (
           <button
             disabled={disabled}
@@ -373,6 +390,8 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
                 toast.error(response.data.error);
                 clearCart();
                 setDisabled(true);
+              } else if(response.data.success === "check"){
+                toast.error(response.data.error);
               } else {
                 toast.success("Your order has been successfully placed!");
                 clearCart();

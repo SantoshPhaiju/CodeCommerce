@@ -2,6 +2,7 @@
 import axios from "axios";
 import connectToDb from "../../middleware/db";
 import Order from "../../models/Order";
+import Product from "../../models/Product";
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
@@ -30,23 +31,25 @@ const handler = async (req, res) => {
       if (response) {
         console.log(response.data);
         let result = response.data;
-        const oldOrder = await Order.findOne({orderId: response.data.product_identity});
-        if(oldOrder){
-          let order = await Order.findOneAndUpdate({orderId: response.data.product_identity}, {status: "Paid", paymentInfo: response.data})
-          res.status(200).json({ success: true, data: result, id: order._id });
-        }else{
-          // Creating the new order
-          const order = new Order({
-            email,
-            orderId: response.data.product_identity,
-            paymentInfo: response.data,
-            address,
-            amount: subTotal,
-            products: cart,
-          });
-          await order.save();
-          res.status(200).send({ success: true, data: result, id: order._id });
-        }
+        let order = await Order.findOneAndUpdate(
+          { orderId: response.data.product_identity },
+          { status: "Paid", paymentInfo: response.data }
+        );
+        // console.log("order = " + order);
+        
+        // Adding the stock less logic here in database
+        let product;
+        Object.keys(order.products).map(async (item) =>{
+          product = await Product.findOne({ slug:  item});
+          // console.log(item);
+          let newQty = product.availableQty - order.products[item].qty;
+          await Product.findOneAndUpdate(
+            { slug: item },
+            { availableQty: newQty }
+          );
+          // console.log("product = " + product);
+        })
+        res.status(200).json({ success: true, data: result, id: order._id });
       }
     } catch (error) {
       console.log(error);

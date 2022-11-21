@@ -27,6 +27,12 @@ const handler = async (req, res) => {
     // console.log(product);
     sumTotal += cart[item].price * cart[item].qty;
     // console.log(product.price, cart[item].price);
+    console.log(product.availableQty);
+    // TODO: check if the cart items are out of stock --done
+    if(product.availableQty < cart[item].qty){
+      res.status(200).json({success: "check", error: "Some items in your cart is out of stock! Try reducing the quantity!"})
+      return 
+    }
     if(product.price !== cart[item].price){
       let order = await Order.findById(id);
       let deleteorder;
@@ -48,7 +54,6 @@ const handler = async (req, res) => {
       return 
   }
 
-    // TODO: check if the cart items are out of stock
 
     // TODO: check if the details are vaild or not
 
