@@ -65,7 +65,7 @@ const Slug = ({ buyNow, addToCart, product, variants }) => {
               width={800}
               height={100}
             />
-            <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
+            <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0 relative">
               <h2 className="text-sm title-font text-gray-500 tracking-widest font-robotoslab">
                 CODECOMMERCE
               </h2>
@@ -310,16 +310,20 @@ const Slug = ({ buyNow, addToCart, product, variants }) => {
                 <button
                   className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-3 sm:px-6 focus:outline-none hover:bg-pink-600 rounded font-firasans font-medium"
                   onClick={() => {
+                    if (product.availableQty > 1) {
                     addToCart(
                       slug,
                       1,
                       product.price,
                       product.title,
                       product.size,
-                      product.color, 
+                      product.color,
                       product.img
                     );
-                    toast.success("Item added to cart!")
+                    toast.success("Item added to cart!");
+                    }else{
+                      toast.warning("Sorry! Item is currently out of stock.");
+                    }
                   }}
                 >
                   Add to Cart
@@ -339,7 +343,8 @@ const Slug = ({ buyNow, addToCart, product, variants }) => {
               </div>
               <div className="buyNow flex justify-center items-center my-3 md:justify-start">
                 <button
-                  onClick={() =>
+                  onClick={() =>{
+                    if (product.availableQty > 1) {
                     buyNow(
                       slug,
                       1,
@@ -349,6 +354,10 @@ const Slug = ({ buyNow, addToCart, product, variants }) => {
                       product.color,
                       product.img
                     )
+                    }else{
+                      toast.warning("Sorry! Item is currently out of stock.");
+                    }
+                  }
                   }
                   className="flex my-5 text-white shadow-lg shadow-gray-800/50 bg-green-700 border-0 py-2 px-8 sm:px-10 focus:outline-none hover:bg-green-900 rounded font-firasans font-medium space-x-2 justify-center items-center"
                 >
@@ -382,6 +391,16 @@ const Slug = ({ buyNow, addToCart, product, variants }) => {
               {service && service !== null && (
                 <div className="text-green-700 font-firasans my-3 text-sm">
                   Yay! This pincode is serviceable
+                </div>
+              )}
+
+              {!product.availableQty < 1 ? (
+                <div className="text-center text-white font-firasans mt-4 text-xl absolute top-0 -left-16 bg-yellow-600 px-2 py-1 rounded-md">
+                  In Stock
+                </div>
+              ) : (
+                <div className="text-center text-white font-firasans mt-4 text-xl absolute top-0 -left-28 bg-red-700 px-2 py-1 rounded-md">
+                  Out of Stock
                 </div>
               )}
             </div>

@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 import mongoose from "mongoose";
 import Link from "next/link";
 import Product from "../models/Product";
-import { HiOutlineShoppingCart } from 'react-icons/hi';
+import { HiOutlineShoppingCart } from "react-icons/hi";
 
-const Books = ({books, buyNow}) => {
-  console.log(books);
+const Books = ({ books, buyNow }) => {
+  // console.log(books);
   return (
     <div>
       <h2 className="text-center mt-10 font-firasans text-3xl -mb-10 text-purple-900/75 font-semibold">
@@ -16,8 +16,8 @@ const Books = ({books, buyNow}) => {
           <div className="flex flex-wrap justify-center gap-4">
             {Object.keys(books).length === 0 && (
               <span>
-                Sorry! All the books are currently out of stock. New Stock coming
-                soon!
+                Sorry! All the books are currently out of stock. New Stock
+                coming soon!
               </span>
             )}
             {Object.keys(books).map((product) => {
@@ -52,28 +52,30 @@ const Books = ({books, buyNow}) => {
                         Rs. {books[product].price}
                       </p>
 
-                      <button
-                        onClick={() =>
-                          buyNow(
-                            books[product].slug,
-                            1,
-                            books[product].price,
-                            books[product].title
-                          )
-                        }
-                        className="flex my-5 text-white shadow-lg shadow-gray-800/50 bg-green-700 border-0 py-2 px-8 sm:px-10 focus:outline-none hover:bg-green-900 rounded font-firasans font-medium space-x-2 justify-center items-center"
-                      >
-                        <HiOutlineShoppingCart className="text-xl rotate-12 text-pink-100 font-bold" />
-                        <span>Buy Now</span>
-                      </button>
+                      {!books[product].availableQty < 1 && (
+                        <button
+                          onClick={() =>
+                            buyNow(
+                              books[product].slug,
+                              1,
+                              books[product].price,
+                              books[product].title
+                            )
+                          }
+                          className="flex my-5 text-white shadow-lg shadow-gray-800/50 bg-green-700 border-0 py-2 px-8 sm:px-10 focus:outline-none hover:bg-green-900 rounded font-firasans font-medium space-x-2 justify-center items-center"
+                        >
+                          <HiOutlineShoppingCart className="text-xl rotate-12 text-pink-100 font-bold" />
+                          <span>Buy Now</span>
+                        </button>
+                      )}
                     </div>
 
                     {!books[product].availableQty < 1 ? (
-                      <div className="text-center text-white font-firasans mt-4 text-xl absolute -top-[300px] -left-6 bg-yellow-600 px-2 py-1 rounded-md">
+                      <div className="text-center text-white font-firasans mt-4 text-xl absolute -top-[320px] -left-6 bg-yellow-600 px-2 py-1 rounded-md">
                         In Stock
                       </div>
                     ) : (
-                      <div className="text-center text-white font-firasans mt-4 text-xl absolute -top-[300px] -left-6 bg-red-700 px-2 py-1 rounded-md">
+                      <div className="text-center text-white font-firasans mt-4 text-xl absolute -top-[320px] -left-6 bg-red-700 px-2 py-1 rounded-md">
                         Out of Stock
                       </div>
                     )}
@@ -87,8 +89,7 @@ const Books = ({books, buyNow}) => {
       </section>
     </div>
   );
-}
-
+};
 
 export async function getServerSideProps(context) {
   if (!mongoose.connections[0].readyState) {
@@ -127,4 +128,4 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default Books
+export default Books;
