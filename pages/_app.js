@@ -6,15 +6,28 @@ import Navbar from "../components/Navbar";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingBar from "react-top-loading-bar";
 import "../styles/globals.css";
+import axios from 'axios'
 
 function MyApp({ Component, pageProps }) {
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
   const [loggedIn, setLoggedIn] = useState(false);
-
+  const [userData, setUserData] = useState({});
   const [progress, setProgress] = useState(0);
 
   const router = useRouter();
+  const fetchuser = async () => {
+    const token = localStorage.getItem("token");
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_HOST}/api/fetchuserdata`,
+      { data: token }
+    );
+    // console.log("app",response.data);
+    if (response.data) {
+      // setUser(response.data.user);
+      setUserData(response.data.user);
+    }
+  };
 
   useEffect(() => {
     router.events.on("routeChangeStart", () => {
@@ -24,6 +37,7 @@ function MyApp({ Component, pageProps }) {
       setProgress(100);
     });
     if (localStorage.getItem("token")) {
+      fetchuser();
       setLoggedIn(true);
     } else {
       setLoggedIn(false);
@@ -117,6 +131,7 @@ function MyApp({ Component, pageProps }) {
         cartLength={cartLength}
         loggedIn={loggedIn}
         logout={logout}
+        userData={userData}
       />
       <div className="min-h-[40vh] overflow-x-hidden">
         <Component

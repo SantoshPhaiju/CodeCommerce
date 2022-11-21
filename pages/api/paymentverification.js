@@ -5,7 +5,7 @@ import Order from "../../models/Order";
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
-    // console.log(req.body.data);
+    console.log(req.body.data);
 
     const payload = req.body.data;
     let data = {
@@ -13,7 +13,7 @@ const handler = async (req, res) => {
       amount: payload.amount,
     };
     // console.log(data);
-    console.log(payload.orderData);
+    // console.log(payload.orderData);
 
     let config = {
       headers: {
@@ -30,8 +30,23 @@ const handler = async (req, res) => {
       if (response) {
         console.log(response.data);
         let result = response.data;
-        let order = await Order.findOneAndUpdate({orderId: response.data.product_identity}, {status: "Paid", paymentInfo: response.data})
-        res.status(200).json({ success: true, data: result, id: order._id });
+        const oldOrder = await Order.findOne({orderId: response.data.product_identity});
+        if(oldOrder){
+          let order = await Order.findOneAndUpdate({orderId: response.data.product_identity}, {status: "Paid", paymentInfo: response.data})
+          res.status(200).json({ success: true, data: result, id: order._id });
+        }else{
+          // Creating the new order
+          const order = new Order({
+            email,
+            orderId: response.data.product_identity,
+            paymentInfo: response.data,
+            address,
+            amount: subTotal,
+            products: cart,
+          });
+          await order.save();
+          res.status(200).send({ success: true, data: result, id: order._id });
+        }
       }
     } catch (error) {
       console.log(error);

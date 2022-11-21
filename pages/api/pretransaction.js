@@ -20,15 +20,20 @@ const handler = async (req, res) => {
 
     // TODO: check if the cart is tampered with
     let product, sumTotal = 0;
-    console.log(cart);
+    // console.log(cart, id);
    for(let item in cart){
-    console.log(cart[item]);
+    // console.log(cart[item]);
     product = await Product.findOne({slug: item});
-    console.log(product);
+    // console.log(product);
     sumTotal += cart[item].price * cart[item].qty;
-    console.log(product.price, cart[item].price);
+    // console.log(product.price, cart[item].price);
     if(product.price !== cart[item].price){
-      res.status(200).json({success: false, error: "1:The price of the some items has been changed in your cart. Please try again!"})
+      let order = await Order.findById(id);
+      let deleteorder;
+      if(order){
+        deleteorder = await Order.findByIdAndDelete(id);
+      }
+      res.status(200).json({success: false, error: "1:The price of the some items has been changed in your cart. Please try again!", deleteorder})
       return 
     }
   }
