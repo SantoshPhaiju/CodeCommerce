@@ -39,7 +39,7 @@ const Books = ({books, buyNow}) => {
                       height={400}
                     />
                   </Link>
-                  <div className="mt-4 text-center md:text-left">
+                  <div className="mt-4 text-center md:text-left relative">
                     <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
                       {books[product].category}
                     </h3>
@@ -67,6 +67,16 @@ const Books = ({books, buyNow}) => {
                         <span>Buy Now</span>
                       </button>
                     </div>
+
+                    {!books[product].availableQty < 1 ? (
+                      <div className="text-center text-white font-firasans mt-4 text-xl absolute -top-[300px] -left-6 bg-yellow-600 px-2 py-1 rounded-md">
+                        In Stock
+                      </div>
+                    ) : (
+                      <div className="text-center text-white font-firasans mt-4 text-xl absolute -top-[300px] -left-6 bg-red-700 px-2 py-1 rounded-md">
+                        Out of Stock
+                      </div>
+                    )}
                     {/* रू */}
                   </div>
                 </div>

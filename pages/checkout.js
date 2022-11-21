@@ -289,7 +289,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
       <h2 className="font-medium font-firasans text-xl mt-8">
         2. Review Cart Items & Pay
       </h2>
-      <div className="sidebar bg-pink-100 px-10 py-4 m-2 rounded-md font-medium">
+      <div className="sidebar bg-pink-100 px-10 py-4 rounded-md font-medium">
         <ol className="list-decimal">
           {Object.keys(cart).length == 0 && (
             <div className="text-center my-5 font-light font-firasans">
@@ -299,15 +299,14 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
           {Object.keys(cart).map((k) => {
             return (
               <li key={k}>
-                <div className="item flex my-3 text-base 2xl:text-lg font-firasans font-medium text-black">
-                  <div className="w-[80%] sm:w-[60%] md:w-[40%]">
+                <div className="item flex flex-wrap my-3 text-base 2xl:text-lg font-firasans font-medium text-black">
+                  <div className="w-[60%] sm:w-[60%] md:w-[40%]">
                     {cart[k].name} ({cart[k].size}/{cart[k].variant})
                   </div>
-                
-                  <div>
+                  <div className="flex justify-center items-center w-[20%]">
                     <img
                       src={cart[k].img}
-                      className="object-top object-contain w-full h-[10vh] block mx-auto mr-2"
+                      className="object-top object-contain w-full h-[12vh] block mx-auto mr-2 mt-2"
                       alt="This is the product image."
                     />
                   </div>

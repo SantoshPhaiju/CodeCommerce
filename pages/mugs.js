@@ -37,7 +37,7 @@ const Mugs = ({mugs}) => {
                       height={400}
                     />
                   </Link>
-                  <div className="mt-4 text-center md:text-left">
+                  <div className="mt-4 text-center md:text-left relative">
                     <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
                       {mugs[product].category}
                     </h3>
@@ -100,6 +100,15 @@ const Mugs = ({mugs}) => {
                         <button className="border-2 border-gray-300 ml-1 bg-white rounded-full w-6 h-6 focus:outline-none"></button>
                       )}
                     </div>
+                    {!mugs[product].availableQty < 1 ? (
+                      <div className="text-center text-white font-firasans mt-4 text-xl absolute -top-[300px] -left-6 bg-yellow-600 px-2 py-1 rounded-md">
+                        In Stock
+                      </div>
+                    ) : (
+                      <div className="text-center text-white font-firasans mt-4 text-xl absolute -top-[300px] -left-6 bg-red-600 px-2 py-1 rounded-md">
+                        Out of Stock
+                      </div>
+                    )}
                     {/* रू */}
                   </div>
                 </div>

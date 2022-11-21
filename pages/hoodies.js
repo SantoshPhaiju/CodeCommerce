@@ -5,6 +5,7 @@ import Link from 'next/link';
 
 
 const Hoodies = ({hoodies}) => {
+  // console.log(hoodies);
   return (
     <div>
       <h2 className="text-center mt-10 font-firasans text-3xl -mb-10 text-purple-900/75 font-semibold">
@@ -23,7 +24,7 @@ const Hoodies = ({hoodies}) => {
               // console.log(hoodies[product].size);
               return (
                 <div
-                  className="xl:w-[24%] lg:w-[30%] md:w-[45%] pt-0 p-4 w-full border shadow-md rounded-md"
+                  className="xl:w-[24%] lg:w-[30%] md:w-[45%] pt-0 p-4 w-full border shadow-md rounded-md "
                   key={hoodies[product]._id}
                 >
                   <Link
@@ -38,7 +39,7 @@ const Hoodies = ({hoodies}) => {
                       height={400}
                     />
                   </Link>
-                  <div className="mt-4 text-center md:text-left">
+                  <div className="mt-4 text-center md:text-left relative">
                     <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
                       {hoodies[product].category}
                     </h3>
@@ -101,6 +102,15 @@ const Hoodies = ({hoodies}) => {
                         <button className="border-2 border-gray-300 ml-1 bg-white rounded-full w-6 h-6 focus:outline-none"></button>
                       )}
                     </div>
+                    {!hoodies[product].availableQty < 1 ? (
+                      <div className="text-center text-white font-firasans mt-4 text-xl absolute -top-[300px] -left-6 bg-yellow-600 px-2 py-1 rounded-md">
+                        In Stock
+                      </div>
+                    ) : (
+                      <div className="text-center text-white font-firasans mt-4 text-xl absolute -top-[300px] -left-6 bg-red-600 px-2 py-1 rounded-md">
+                        Out of Stock
+                      </div>
+                    )}
                     {/* रू */}
                   </div>
                 </div>

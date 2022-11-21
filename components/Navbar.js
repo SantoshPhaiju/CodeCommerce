@@ -206,14 +206,14 @@ const Navbar = ({
             {Object.keys(cart).map((k) => {
               return (
                 <li key={k}>
-                  <div className="item flex my-3 text-base 2xl:text-lg font-firasans font-medium text-black">
-                    <div className="w-2/3">
+                  <div className="item flex flex-wrap my-3 text-base 2xl:text-lg font-firasans font-medium text-black">
+                    <div className="w-[40%]">
                       {cart[k].name} ({cart[k].variant}/{cart[k].size})
                     </div>
                     <div>
                       <img
                         src={cart[k].img}
-                        className="object-top object-contain w-full h-[10vh] block mx-auto mr-2"
+                        className="object-top object-contain w-full h-[12vh] block mx-auto ml-2 mr-2"
                         alt="This is the product image."
                       />
                     </div>
