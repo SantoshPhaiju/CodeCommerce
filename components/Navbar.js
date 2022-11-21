@@ -210,6 +210,13 @@ const Navbar = ({
                     <div className="w-2/3">
                       {cart[k].name} ({cart[k].variant}/{cart[k].size})
                     </div>
+                    <div>
+                      <img
+                        src={cart[k].img}
+                        className="object-top object-contain w-full h-[10vh] block mx-auto mr-2"
+                        alt="This is the product image."
+                      />
+                    </div>
                     <div className="w-1/3 flex items-center justify-center gap-5 text-lg">
                       <AiFillMinusCircle
                         onClick={() =>
@@ -227,12 +234,21 @@ const Navbar = ({
                       <div>{cart[k].qty}</div>
                       <AiFillPlusCircle
                         onClick={() =>
-                          addToCart(k, 1, 500, "Tshirt(XL, Blue)", "XL", "Blue")
+                          addToCart(
+                            k,
+                            cart[k].qty,
+                            cart[k].price,
+                            cart[k].name,
+                            cart[k].size,
+                            cart[k].variant,
+                            cart[k].img
+                          )
                         }
                         className="text-xl text-pink-600 cursor-pointer"
                       />
                     </div>
                   </div>
+                  <hr className="text-black opacity-100  border-top-2 border-gray-400 text-lg w-full font-bold " />
                 </li>
               );
             })}

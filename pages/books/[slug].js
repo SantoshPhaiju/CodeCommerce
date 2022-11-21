@@ -171,7 +171,8 @@ const Slug = ({ buyNow, addToCart, product }) => {
                       product.price,
                       product.title,
                       product.size,
-                      product.color
+                      product.color,
+                      product.img
                     );
                     toast.success("Item added to cart!");
                   }}
@@ -200,7 +201,8 @@ const Slug = ({ buyNow, addToCart, product }) => {
                       product.price,
                       product.title,
                       product.size,
-                      product.color
+                      product.color,
+                      product.img
                     )
                   }
                   className="flex my-5 text-white shadow-lg shadow-gray-800/50 bg-green-700 border-0 py-2 px-8 sm:px-10 focus:outline-none hover:bg-green-900 rounded font-firasans font-medium space-x-2 justify-center items-center"

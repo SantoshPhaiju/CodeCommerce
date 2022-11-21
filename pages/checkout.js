@@ -149,7 +149,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
 
   // Order should only be placed after the payment
   // TODO: Needs to populate orders in the database only after the payment is made
-  const orderDetails = { ...orderData, orderId, subTotal, cart, id };
+  const orderDetails = { ...orderData, orderId, subTotal, cart, id};
   return (
     <div className="container mx-auto max-w-[1200px] px-3 mb-20">
       <h1 className="font-bold text-3xl my-8 text-pink-800 text-center font-roboto">
@@ -303,6 +303,14 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
                   <div className="w-[80%] sm:w-[60%] md:w-[40%]">
                     {cart[k].name} ({cart[k].size}/{cart[k].variant})
                   </div>
+                
+                  <div>
+                    <img
+                      src={cart[k].img}
+                      className="object-top object-contain w-full h-[10vh] block mx-auto mr-2"
+                      alt="This is the product image."
+                    />
+                  </div>
                   <div className="w-1/3 flex items-center justify-center gap-3 text-lg">
                     <AiFillMinusCircle
                       onClick={() =>
@@ -312,7 +320,8 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
                           cart[k].price,
                           cart[k].name,
                           cart[k].size,
-                          cart[k].variant
+                          cart[k].variant,
+                          cart[k].img
                         )
                       }
                       className="text-xl text-pink-600 cursor-pointer"
@@ -326,18 +335,20 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
                           cart[k].price,
                           cart[k].name,
                           cart[k].size,
-                          cart[k].variant
+                          cart[k].variant,
+                          cart[k].img
                         )
                       }
                       className="text-xl text-pink-600 cursor-pointer"
                     />
                   </div>
                 </div>
+                <hr className="text-black opacity-100 mb-4 border-top-2 border-gray-400 text-lg w-full font-bold " />
               </li>
             );
           })}
         </ol>
-        <span className="subtotal font-bold font-robotoslab">
+        <span className="subtotal font-bold font-robotoslab pt-4">
           SubTotal: रु {subTotal}
         </span>
       </div>

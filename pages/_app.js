@@ -74,21 +74,21 @@ function MyApp({ Component, pageProps }) {
     setSubTotal(subt);
   };
 
-  const addToCart = (itemCode, qty, price, name, size, variant) => {
+  const addToCart = (itemCode, qty, price, name, size, variant, img) => {
     let newCart = cart;
     if (itemCode in cart) {
       newCart[itemCode].qty = newCart[itemCode].qty + qty;
     } else {
-      newCart[itemCode] = { qty, price, name, size, variant };
+      newCart[itemCode] = { qty, price, name, size, variant, img };
     }
     // console.log(newCart)
     setCart(newCart);
     saveCart(newCart);
   };
 
-  const buyNow = (itemCode, qty, price, name, size, variant) => {
+  const buyNow = (itemCode, qty, price, name, size, variant, img) => {
     let newCart = {};
-    newCart[itemCode] = { qty: 1, price, name, size, variant };
+    newCart[itemCode] = { qty: 1, price, name, size, variant, img };
     setCart(newCart);
     saveCart(newCart);
     router.push("/checkout");

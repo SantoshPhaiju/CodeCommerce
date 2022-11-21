@@ -12,6 +12,7 @@ const OrderPage = ({ order, addToCart }) => {
   }else{
     orderedProducts = {};
   }
+  // console.log(orderedProducts);
   const { id } = router.query;
   // console.log(Object.keys(orderedProducts));
   // console.log(orderedProducts);
@@ -37,8 +38,8 @@ const OrderPage = ({ order, addToCart }) => {
     <div>
       <section className="text-gray-600 body-font overflow-hidden">
         <div className="container px-5 py-24 mx-auto">
-          <div className="lg:w-4/5 mx-auto flex flex-wrap">
-            <div className="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
+          <div className="lg:w-[90%] mx-auto flex flex-wrap gap-10 justify-between">
+            <div className="lg:w-[40vw] w-full">
               <h2 className="text-sm title-font text-gray-500 tracking-widest font-firasans">
                 CODECOMMERCE.COM
               </h2>
@@ -61,6 +62,9 @@ const OrderPage = ({ order, addToCart }) => {
                         Items Description
                       </th>
                       <th className="px-4 py-3 tracking-wider font-medium text-gray-900 text-xs sm:text-lg max-2xl:text-xl bg-gray-200 font-robotoslab">
+                        Image
+                      </th>
+                      <th className="px-4 py-3 tracking-wider font-medium text-gray-900 text-xs sm:text-lg max-2xl:text-xl bg-gray-200 font-robotoslab">
                         Quantity
                       </th>
                       <th className="px-4 py-3 tracking-wider font-medium text-gray-900 text-xs sm:text-lg max-2xl:text-xl bg-gray-200 font-robotoslab">
@@ -80,6 +84,13 @@ const OrderPage = ({ order, addToCart }) => {
                               {orderedProducts[item]?.name}(
                               {orderedProducts[item]?.size}/
                               {orderedProducts[item]?.variant})
+                            </td>
+                            <td className="px-4 py-3">
+                              <img
+                                className="object-top object-contain w-full h-[10vh] block mx-auto"
+                                src={orderedProducts[item]?.img}
+                                alt="This is the image here"
+                              />
                             </td>
                             <td className="px-4 py-3">
                               {orderedProducts[item].qty}
@@ -127,8 +138,8 @@ const OrderPage = ({ order, addToCart }) => {
             </div>
             <img
               alt="ecommerce"
-              className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded"
-              src="https://dummyimage.com/400x400"
+              className="w-full lg:w-[35%] lg:h-auto h-64 object-cover object-center rounded"
+              src="/order.jpg"
             />
           </div>
         </div>
