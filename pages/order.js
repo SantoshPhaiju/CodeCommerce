@@ -5,9 +5,18 @@ import mongoose from "mongoose";
 
 const OrderPage = ({ order, addToCart }) => {
   const router = useRouter();
+
+  // console.log(order);
+  useEffect(() => {
+    if(Object.keys(order).length === 0){
+      router.push("/404");
+    }
+  }, []);
+
+
   let orderedProducts;
   // console.log(order);
-  if(order.amount !== 0){
+  if(Object.keys(order).length !== 0){
     orderedProducts = order.products;
   }else{
     orderedProducts = {};
@@ -172,7 +181,10 @@ export async function getServerSideProps(context) {
   }
 
   let order = await Order.findById(context.query.id);
-  // console.log(order);
+  console.log(order);
+  if(order === null){
+    order = {};
+  }
 
   return {
     props: {

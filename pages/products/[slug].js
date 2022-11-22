@@ -5,13 +5,17 @@ import { HiOutlineShoppingCart } from "react-icons/hi";
 import Product from "../../models/Product";
 import mongoose from "mongoose";
 import { toast } from "react-toastify";
+import Error from "next/error";
 
-const Slug = ({ buyNow, addToCart, product, variants }) => {
+const Slug = ({ buyNow, addToCart, product, variants, error }) => {
   // console.log(product, variants);
   // console.log(variants[1].color);
   const router = useRouter();
   const { slug } = router.query;
-
+  
+  if(error === 404){
+    return <Error statusCode={404} />
+  }
   const [pin, setPin] = useState("");
   const [service, setService] = useState(null);
 
@@ -41,6 +45,7 @@ const Slug = ({ buyNow, addToCart, product, variants }) => {
   const onChangePin = (e) => {
     setPin(e.target.value);
   };
+
 
   
   const refreshVariant = (newColor, newSize) => {
@@ -416,8 +421,16 @@ export async function getServerSideProps(context) {
   if (!mongoose.connections[0].readyState) {
     await mongoose.connect(process.env.MONGO_URI);
   }
+  let error;
 
   let product = await Product.findOne({ slug: context.query.slug });
+  if(product === null){
+return {
+  props: {
+   error: 404
+  }, // will be passed to the page component as props
+};
+  }
   let variants = await Product.find({ title: product.title });
 
   let colorSizeSlug = {}; // {blue: {xl: {slug: "wear-the-code"}}}
