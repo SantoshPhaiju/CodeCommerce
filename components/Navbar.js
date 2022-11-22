@@ -50,8 +50,7 @@ const Navbar = ({
   };
 
   useEffect(() => {
-    Object.keys(cart).length !== 0 && setSidebar(true);
-  
+    Object.keys(cart).length !== 0 ? setSidebar(true) : setSidebar(false);
   }, []);
   return (
     <>
