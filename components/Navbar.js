@@ -168,7 +168,10 @@ const Navbar = ({
             </Link>
           )}
           {loggedIn && (
-            <div className="text-lg font-firasans"> Welcome {userData.name} </div>
+            <div className="text-lg font-firasans">
+              {" "}
+              Welcome {userData.name}{" "}
+            </div>
           )}
 
           <AiOutlineShoppingCart
@@ -204,7 +207,7 @@ const Navbar = ({
               </div>
             )}
             {Object.keys(cart).map((k) => {
-              console.log(cart[k]);
+              // console.log(cart[k]);
               return (
                 <li key={k}>
                   <div className="item flex flex-wrap my-3 text-base 2xl:text-lg font-firasans font-medium text-black">
@@ -257,15 +260,19 @@ const Navbar = ({
           <div className="subtotal font-bold font-robotoslab mt-10 ml-2">
             SubTotal: Rs. {subTotal}
           </div>
-          <div className="button flex flex-col lg:flex-row gap-4 mt-10 lg:gap-1 justify-center items-center my-2 lg:space-x-2">
+          <div className="flex flex-col lg:flex-row gap-4 mt-10 lg:gap-1 justify-center items-center my-2 lg:space-x-2">
             <Link href={"/checkout"}>
-              <button className="font-firasans bg-pink-500 py-1 text-lg px-8 md:px-2 text-blue-100 font-medium text-center rounded-md shadow-lg shadow-gray-700/60 hover:bg-pink-700 flex items-center justify-center space-x-2">
+              <button
+                disabled={Object.keys(cart).length === 0 ? true : false}
+                className="disabled:bg-pink-300 disabled:shadow-none font-firasans bg-pink-500 py-1 text-lg px-8 md:px-2 text-blue-100 font-medium text-center rounded-md shadow-lg shadow-gray-700/60 hover:bg-pink-700 flex items-center justify-center space-x-2"
+              >
                 <BsFillBagCheckFill />
                 <span>CheckOut</span>
               </button>
             </Link>
             <button
-              className="font-firasans bg-red-600 py-1 text-lg px-8 md:px-2 text-blue-100 font-medium text-center rounded-md shadow-lg shadow-gray-700/60 hover:bg-red-800 flex items-center justify-center space-x-2"
+              disabled={Object.keys(cart).length === 0 ? true : false}
+              className="disabled:bg-red-400 disabled:shadow-none font-firasans bg-red-600 py-1 text-lg px-8 md:px-2 text-blue-100 font-medium text-center rounded-md shadow-lg shadow-gray-700/60 hover:bg-red-800 flex items-center justify-center space-x-2"
               onClick={clearCart}
             >
               <AiFillDelete />

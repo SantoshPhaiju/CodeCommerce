@@ -49,6 +49,10 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
     } else {
       fetchuser();
     }
+
+    if(Object.keys(cart).length === 0){
+      router.push("/")
+    }
   }, []);
   // console.log(user);
   const [disabled, setDisabled] = useState(true);
@@ -149,7 +153,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
 
   // Order should only be placed after the payment
   // TODO: Needs to populate orders in the database only after the payment is made
-  const orderDetails = { ...orderData, orderId, subTotal, cart, id};
+  const orderDetails = { ...orderData, orderId, subTotal, cart, id, pincode};
   return (
     <div className="container mx-auto max-w-[1200px] px-3 mb-20">
       <h1 className="font-bold text-3xl my-8 text-pink-800 text-center font-roboto">
@@ -220,7 +224,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
               Phone
             </label>
             <input
-              type="phone"
+              type="number"
               id="phone"
               name="phone"
               className="w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
@@ -271,7 +275,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
         <div className="px-2 w-1/2">
           <div className="mb-2">
             <label htmlFor="city" className="leading-7 text-sm text-gray-600">
-              City
+              District
             </label>
             <input
               type="text"

@@ -63,13 +63,18 @@ const Books = ({ books, buyNow }) => {
 
                       {!books[product].availableQty < 1 && (
                         <button
-                          onClick={() =>
+                          onClick={() =>{
+                            // console.log(books[product])
                             buyNow(
                               books[product].slug,
                               1,
                               books[product].price,
-                              books[product].title
+                              books[product].title,
+                              books[product]?.size,
+                              books[product]?.variant,
+                              books[product]?.img
                             )
+                          }
                           }
                           className="flex my-5 text-white shadow-lg shadow-gray-800/50 bg-green-700 border-0 py-2 px-8 sm:px-10 focus:outline-none hover:bg-green-900 rounded font-firasans font-medium space-x-2 justify-center items-center"
                         >
