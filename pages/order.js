@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import Order from "../models/Order";
 import mongoose from "mongoose";
 
@@ -16,6 +16,15 @@ const OrderPage = ({ order, addToCart }) => {
   const { id } = router.query;
   // console.log(Object.keys(orderedProducts));
   // console.log(orderedProducts);
+  let date;
+  let time;
+  time = new Date(order.createdAt).toLocaleTimeString();
+  date = new Date(order.createdAt).toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   const handlePay = () =>{
     // console.log(order.products);
@@ -54,6 +63,13 @@ const OrderPage = ({ order, addToCart }) => {
                   '{order?.status}'
                 </span>
                 .
+              </p>
+              <p className="leading-relaxed mb-4 text-green-600 font-robotoslab">
+                Order placed on:&nbsp;
+                <span className="text-orange-600 font-semibold font-robotoslab text-lg">
+                  {date} at {time}
+                </span>
+                
               </p>
 
               <div className="w-full mb-4 overflow-auto">

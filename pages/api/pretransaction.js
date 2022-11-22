@@ -40,13 +40,6 @@ const handler = async (req, res) => {
       });
       return;
     }
-    if (name.length > 3) {
-      res.status(200).json({
-        success: "check",
-        error: "Name must be at least 3 character long",
-      });
-      return;
-    }
 
     //  check if the cart is tampered with
     let product,
