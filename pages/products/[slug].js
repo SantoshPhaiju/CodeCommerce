@@ -45,11 +45,14 @@ const Slug = ({ buyNow, addToCart, product, variants }) => {
   
   const refreshVariant = (newColor, newSize) => {
     // console.log("Running refreshVariant function");
-    // setColor(newColor);
-    // setSize(newSize);
-    let url = `${process.env.NEXT_PUBLIC_HOST}/products/${variants[newColor][newSize]["slug"]}`;
-    window.location = url;
+    setColor(newColor);
+    setSize(newSize);
+    // let url = `${process.env.NEXT_PUBLIC_HOST}/products/${variants[newColor][newSize]["slug"]}`;
+    // window.location = url;
+    router.push(`/products/${variants[newColor][newSize]['slug']}`);
+    // router.push(url);
     // console.log(variants[newColor][newSize]['slug']);
+    console.log(newColor, newSize);
   };
   
   
@@ -57,7 +60,7 @@ const Slug = ({ buyNow, addToCart, product, variants }) => {
     <>
       <section className="text-gray-600 body-font overflow-hidden">
         <div className="container px-5 py-24 mx-auto">
-          <div className="lg:w-4/5 mx-auto flex flex-wrap">
+          <div className="lg:w-4/5 mx-auto flex flex-wrap relative">
             <img
               alt="ecommerce"
               className="lg:w-4/12 w-full h-[400px] object-contain object-top rounded"
@@ -65,6 +68,15 @@ const Slug = ({ buyNow, addToCart, product, variants }) => {
               width={800}
               height={100}
             />
+            {!product.availableQty < 1 ? (
+              <div className="text-center text-white font-firasans mt-4 text-xl absolute top-0 -left-2 bg-yellow-600 px-2 py-1 rounded-md">
+                In Stock
+              </div>
+            ) : (
+              <div className="text-center text-white font-firasans mt-4 text-xl absolute top-0 -left-2 bg-red-700 px-2 py-1 rounded-md">
+                Out of Stock
+              </div>
+            )}
             <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0 relative">
               <h2 className="text-sm title-font text-gray-500 tracking-widest font-robotoslab">
                 CODECOMMERCE
@@ -311,17 +323,17 @@ const Slug = ({ buyNow, addToCart, product, variants }) => {
                   className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-3 sm:px-6 focus:outline-none hover:bg-pink-600 rounded font-firasans font-medium"
                   onClick={() => {
                     if (product.availableQty > 1) {
-                    addToCart(
-                      slug,
-                      1,
-                      product.price,
-                      product.title,
-                      product.size,
-                      product.color,
-                      product.img
-                    );
-                    toast.success("Item added to cart!");
-                    }else{
+                      addToCart(
+                        slug,
+                        1,
+                        product.price,
+                        product.title,
+                        product.size,
+                        product.color,
+                        product.img
+                      );
+                      toast.success("Item added to cart!");
+                    } else {
                       toast.warning("Sorry! Item is currently out of stock.");
                     }
                   }}
@@ -343,22 +355,21 @@ const Slug = ({ buyNow, addToCart, product, variants }) => {
               </div>
               <div className="buyNow flex justify-center items-center my-3 md:justify-start">
                 <button
-                  onClick={() =>{
+                  onClick={() => {
                     if (product.availableQty > 1) {
-                    buyNow(
-                      slug,
-                      1,
-                      product.price,
-                      product.title,
-                      product.size,
-                      product.color,
-                      product.img
-                    )
-                    }else{
+                      buyNow(
+                        slug,
+                        1,
+                        product.price,
+                        product.title,
+                        product.size,
+                        product.color,
+                        product.img
+                      );
+                    } else {
                       toast.warning("Sorry! Item is currently out of stock.");
                     }
-                  }
-                  }
+                  }}
                   className="flex my-5 text-white shadow-lg shadow-gray-800/50 bg-green-700 border-0 py-2 px-8 sm:px-10 focus:outline-none hover:bg-green-900 rounded font-firasans font-medium space-x-2 justify-center items-center"
                 >
                   <HiOutlineShoppingCart className="text-xl rotate-12 text-pink-100 font-bold" />
@@ -391,16 +402,6 @@ const Slug = ({ buyNow, addToCart, product, variants }) => {
               {service && service !== null && (
                 <div className="text-green-700 font-firasans my-3 text-sm">
                   Yay! This pincode is serviceable
-                </div>
-              )}
-
-              {!product.availableQty < 1 ? (
-                <div className="text-center text-white font-firasans mt-4 text-xl absolute top-0 -left-16 bg-yellow-600 px-2 py-1 rounded-md">
-                  In Stock
-                </div>
-              ) : (
-                <div className="text-center text-white font-firasans mt-4 text-xl absolute top-0 -left-28 bg-red-700 px-2 py-1 rounded-md">
-                  Out of Stock
                 </div>
               )}
             </div>

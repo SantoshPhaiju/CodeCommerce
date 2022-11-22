@@ -204,6 +204,7 @@ const Navbar = ({
               </div>
             )}
             {Object.keys(cart).map((k) => {
+              console.log(cart[k]);
               return (
                 <li key={k}>
                   <div className="item flex flex-wrap my-3 text-base 2xl:text-lg font-firasans font-medium text-black">
@@ -236,7 +237,7 @@ const Navbar = ({
                         onClick={() =>
                           addToCart(
                             k,
-                            cart[k].qty,
+                            1,
                             cart[k].price,
                             cart[k].name,
                             cart[k].size,

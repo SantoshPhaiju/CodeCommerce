@@ -28,7 +28,9 @@ const OrderPage = ({ order, addToCart }) => {
         order.products[item]?.price,
         order.products[item]?.name,
         order.products[item]?.size,
-        order.products[item]?.variant
+        order.products[item]?.variant,
+        order.products[item]?.variant,
+        order.products[item]?.img
       );
     })
     router.push("/checkout?oid=" + order?.orderId + "&id=" + order?._id);

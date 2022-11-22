@@ -355,6 +355,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
       <button
         disabled={disabled}
         onClick={async () => {
+         
           const response = await axios.post(
                 `${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`,
                 {
@@ -388,6 +389,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
           <button
             disabled={disabled}
             onClick={async () => {
+               console.log(orderDetails);
               const response = await axios.post(
                 `${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`,
                 {

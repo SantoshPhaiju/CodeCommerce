@@ -11,10 +11,10 @@ const handler = async (req, res) => {
         tshirts[item.title].availableQty += item.availableQty;
       }
      if(!tshirts[item.title].color.includes(item.color) && item.availableQty > 0){
-      tshirts[item.title].color.push(item.color);
+      tshirts[item.title].color += item.color;
      }
      if(!tshirts[item.title].size.includes(item.size) && item.availableQty > 0){
-      tshirts[item.title].size.push(item.size);
+      tshirts[item.title].size += item.size;
      }
     }else{
       // console.log(item);

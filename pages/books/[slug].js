@@ -43,7 +43,7 @@ const Slug = ({ buyNow, addToCart, product }) => {
     <>
       <section className="text-gray-600 body-font overflow-hidden">
         <div className="container px-5 py-24 mx-auto">
-          <div className="lg:w-4/5 mx-auto flex flex-wrap">
+          <div className="lg:w-4/5 mx-auto flex flex-wrap relative">
             <img
               alt="ecommerce"
               className="lg:w-4/12 w-full h-[400px] object-contain object-top rounded"
@@ -51,6 +51,15 @@ const Slug = ({ buyNow, addToCart, product }) => {
               width={800}
               height={100}
             />
+            {!product.availableQty < 1 ? (
+              <div className="text-center text-white font-firasans mt-4 text-xl absolute top-0 -left-2 bg-yellow-600 px-2 py-1 rounded-md">
+                In Stock
+              </div>
+            ) : (
+              <div className="text-center text-white font-firasans mt-4 text-xl absolute top-0 -left-2 bg-red-700 px-2 py-1 rounded-md">
+                Out of Stock
+              </div>
+            )}
             <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0 relative">
               <h2 className="text-sm title-font text-gray-500 tracking-widest font-robotoslab">
                 CODECOMMERCE
@@ -245,16 +254,6 @@ const Slug = ({ buyNow, addToCart, product }) => {
               {service && service !== null && (
                 <div className="text-green-700 font-firasans my-3 text-sm">
                   Yay! This pincode is serviceable
-                </div>
-              )}
-
-              {!product.availableQty < 1 ? (
-                <div className="text-center text-white font-firasans mt-4 text-xl absolute top-0 -left-16 bg-yellow-600 px-2 py-1 rounded-md">
-                  In Stock
-                </div>
-              ) : (
-                <div className="text-center text-white font-firasans mt-4 text-xl absolute top-0 -left-28 bg-red-700 px-2 py-1 rounded-md">
-                  Out of Stock
                 </div>
               )}
             </div>

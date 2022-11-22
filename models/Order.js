@@ -8,7 +8,6 @@ const OrderSchema = mongoose.Schema(
     products: { type: Object, required: true },
     address: { type: String, required: true },
     amount: { type: Number, required: true },
-    img: { type: String, required: true },
     status: { type: String, default: "Pending", required: true },
   },
   { timestamps: true }
