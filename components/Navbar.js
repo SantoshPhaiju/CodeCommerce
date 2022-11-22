@@ -26,24 +26,36 @@ const Navbar = ({
   const router = useRouter();
   const [dropdown, setDropdown] = useState(false);
   const [page, setPage] = useState("/");
+  const [sidebar, setSidebar] = useState(false);
 
   useEffect(() => {
     // console.log(router.route);
     setPage(router.route);
+    setDropdown(false);
+    let exempted = ['/checkout', '/orders', '/orders'];
+    if(exempted.includes(router.route)){
+      setSidebar(false);
+    }
   }, [router.route]);
 
   const toggleCart = () => {
-    if (ref.current.classList.contains("translate-x-full")) {
-      ref.current.classList.remove("translate-x-full");
-      ref.current.classList.add("translate-x-0");
-    } else if (ref.current.classList.contains("translate-x-0")) {
-      ref.current.classList.remove("translate-x-0");
-      ref.current.classList.add("translate-x-full");
-    }
+    setSidebar(!sidebar);
+    // if (ref.current.classList.contains("translate-x-full")) {
+    //   ref.current.classList.remove("translate-x-full");
+    //   ref.current.classList.add("translate-x-0");
+    // } else if (ref.current.classList.contains("translate-x-0")) {
+    //   ref.current.classList.remove("translate-x-0");
+    //   ref.current.classList.add("translate-x-full");
+    // }
   };
+
+  useEffect(() => {
+    Object.keys(cart).length !== 0 && setSidebar(true);
+  
+  }, []);
   return (
     <>
-      <div className="flex flex-col justify-center items-center gap-2 md:flex-row md:justify-between shadow-lg w-full bg-white sticky top-0 z-20">
+      <div className={`flex flex-col justify-center items-center gap-2 md:flex-row md:justify-between shadow-lg w-full bg-white sticky top-0 z-20 ${sidebar && "overflow-hidden"}`}>
         <Link href={"/"}>
           <div className="logo flex items-center text-lg font-mono text-blue-800 font-semibold ml-4">
             <Image
@@ -119,7 +131,7 @@ const Navbar = ({
               <div
                 onMouseOver={() => setDropdown(true)}
                 onMouseLeave={() => setDropdown(false)}
-                className="absolute right-40 text-lg bg-slate-100 shadow-lg shadow-gray-400/30 pl-5 border-2 border-gray-300 top-7 py-2 flex px-3 rounded-md font-firasans w-36"
+                className="absolute right-40 text-lg bg-slate-100 shadow-lg shadow-gray-400/30 pl-5 border-2 border-gray-300 top-8 lg:top-6 py-2 flex px-3 rounded-md font-firasans w-36"
               >
                 <ul className="flex flex-col">
                   <Link
@@ -188,7 +200,7 @@ const Navbar = ({
 
         <div
           className={`sidebar overflow-y-auto fixed top-0 right-0 bg-pink-200 px-6 py-10 transition-all transform ${
-            Object.keys(cart).length !== 0
+            sidebar
               ? "translate-x-0"
               : "translate-x-full"
           } duration-300 w-72 md:w-96 2xl:w-[25vw] h-[100vh] shadow-lg shadow-gray-500 z-20 font-medium`}

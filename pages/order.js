@@ -140,7 +140,7 @@ const OrderPage = ({ order, addToCart }) => {
             </div>
             <img
               alt="ecommerce"
-              className="w-full lg:w-[35%] lg:h-auto h-64 object-cover object-center rounded"
+              className="w-full lg:w-[35%] xl:w-[35%] 2xl:w-[30%] lg:h-auto h-64 object-cover object-center rounded"
               src="/order.jpg"
             />
           </div>

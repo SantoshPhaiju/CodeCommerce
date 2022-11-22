@@ -117,7 +117,8 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <LoadingBar
-        color="#ec4899"
+        color="#000"
+        // color="#ec4899"
         progress={progress}
         waitingTime={400}
         onLoaderFinished={() => setProgress(0)}

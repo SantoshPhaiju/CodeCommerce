@@ -5,9 +5,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
-    overflow-x:  hidden;
-}
 
 @layer components{
     .link{
