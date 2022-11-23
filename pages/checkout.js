@@ -16,7 +16,7 @@ import Order from "../models/Order";
 const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart, order }) => {
   const router = useRouter();
   const [user, setUser] = useState({});
-
+  
   // console.log(order);
 
   const { oid, id } = router.query;
@@ -31,6 +31,8 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart, order 
   });
   const [pincode, setPincode] = useState(Object.keys(order).length !== 0 ? order.pincode : "");
   const [disabled, setDisabled] = useState(true);
+
+  
 
   
 
@@ -56,12 +58,12 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart, order 
     } else {
       fetchuser();
     }
-    if (Object.keys(order).length !== 0) {
-      // console.log(order.phone);
-      setDisabled(false);
-      // setPincode(order.pincode);
-    }
 
+     if (Object.keys(order).length !== 0) {
+       // console.log(order.phone);
+       setDisabled(false);
+       // setPincode(order.pincode);
+     }
 
     // if(Object.keys(cart).length === 0){
     //   router.push("/")
@@ -151,8 +153,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart, order 
         orderData.email.length > 3 &&
         orderData.address.length > 3 &&
         pincode.length > 3 &&
-        orderData.phone.length > 9 &&
-        Object.keys(cart).length !== 0
+        orderData.phone.length > 9
       ) {
         setDisabled(false);
       } else {

@@ -33,7 +33,7 @@ const handler = async (req, res) => {
         let result = response.data;
         let order = await Order.findOneAndUpdate(
           { orderId: response.data.product_identity },
-          { status: "Paid", paymentInfo: response.data }
+          { status: "Paid", paymentInfo: response.data, transactionId: response.data.idx }
         );
         // console.log("order = " + order);
         

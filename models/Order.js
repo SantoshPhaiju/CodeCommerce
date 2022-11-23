@@ -9,6 +9,7 @@ const OrderSchema = mongoose.Schema(
     phone: { type: Number, required: true },
     name: { type: String, required: true },
     orderId: { type: String, required: true },
+    transactionId: { type: String, default: "" },
     paymentInfo: { type: Object, default: "" },
     products: { type: Object, required: true },
     address: { type: String, required: true },
