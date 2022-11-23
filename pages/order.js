@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import Order from "../models/Order";
 import mongoose from "mongoose";
 
-const OrderPage = ({ order, addToCart }) => {
+const OrderPage = ({ order, addToCart, clearCart }) => {
   const router = useRouter();
 
   // console.log(order);
@@ -47,10 +47,10 @@ const OrderPage = ({ order, addToCart }) => {
         order.products[item]?.name,
         order.products[item]?.size,
         order.products[item]?.variant,
-        order.products[item]?.variant,
-        order.products[item]?.img
+        order.products[item]["img"]
       );
     })
+    // clearCart();
     router.push("/checkout?oid=" + order?.orderId + "&id=" + order?._id);
   }
   

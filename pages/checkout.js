@@ -10,22 +10,29 @@ import {
 import axios from "axios";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import mongoose from "mongoose";
+import Order from "../models/Order";
 
-const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
+const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart, order }) => {
   const router = useRouter();
   const [user, setUser] = useState({});
+
+  // console.log(order);
 
   const { oid, id } = router.query;
 
   const [orderData, setOrderData] = useState({
     name: "",
     email: "",
-    phone: "",
-    address: "",
-    city: "",
-    state: "",
+    phone: Object.keys(order).length !== 0 ? order.phone : "",
+    address: Object.keys(order).length !== 0 ? order.address : "",
+    city: Object.keys(order).length !== 0 ? order.city : "",
+    state: Object.keys(order).length !== 0 ? order.state : "",
   });
-  const [pincode, setPincode] = useState("");
+  const [pincode, setPincode] = useState(Object.keys(order).length !== 0 ? order.pincode : "");
+  const [disabled, setDisabled] = useState(true);
+
+  
 
   useEffect(() => {
     const fetchuser = async () => {
@@ -49,13 +56,18 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
     } else {
       fetchuser();
     }
-
-    if(Object.keys(cart).length === 0){
-      router.push("/")
+    if (order) {
+      // console.log(order.phone);
+      setDisabled(false);
+      // setPincode(order.pincode);
     }
+
+
+    // if(Object.keys(cart).length === 0){
+    //   router.push("/")
+    // }
   }, []);
   // console.log(user);
-  const [disabled, setDisabled] = useState(true);
 
   const orderId = oid || Math.floor(Math.random() * Date.now()); // Order id needs to be changed
 
@@ -115,7 +127,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
     setOrderData({ ...orderData, [e.target.name]: e.target.value });
     if (e.target.name === "pincode") {
       setPincode(e.target.value);
-      if (e.target.value.length == 5) {
+      if (e.target.value.length === 5) {
         let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
         let pinJson = await pins.json();
         // console.log(pinJson);
@@ -243,7 +255,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
               PinCode
             </label>
             <input
-              type="number"
+              type="text"
               id="pincode"
               name="pincode"
               className="w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
@@ -281,10 +293,10 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
               type="text"
               id="city"
               name="city"
-              value={orderData.city}
               className="w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-              required
+              value={orderData.city}
               onChange={handleChange}
+              required
             />
           </div>
         </div>
@@ -350,50 +362,54 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
               </li>
             );
           })}
+
+          
         </ol>
-        <span className="subtotal font-bold font-robotoslab pt-4">
-          SubTotal: रु {subTotal}
-        </span>
+        {Object.keys(cart).length !== 0 && (
+          <span className="subtotal font-bold font-robotoslab pt-4">
+            SubTotal: रु {subTotal}
+          </span>
+        )}
+        
       </div>
       <div className="ml-3 flex space-x-4">
-      <button
-        disabled={disabled}
-        onClick={async () => {
-         
-          const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`,
-                {
-                  data: orderDetails,
-                }
-              );
-              // console.log(response.data);
-              if (response.data.success === false) {
-                // console.log(response.data);
-                toast.error(response.data.error);
-                clearCart();
-                setDisabled(true);
-              } else if(response.data.success === "check"){
-                toast.error(response.data.error);
-              }else {
-                return checkout.show({ amount: Number(payTotal) });
+        <button
+          disabled={disabled}
+          onClick={async () => {
+            const response = await axios.post(
+              `${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`,
+              {
+                data: orderDetails,
               }
+            );
+            // console.log(response.data);
+            if (response.data.success === false) {
+              // console.log(response.data);
+              toast.error(response.data.error);
+              clearCart();
+              setDisabled(true);
+            } else if (response.data.success === "check") {
+              toast.error(response.data.error);
+            } else {
+              return checkout.show({ amount: Number(payTotal) });
             }
-        }
-        className="transition-all duration-300 disabled:bg-pink-200 disabled:shadow-none disabled:text-black font-firasans bg-pink-400 py-1 my-2 text-lg px-10 md:px-5 font-medium text-center rounded-md hover:bg-pink-500 flex items-center justify-center space-x-2 shadow-lg shadow-gray-700/50 text-purple-700"
-      >
-        {/* <BsFillBagCheckFill className="text-base" /> */}
-        <img
-          src="/khalti.png"
-          alt="khalti logo here"
-          className="w-14 h-8 -mx-4"
-        />
-        <span>Pay Rs. {subTotal}</span>
-      </button>
+          }}
+          className="transition-all duration-300 disabled:bg-pink-200 disabled:shadow-none disabled:text-black font-firasans bg-pink-400 py-1 my-2 text-lg px-10 md:px-5 font-medium text-center rounded-md hover:bg-pink-500 flex items-center justify-center space-x-2 shadow-lg shadow-gray-700/50 text-purple-700"
+        >
+          {/* <BsFillBagCheckFill className="text-base" /> */}
+          <img
+            src="/khalti.png"
+            alt="khalti logo here"
+            className="w-14 h-8 -mx-4"
+          />
+          {Object.keys(cart).length !== 0 && <span>Pay Rs. {subTotal}</span>}
+         
+        </button>
         {!oid && (
           <button
             disabled={disabled}
             onClick={async () => {
-               console.log(orderDetails);
+              // console.log(orderDetails);
               const response = await axios.post(
                 `${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`,
                 {
@@ -406,7 +422,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
                 toast.error(response.data.error);
                 clearCart();
                 setDisabled(true);
-              } else if(response.data.success === "check"){
+              } else if (response.data.success === "check") {
                 toast.error(response.data.error);
               } else {
                 toast.success("Your order has been successfully placed!");
@@ -424,5 +440,24 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart }) => {
     </div>
   );
 };
+
+
+export async function getServerSideProps(context) {
+  if (!mongoose.connections[0].readyState) {
+    mongoose.connect(process.env.MONGO_URI);
+  }
+
+  let order = await Order.findById(context.query.id);
+  // console.log(order);
+  if (order === null) {
+    order = {};
+  }
+
+  return {
+    props: {
+      order: JSON.parse(JSON.stringify(order)),
+    }, // will be passed to the page component as props
+  };
+}
 
 export default Checkout;

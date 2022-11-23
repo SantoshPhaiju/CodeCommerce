@@ -3,7 +3,9 @@ import mongoose from "mongoose";
 const OrderSchema = mongoose.Schema(
   {
     email: { type: String, required: true },
-    pincode: { type: Number, required: true },
+    pincode: { type: String, required: true },
+    state: { type: String, required: true },
+    city: { type: String, required: true },
     phone: { type: Number, required: true },
     name: { type: String, required: true },
     orderId: { type: String, required: true },

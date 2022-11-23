@@ -16,6 +16,8 @@ const handler = async (req, res) => {
       subTotal,
       cart,
       id,
+      city, 
+      state
     } = req.body.data;
 
     // Doing some of the validatoins here
@@ -33,7 +35,7 @@ const handler = async (req, res) => {
       });
       return;
     }
-    if (pincode.length < 5) {
+    if (String(pincode).length < 5) {
       res.status(200).json({
         success: "check",
         error: "Please enter a valid pincode",
@@ -109,6 +111,8 @@ const handler = async (req, res) => {
           pincode,
           phone,
           name,
+          city,
+          state
         }
       );
       res.status(200).send({ success: true, data: updatedOrder });
@@ -123,6 +127,8 @@ const handler = async (req, res) => {
         address,
         amount: subTotal,
         products: cart,
+        city,
+        state
       });
       await order.save();
       res.status(200).send({ success: true });
