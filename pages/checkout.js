@@ -56,7 +56,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart, order 
     } else {
       fetchuser();
     }
-    if (order) {
+    if (Object.keys(order).length !== 0) {
       // console.log(order.phone);
       setDisabled(false);
       // setPincode(order.pincode);

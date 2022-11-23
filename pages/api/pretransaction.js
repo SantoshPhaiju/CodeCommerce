@@ -2,6 +2,7 @@ import axios from "axios";
 import connectToDb from "../../middleware/db";
 import Order from "../../models/Order";
 import Product from "../../models/Product";
+import pincodes from "../../data/pincodes.json";
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
@@ -16,9 +17,18 @@ const handler = async (req, res) => {
       subTotal,
       cart,
       id,
-      city, 
-      state
+      city,
+      state,
     } = req.body.data;
+
+    // Check if the pincode is servicable
+    if (!Object.keys(pincodes).includes(pincode)) {
+      res.status(200).json({
+        success: "check",
+        error: "Please enter a serviceabe pincode",
+      });
+      return;
+    }
 
     // Doing some of the validatoins here
     if (name.length < 3) {
@@ -112,7 +122,7 @@ const handler = async (req, res) => {
           phone,
           name,
           city,
-          state
+          state,
         }
       );
       res.status(200).send({ success: true, data: updatedOrder });
@@ -128,7 +138,7 @@ const handler = async (req, res) => {
         amount: subTotal,
         products: cart,
         city,
-        state
+        state,
       });
       await order.save();
       res.status(200).send({ success: true });
