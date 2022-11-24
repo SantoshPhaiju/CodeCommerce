@@ -6,7 +6,7 @@ import pincodes from "../../data/pincodes.json";
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
-    console.log(req.body.data);
+    // console.log(req.body.data);
     const {
       name,
       email,
@@ -107,7 +107,7 @@ const handler = async (req, res) => {
 
     // Initiate an order corresponding to the order id
     // Checking if the order already exists in our database and updating it.
-    console.log(cart);
+    // console.log(cart);
     const oldOrder = await Order.findById(id);
     if (oldOrder) {
       // console.log(oldOrder);

@@ -6,7 +6,7 @@ import ProductCard from "../components/ProductCard";
 import Product from "../models/Product";
 
 const Tshirts = ({ tshirts }) => {
-  console.log(tshirts);
+  // console.log(tshirts);
   return (
     <div>
       <h2 className="text-center mt-10 font-firasans text-3xl -mb-10 text-purple-900/75 font-semibold">

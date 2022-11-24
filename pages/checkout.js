@@ -60,9 +60,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart, order 
     }
 
      if (Object.keys(order).length !== 0) {
-       // console.log(order.phone);
        setDisabled(false);
-       // setPincode(order.pincode);
      }
 
     // if(Object.keys(cart).length === 0){
@@ -363,15 +361,12 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart, order 
               </li>
             );
           })}
-
-          
         </ol>
         {Object.keys(cart).length !== 0 && (
           <span className="subtotal font-bold font-robotoslab pt-4">
             SubTotal: रु {subTotal}
           </span>
         )}
-        
       </div>
       <div className="ml-3 flex space-x-4">
         <button
@@ -403,8 +398,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart, order 
             alt="khalti logo here"
             className="w-14 h-8 -mx-4"
           />
-          {Object.keys(cart).length !== 0 && <span>Pay Rs. {subTotal}</span>}
-         
+          <span>Pay Rs.{Object.keys(cart).length !== 0 ? subTotal  : 0}</span>
         </button>
         {!oid && (
           <button

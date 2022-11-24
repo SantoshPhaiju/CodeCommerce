@@ -181,7 +181,7 @@ export async function getServerSideProps(context) {
   }
 
   let order = await Order.findById(context.query.id);
-  console.log(order);
+  // console.log(order);
   if(order === null){
     order = {};
   }

@@ -29,7 +29,6 @@ const Navbar = ({
   const [sidebar, setSidebar] = useState(false);
 
   useEffect(() => {
-    // console.log(router.route);
     setPage(router.route);
     setDropdown(false);
     let exempted = ['/checkout', '/orders', '/orders'];
@@ -39,7 +38,11 @@ const Navbar = ({
   }, [router.route]);
 
   const toggleCart = () => {
-    setSidebar(!sidebar);
+    if(sidebar === true){
+      setSidebar(false);
+    }else{
+      setSidebar(true);
+    }
     // if (ref.current.classList.contains("translate-x-full")) {
     //   ref.current.classList.remove("translate-x-full");
     //   ref.current.classList.add("translate-x-0");
@@ -50,11 +53,15 @@ const Navbar = ({
   };
 
   useEffect(() => {
-    Object.keys(cart).length !== 0 ? setSidebar(true) : setSidebar(false);
-  }, []);
+    Object.keys(cart).length !== 0 && sidebar !== true ? setSidebar(true) : setSidebar(false);
+  }, [cartLength]);
   return (
     <>
-      <div className={`flex flex-col justify-center items-center gap-2 md:flex-row md:justify-between shadow-lg w-full bg-white sticky top-0 z-20 ${sidebar && "overflow-hidden"}`}>
+      <div
+        className={`flex flex-col justify-center items-center gap-2 md:flex-row md:justify-between shadow-lg w-full bg-white sticky top-0 z-20 ${
+          sidebar && "overflow-hidden"
+        }`}
+      >
         <Link href={"/"}>
           <div className="logo flex items-center text-lg font-mono text-blue-800 font-semibold ml-4">
             <Image
@@ -198,11 +205,9 @@ const Navbar = ({
         </div>
 
         <div
-          className={`sidebar overflow-y-auto fixed top-0 right-0 bg-pink-200 px-6 py-10 transition-all transform ${
-            sidebar
-              ? "translate-x-0"
-              : "translate-x-full"
-          } duration-300 w-72 md:w-96 2xl:w-[25vw] h-[100vh] shadow-lg shadow-gray-500 z-20 font-medium`}
+          className={`sidebar overflow-y-auto fixed top-0 right-0 bg-pink-200 px-6 py-10 transition-all duration-300 ${
+            sidebar ? "right-0" : "-right-full"
+          }  w-72 md:w-96 2xl:w-[25vw] h-[100vh] shadow-lg shadow-gray-500 z-20 font-medium`}
           ref={ref}
         >
           <h2 className="font-bold text-xl text-center mb-2 font-roboto text-blue-800 xl:text-2xl 2xl:text-3xl">
@@ -212,7 +217,7 @@ const Navbar = ({
             <AiFillCloseCircle className="text-2xl cursor-pointer text-pink-500" />
           </span>
           <ol className="list-decimal">
-            {Object.keys(cart).length == 0 && (
+            {Object.keys(cart).length === 0 && (
               <div className="text-center my-5 font-light font-firasans">
                 Your cart is Empty ! 😵‍💫
               </div>
@@ -248,7 +253,7 @@ const Navbar = ({
                       />
                       <div>{cart[k].qty}</div>
                       <AiFillPlusCircle
-                        onClick={() =>
+                        onClick={() =>{
                           addToCart(
                             k,
                             1,
@@ -257,7 +262,7 @@ const Navbar = ({
                             cart[k].size,
                             cart[k].variant,
                             cart[k].img
-                          )
+                          )}
                         }
                         className="text-xl text-pink-600 cursor-pointer"
                       />
