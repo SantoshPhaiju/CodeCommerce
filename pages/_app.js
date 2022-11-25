@@ -144,6 +144,7 @@ function MyApp({ Component, pageProps }) {
           cartLength={cartLength}
           subTotal={subTotal}
           loggedIn={loggedIn}
+          userData={userData}
           {...pageProps}
         />
 

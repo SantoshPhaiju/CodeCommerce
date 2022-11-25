@@ -3,8 +3,9 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import AccountSideBar from "../components/AccountSideBar";
 
-const MyAccount = () => {
+const MyAccount = ({userData}) => {
   const router = useRouter();
+  console.log(userData);
   useEffect(() => {
     if (!localStorage.getItem("token")) {
       router.push("/login");
@@ -19,19 +20,19 @@ const MyAccount = () => {
             <h1 className="font-sans text-lg lg:text-2xl text-pink-900">
               Manage My Account
               <div className="boxes flex w-[100%] space-x-5 mt-8">
-                <div className="left bg-white w-[30%] h-[30vh] px-5 py-4 shadow-md">
+                <div className="left bg-white w-[30%] h-[250px] px-5 py-4 shadow-md">
                   <h3 className="text-lg font-normal font-robotoslab mb-4">
                     Personal Profile{" "}
                     <Link href={"/myprofile"} className="text-sm text-blue-500/70">
                       | EDIT
                     </Link>
                   </h3>
-                  <h3 className="text-base mt-1  font-firasans">Santosh Phaiju</h3>
-                  <h3 className="text-base mt-1  font-firasans">santoshphaiju@gmail.com</h3>
-                  <h3 className="text-base mt-1  font-firasans">(+977) 9803045389</h3>
-                  <h3 className="text-base mt-1  font-firasans">Chabahil, Kathmandu</h3>
+                  <h3 className="text-base mt-1  font-firasans">{userData?.name}</h3>
+                  <h3 className="text-base mt-1  font-firasans">{userData?.email}</h3>
+                  <h3 className="text-base mt-1  font-firasans">{userData?.dob}</h3>
+                  <h3 className="text-base mt-1  font-firasans">{userData?.gender}</h3>
                 </div>
-                <div className="right bg-white w-[70%] h-[30vh] px-5 py-4 shadow-md">
+                <div className="right bg-white w-[70%] h-[250px] px-5 py-4 shadow-md">
                   <div className="flex space-x-6 h-full">
                     <div className="rightside w-[50%]">
                       <h3 className="text-lg font-normal font-robotoslab mb-4">
