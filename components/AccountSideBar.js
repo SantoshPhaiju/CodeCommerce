@@ -28,7 +28,14 @@ const AccountSideBar = () => {
               My Profile
             </li>
           </Link>
-          <li>Address Book</li>
+          <Link
+            className={`${
+              router.pathname === "/addressbook" && "text-purple-600/80 font-bold"
+            }`}
+            href={"/addressbook"}
+          >
+            <li>Address Book</li>
+          </Link>
           <li>My Payment Options</li>
           <li>Vouchers</li>
         </ul>

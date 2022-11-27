@@ -38,7 +38,9 @@ const MyProfile = () => {
 }
 
 useEffect(() =>{
+  if(localStorage.getItem("token")){
     fetchuser();
+  }
     if(editProfile === true){
       setFormData({name: userData.name, email: userData.email, phone: userData.phone ? userData.phone : "", gender: userData.gender})
       setDob(userData.dob);
