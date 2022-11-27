@@ -26,17 +26,18 @@ const AddressBook = () => {
     gender: "",
   });
 
-  const fetchuser = async () => {
-    const token = localStorage.getItem("token");
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_HOST}/api/fetchuserdata`,
-      { data: token }
-    );
-    console.log("app", response.data);
-    if (response.data) {
-      setUserData(response.data.user);
-    }
-  };
+//   const fetchAddress = async () => {
+//     const token = localStorage.getItem("token");
+//     const response = await axios.post(
+//       `${process.env.NEXT_PUBLIC_HOST}/api/fetchaddress`,
+//       { data: token }
+//     );
+//     console.log("app", response.data);
+//     if (response.data) {
+//       setUserData(response.data.user);
+//     }
+//   };
+
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -129,5 +130,7 @@ const AddressBook = () => {
     </div>
   );
 };
+
+
 
 export default AddressBook;
