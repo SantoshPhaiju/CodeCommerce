@@ -14,6 +14,8 @@ const AddressBookSchema = mongoose.Schema(
     landmark: { type: String, default: "" },
     province: { type: String, default: "", required: true },
     label: { type: String, default: "" },
+    shippingAddress: { type: Boolean},
+    billingAddress: { type: Boolean },
     city: { type: String, default: "", required: true },
     area: { type: String, default: "", required: true },
   },
