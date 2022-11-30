@@ -1,16 +1,51 @@
+import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AccountSideBar from "../components/AccountSideBar";
 
-const MyAccount = ({userData}) => {
+const MyAccount = ({ userData }) => {
   const router = useRouter();
-  console.log(userData);
+  // console.log(userData);
   useEffect(() => {
     if (!localStorage.getItem("token")) {
       router.push("/login");
     }
   }, []);
+  const [userAddress, setUserAddress] = useState({});
+  const [shippingAddress, setShippingAddress] = useState({});
+  const [billingAddress, setBillingAddress] = useState({});
+
+  const fetchAddress = async () => {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_HOST}/api/fetchaddress`,
+      {
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+      }
+    );
+    // console.log("app", response.data);
+    if (response.data.success === true) {
+      setUserAddress(response.data.useraddress);
+    }
+  };
+
+  useEffect(() => {
+    fetchAddress();
+  }, []);
+
+  useEffect(() => {
+    Object.keys(userAddress).forEach((key) => {
+      if (userAddress[key].shippingAddress === true) {
+        setShippingAddress(userAddress[key]);
+      }
+      if (userAddress[key].billingAddress === true) {
+        setBillingAddress(userAddress[key]);
+      }
+    });
+  }, [fetchAddress]);
+
   return (
     <div className="w-[100vw] bg-slate-100 min-h-[90vh]">
       <div className="container mx-auto 2xl:w-[80vw] lg:w-[80vw] w-[95vw]">
@@ -23,14 +58,25 @@ const MyAccount = ({userData}) => {
                 <div className="left bg-white w-[30%] h-[250px] px-5 py-4 shadow-md">
                   <h3 className="text-lg font-normal font-robotoslab mb-4">
                     Personal Profile{" "}
-                    <Link href={"/myprofile"} className="text-sm text-blue-500/70">
+                    <Link
+                      href={"/myprofile"}
+                      className="text-sm text-blue-500/70"
+                    >
                       | EDIT
                     </Link>
                   </h3>
-                  <h3 className="text-base mt-1  font-firasans">{userData?.name}</h3>
-                  <h3 className="text-base mt-1  font-firasans">{userData?.email}</h3>
-                  <h3 className="text-base mt-1  font-firasans">{userData?.dob}</h3>
-                  <h3 className="text-base mt-1  font-firasans">{userData?.gender}</h3>
+                  <h3 className="text-base mt-1  font-firasans">
+                    {userData?.name}
+                  </h3>
+                  <h3 className="text-base mt-1  font-firasans">
+                    {userData?.email}
+                  </h3>
+                  <h3 className="text-base mt-1  font-firasans">
+                    {userData?.dob}
+                  </h3>
+                  <h3 className="text-base mt-1  font-firasans">
+                    {userData?.gender}
+                  </h3>
                 </div>
                 <div className="right bg-white w-[70%] h-[250px] px-5 py-4 shadow-md">
                   <div className="flex space-x-6 h-full">
@@ -45,36 +91,36 @@ const MyAccount = ({userData}) => {
                         DEFAULT SHIPPING ADDRESS
                       </p>
                       <h4 className="text-lg font-semibold font-roboto mb-2">
-                        Santosh Phaiju
+                        {shippingAddress?.name}
                       </h4>
                       <p className="text-sm font-medium font-firasans mb-1.5">
-                        Chabahil
+                        {shippingAddress?.address}
                       </p>
                       <p className="text-sm font-medium font-firasans mb-1.5">
-                        Bagmati Province - Kathmandu Metro 7 - Chabahil Area -
-                        Chabahil Chowk
+                        {shippingAddress?.province} - {shippingAddress?.city} -{" "}
+                        {shippingAddress?.area} -{shippingAddress?.address}
                       </p>
                       <p className="text-sm font-medium font-firasans mb-1.5">
-                        (+977) 9803045389
+                        (+977) {shippingAddress?.mobile}
                       </p>
                     </div>
                     <div className="h-full py-4 bg-gray-300 rounded-lg w-0.5"></div>
                     <div className="leftside w-[50%] mt-7">
                       <p className="text-sm font-medium text-gray-400 font-firasans my-3">
-                        DEFAULT SHIPPING ADDRESS
+                        DEFAULT BILLING ADDRESS
                       </p>
                       <h4 className="text-lg font-semibold font-roboto mb-2">
-                        Santosh Phaiju
+                        {billingAddress?.name}
                       </h4>
                       <p className="text-sm font-medium font-firasans mb-1.5">
-                        Chabahil
+                        {billingAddress?.address}
                       </p>
                       <p className="text-sm font-medium font-firasans mb-1.5">
-                        Bagmati Province - Kathmandu Metro 7 - Chabahil Area -
-                        Chabahil Chowk
+                        {billingAddress?.province} - {billingAddress?.city} -{" "}
+                        {billingAddress?.area} - {billingAddress?.address}
                       </p>
                       <p className="text-sm font-medium font-firasans mb-1.5">
-                        (+977) 9803045389
+                        (+977) {billingAddress?.mobile}
                       </p>
                     </div>
                   </div>
