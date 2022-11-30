@@ -32,7 +32,11 @@ const MyAccount = ({ userData }) => {
   };
 
   useEffect(() => {
-    fetchAddress();
+    if (localStorage.getItem("token")) {
+      fetchAddress();
+    } else {
+      router.push("/login");
+    }
   }, []);
 
   useEffect(() => {
@@ -83,45 +87,71 @@ const MyAccount = ({ userData }) => {
                     <div className="rightside w-[50%]">
                       <h3 className="text-lg font-normal font-robotoslab mb-4">
                         Address Book&nbsp;
-                        <Link href={"/"} className="text-sm text-blue-500/70">
+                        <Link
+                          href={"/addressbook"}
+                          className="text-sm text-blue-500/70"
+                        >
                           | EDIT
                         </Link>
                       </h3>
                       <p className="text-sm font-medium text-gray-400 font-firasans my-3">
                         DEFAULT SHIPPING ADDRESS
                       </p>
-                      <h4 className="text-lg font-semibold font-roboto mb-2">
-                        {shippingAddress?.name}
-                      </h4>
-                      <p className="text-sm font-medium font-firasans mb-1.5">
-                        {shippingAddress?.address}
-                      </p>
-                      <p className="text-sm font-medium font-firasans mb-1.5">
-                        {shippingAddress?.province} - {shippingAddress?.city} -{" "}
-                        {shippingAddress?.area} -{shippingAddress?.address}
-                      </p>
-                      <p className="text-sm font-medium font-firasans mb-1.5">
-                        (+977) {shippingAddress?.mobile}
-                      </p>
+                      {Object.keys(shippingAddress).length !== 0 ? (
+                        <>
+                          <h4 className="text-lg font-semibold font-roboto mb-2">
+                            {shippingAddress?.name}
+                          </h4>
+                          <p className="text-sm font-medium font-firasans mb-1.5">
+                            {shippingAddress?.address}
+                          </p>
+                          <p className="text-sm font-medium font-firasans mb-1.5">
+                            {shippingAddress?.province} -{" "}
+                            {shippingAddress?.city} - {shippingAddress?.area} -
+                            {shippingAddress?.address}
+                          </p>
+                          <p className="text-sm font-medium font-firasans mb-1.5">
+                            (+977) {shippingAddress?.mobile}
+                          </p>
+                        </>
+                      ) : (
+                        <Link
+                          href={"/addressbook"}
+                          className={"text-blue-500 hover:underline"}
+                        >
+                          Add a default address
+                        </Link>
+                      )}
                     </div>
                     <div className="h-full py-4 bg-gray-300 rounded-lg w-0.5"></div>
                     <div className="leftside w-[50%] mt-7">
                       <p className="text-sm font-medium text-gray-400 font-firasans my-3">
                         DEFAULT BILLING ADDRESS
                       </p>
-                      <h4 className="text-lg font-semibold font-roboto mb-2">
-                        {billingAddress?.name}
-                      </h4>
-                      <p className="text-sm font-medium font-firasans mb-1.5">
-                        {billingAddress?.address}
-                      </p>
-                      <p className="text-sm font-medium font-firasans mb-1.5">
-                        {billingAddress?.province} - {billingAddress?.city} -{" "}
-                        {billingAddress?.area} - {billingAddress?.address}
-                      </p>
-                      <p className="text-sm font-medium font-firasans mb-1.5">
-                        (+977) {billingAddress?.mobile}
-                      </p>
+                      {Object.keys(billingAddress).length !== 0 ? (
+                        <>
+                          <h4 className="text-lg font-semibold font-roboto mb-2">
+                            {billingAddress?.name}
+                          </h4>
+                          <p className="text-sm font-medium font-firasans mb-1.5">
+                            {billingAddress?.address}
+                          </p>
+                          <p className="text-sm font-medium font-firasans mb-1.5">
+                            {billingAddress?.province} - {billingAddress?.city}{" "}
+                            - {billingAddress?.area} - {billingAddress?.address}
+                          </p>
+                          <p className="text-sm font-medium font-firasans mb-1.5">
+                            (+977) {billingAddress?.mobile}
+                          </p>{" "}
+                        </>
+                      ) : (
+                        <Link
+                          href={"/addressbook"}
+                          className={"text-blue-500 hover:underline"}
+                        >
+                          Add a default address
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>

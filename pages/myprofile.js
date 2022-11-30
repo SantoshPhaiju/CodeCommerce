@@ -11,11 +11,13 @@ const MyProfile = () => {
   const [editProfile, setEditProfile] = useState(false);
   const [userData, setUserData] = useState({});
   // console.log(userData);
-  useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      router.push("/login");
-    }
-  }, []);
+   let token = "";
+   useEffect(() => {
+     if (!localStorage.getItem("token")) {
+       router.push("/login");
+     }
+     token = localStorage.getItem("token");
+   }, []);
 
   const [dob, setDob] = useState("");
 
@@ -45,9 +47,12 @@ useEffect(() =>{
 }, []);
 
 useEffect(() =>{
-  if(editProfile === true){
-    setFormData({name: userData.name, email: userData.email, phone: userData.phone ? userData.phone : "", gender: userData.gender})
-    setDob(userData.dob);
+  if(token){
+
+    if(editProfile === true){
+      setFormData({name: userData.name, email: userData.email, phone: userData.phone ? userData.phone : "", gender: userData.gender})
+      setDob(userData.dob);
+    }
   }
   }, [editProfile])
 

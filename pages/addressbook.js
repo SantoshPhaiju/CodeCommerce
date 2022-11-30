@@ -27,17 +27,22 @@ const AddressBook = () => {
     area: "",
   });
   const [userAddress, setUserAddress] = useState([]);
+  let token = "";
   useEffect(() => {
     if (!localStorage.getItem("token")) {
       router.push("/login");
     }
+    token = localStorage.getItem("token");
   }, []);
 
   useEffect(() => {
-    if (province === "Please choose your province") {
-      setDisableCity(true);
-    } else {
-      setDisableCity(false);
+    if(token){
+
+      if (province === "Please choose your province") {
+        setDisableCity(true);
+      } else {
+        setDisableCity(false);
+      }
     }
   });
 
@@ -74,7 +79,10 @@ const AddressBook = () => {
   };
 
   useEffect(() => {
-    fetchAddress();
+    if(token){
+
+      fetchAddress();
+    }
   }, [openModal]);
 
   const checkboxChange = (e) => {
