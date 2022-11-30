@@ -2,6 +2,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import AccountSideBar from "../components/AccountSideBar";
 
 const MyProfile = () => {
@@ -31,7 +32,7 @@ const MyProfile = () => {
     `${process.env.NEXT_PUBLIC_HOST}/api/fetchuserdata`,
     { data: token }
   );
-  console.log("app",response.data);
+  // console.log("app",response.data);
   if (response.data) {
     setUserData(response.data.user);
   }
@@ -41,11 +42,14 @@ useEffect(() =>{
   if(localStorage.getItem("token")){
     fetchuser();
   }
-    if(editProfile === true){
-      setFormData({name: userData.name, email: userData.email, phone: userData.phone ? userData.phone : "", gender: userData.gender})
-      setDob(userData.dob);
-    }
-  }, [editProfile, formData]);
+}, []);
+
+useEffect(() =>{
+  if(editProfile === true){
+    setFormData({name: userData.name, email: userData.email, phone: userData.phone ? userData.phone : "", gender: userData.gender})
+    setDob(userData.dob);
+  }
+  }, [editProfile])
 
 
   const handleChange = (e) => {
@@ -77,6 +81,7 @@ useEffect(() =>{
     );
     if (response) {
       console.log(response.data);
+      toast.success("Your profile has been successfully updated");
     }
   };
 

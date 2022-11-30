@@ -18,6 +18,7 @@ const handler = async (req, res) => {
         label,
         shippingaddress,
         billingaddress,
+        addressId
       } = req.body.data;
       console.log(req.body.data, `Headers: ${req.headers}`);
       const token = req.headers.token;
@@ -25,14 +26,11 @@ const handler = async (req, res) => {
       // console.log(data);
       const userdata = await User.findById(data.id).select("-password");
 
-      const existsAddress = await AddressBook.find({ userid: userdata._id });
+      const existsAddresses = await AddressBook.find({ userid: userdata._id });
 
-      console.log("exists addressses: " + existsAddress);
-      console.log(existsAddress.length);
-      if (existsAddress) {
-        if(existsAddress.length > 5){
-          return res.status(400).json({success: false, error: "You cannot add more than 5 addresses!"})
-        }
+      console.log("exists addressses: " + existsAddresses);
+      console.log(existsAddresses.length);
+      if (existsAddresses) {
         if (shippingaddress === true) {
           await AddressBook.updateMany(
             { userid: userdata._id },
@@ -61,24 +59,37 @@ const handler = async (req, res) => {
         }
       }
 
-      const useraddress = await AddressBook.create({
-        userid: userdata._id,
-        name,
-        address,
-        mobile,
-        landmark,
-        province,
-        city,
-        area,
-        label,
-        shippingAddress: shippingaddress,
-        billingAddress: billingaddress,
-      });
-      if (useraddress) {
-        res.status(201).json({ success: true, useraddress });
-      } else {
-        res.status(400).json({ success: false, error: "something went worng" });
+      const existsAddress = await AddressBook.findById({ userid: userdata._id, _id: addressId });
+
+      console.log("exists addressses: " + existsAddress);
+      if (existsAddress) {
+        const useraddress = await AddressBook.findByIdAndUpdate(addressId, {
+          name,
+          address,
+          mobile,
+          landmark,
+          province,
+          city,
+          area,
+          label,
+          shippingAddress: shippingaddress,
+          billingAddress: billingaddress,
+        });
+        if (useraddress) {
+          res.status(201).json({ success: true, useraddress });
+        } else {
+          res
+            .status(400)
+            .json({ success: false, error: "something went worng" });
+        }
+      }else{
+         res
+            .status(400)
+            .json({success: false, error: "Please login to make this aciton"})
       }
+
+    
+       
     } catch (error) {
       console.log(error);
       res.status(400).send({ success: false, error });
