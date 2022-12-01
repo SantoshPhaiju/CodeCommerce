@@ -17,7 +17,7 @@ const AccountSideBar = () => {
             Manage My Account
           </h2>
         </Link>
-        <ul className="ml-6 font-ubuntu text-gray-700 text-lg">
+        <ul className="ml-6 font-ubuntu text-gray-700 text-base">
           <Link href={"/myprofile"}>
             <li
               className={`${
@@ -44,7 +44,7 @@ const AccountSideBar = () => {
         <Link href={"/myaccount"}>
           <h2 className="font-rubik text-pink-900 text-xl my-2">My Orders</h2>
         </Link>
-        <ul className="ml-6 font-ubuntu text-gray-700 text-lg">
+        <ul className="ml-6 font-ubuntu text-gray-700 text-base">
           <li>My Returns</li>
           <li>My Cancellations</li>
         </ul>
