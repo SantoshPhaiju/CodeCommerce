@@ -125,8 +125,10 @@ const MyProfile = () => {
     console.log(e.target.id);  
   }
 
+  const resetData = {cupassword: passwordData.cupassword, newpassword: passwordData.newpassword, email: userData.email}
 
-  const handleResetPassword = () =>{
+
+  const handleResetPassword = async () =>{
     console.log("This function is working")
     if(passwordData.cupassword.length === 0){
       return toast.error("Current password field cannot be blank");
@@ -138,7 +140,27 @@ const MyProfile = () => {
       return toast.error("Confirm password field cannot be blank");
     }
 
-    
+    if(passwordData.newpassword !== passwordData.confirmpassword){
+      return toast.error("New password and confirm password donot match");
+
+    }
+
+    try {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_HOST}/api/changepassword`, {data: resetData})
+      console.log(response.data);
+      if(response.data.success === true){
+        setEditPassword(false)
+        toast.success("Password changed successfully");
+        setPasswordData({
+          cupassword: "",
+          newpassword: "",
+          confirmpassword: "",
+        });
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+      return;
+    }
      setEditPassword(false);
   }
 
