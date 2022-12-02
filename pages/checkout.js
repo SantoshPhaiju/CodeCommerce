@@ -13,10 +13,18 @@ import { toast } from "react-toastify";
 import mongoose from "mongoose";
 import Order from "../models/Order";
 
-const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart, order }) => {
+const Checkout = ({
+  cart,
+  subTotal,
+  addToCart,
+  removeFromCart,
+  clearCart,
+  order,
+}) => {
   const router = useRouter();
   const [user, setUser] = useState({});
-  
+  const [userAddress, setUserAddress] = useState({});
+
   // console.log(order);
 
   const { oid, id } = router.query;
@@ -29,45 +37,65 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart, order 
     city: Object.keys(order).length !== 0 ? order.city : "",
     state: Object.keys(order).length !== 0 ? order.state : "",
   });
-  const [pincode, setPincode] = useState(Object.keys(order).length !== 0 ? order.pincode : "");
+  const [pincode, setPincode] = useState(
+    Object.keys(order).length !== 0 ? order.pincode : ""
+  );
   const [disabled, setDisabled] = useState(true);
 
-  
-
-  
-
-  useEffect(() => {
-    const fetchuser = async () => {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST}/api/fetchuserdata`,
-        { data: token }
-      );
-      // console.log(response.data);
-      if (response.data) {
-        // setUser(response.data.user);
-        setOrderData({
-          ...orderData,
-          name: response.data.user.name,
-          email: response.data.user.email,
-        });
+  const fetchAddress = async () => {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_HOST}/api/fetchaddress`,
+      {
+        headers: {
+          token: localStorage.getItem("token"),
+        },
       }
-    };
+    );
+    // console.log("app", response.data);
+    if (response.data.success === true) {
+      setUserAddress(response.data.useraddress);
+      console.log("ordeData", orderData);
+      response.data.useraddress.map((address) => {
+        if (address.shippingAddress === true && oid === undefined) {
+          // do the state change like this if you have to set previous data not then you know the consequences bro
+          setOrderData((orderData) => ({
+            ...orderData,
+            address: address.address,
+            phone: address.mobile,
+          }));
+        }
+      });
+    }
+  };
+
+  const fetchuser = async () => {
+    const token = localStorage.getItem("token");
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_HOST}/api/fetchuserdata`,
+      { data: token }
+    );
+    setUser(response.data.user);
+    if (response.data) {
+      // console.log("response: " , response.data.user)
+      setOrderData({
+        ...orderData,
+        name: response.data.user.name,
+        email: response.data.user.email,
+      });
+    }
+  };
+  useEffect(() => {
     if (!localStorage.getItem("token")) {
       router.push("/login");
     } else {
       fetchuser();
+      fetchAddress();
     }
 
-     if (Object.keys(order).length !== 0) {
-       setDisabled(false);
-     }
-
-    // if(Object.keys(cart).length === 0){
-    //   router.push("/")
-    // }
+    if (Object.keys(order).length !== 0) {
+      setDisabled(false);
+    }
   }, []);
-  // console.log(user);
 
   const orderId = oid || Math.floor(Math.random() * Date.now()); // Order id needs to be changed
 
@@ -146,16 +174,19 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart, order 
       }
     }
     setTimeout(() => {
-      if (
-        orderData.name.length > 3 &&
-        orderData.email.length > 3 &&
-        orderData.address.length > 3 &&
-        pincode.length > 3 &&
-        orderData.phone.length > 9
-      ) {
-        setDisabled(false);
+      if (Object.keys(orderData).length === 0) {
+        if (
+          orderData.name.length > 3 &&
+          orderData.address.length > 3 &&
+          pincode.length > 3 &&
+          orderData.phone.length > 9
+        ) {
+          setDisabled(false);
+        } else {
+          setDisabled(true);
+        }
       } else {
-        setDisabled(true);
+        setDisabled(false);
       }
     }, 200);
   };
@@ -164,7 +195,8 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart, order 
 
   // Order should only be placed after the payment
   // TODO: Needs to populate orders in the database only after the payment is made
-  const orderDetails = { ...orderData, orderId, subTotal, cart, id, pincode};
+  console.log(orderData);
+  const orderDetails = { ...orderData, orderId, subTotal, cart, id, pincode };
   return (
     <div className="container mx-auto max-w-[1200px] px-3 mb-20">
       <h1 className="font-bold text-3xl my-8 text-pink-800 text-center font-roboto">
@@ -398,7 +430,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart, order 
             alt="khalti logo here"
             className="w-14 h-8 -mx-4"
           />
-          <span>Pay Rs.{Object.keys(cart).length !== 0 ? subTotal  : 0}</span>
+          <span>Pay Rs.{Object.keys(cart).length !== 0 ? subTotal : 0}</span>
         </button>
         {!oid && (
           <button
@@ -435,7 +467,6 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart, clearCart, order 
     </div>
   );
 };
-
 
 export async function getServerSideProps(context) {
   if (!mongoose.connections[0].readyState) {
