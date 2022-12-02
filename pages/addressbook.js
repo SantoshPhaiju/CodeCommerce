@@ -17,7 +17,7 @@ const AddressBook = () => {
   const [label, setLabel] = useState("");
   const [shippingaddress, setShippingAddress] = useState(false);
   const [billingaddress, setBillingAddress] = useState(false);
-  const [editModal, setEditModal] = useState(false);
+  const [editModal, setEditModal] = useState("");
   const [addressId, setAddressId] = useState("");
   const [addressDetail, setAddressDetail] = useState({
     name: "",
@@ -36,19 +36,34 @@ const AddressBook = () => {
   }, []);
 
   useEffect(() => {
-    if(token){
-
       if (province === "Please choose your province") {
         setDisableCity(true);
       } else {
         setDisableCity(false);
       }
-    }
-  });
+      console.log(editModal);
+      console.log(openModal)
+
+      if (editModal === false && openModal === true) {
+        setProvince("Please select your province");
+        setCity("Please choose your city or municipality");
+        setLabel("");
+        setShippingAddress(false);
+        setBillingAddress(false);
+        setAddressDetail({
+          name: "",
+          address: "",
+          mobile: "",
+          landmark: "",
+          area: "",
+        });
+      }
+  }, [editModal, openModal]);
 
   const handleChange = (e) => {
     if (e.target.name === "province") {
       setProvince(e.target.value);
+      setDisableCity(false);
     }
 
     if (e.target.name === "city") {
@@ -124,6 +139,18 @@ const AddressBook = () => {
         console.log(response.data);
         fetchAddress();
         toast.success("Address added successfully!");
+        setProvince("Please select your province");
+        setCity("Please choose your city or municipality");
+        setLabel("");
+        setShippingAddress(false);
+        setBillingAddress(false);
+        setAddressDetail({
+          name: "",
+          address: "",
+          mobile: "",
+          landmark: "",
+          area: "",
+        });
       }
     } catch (error) {
       toast.error(error.response.data.error);
@@ -159,23 +186,7 @@ const AddressBook = () => {
       landmark: address.landmark,
       area: address.area,
     })
-    // setTimeout(() => {
-    //   console.log(editModal);
-    //   if(editModal === false){
-    //     setProvince("Please select your province");
-    //     setCity("Please select your city");
-    //     setLabel("");
-    //     setShippingAddress(false);
-    //     setBillingAddress(false);
-    //     setAddressDetail({
-    //       name: "",
-    //       address: "",
-    //       mobile: "",
-    //       landmark: "",
-    //       area: "",
-    //     });
-    //   }
-    //   }, 3000);
+      
     }
 
     const handleEditSave = async (e) =>{
@@ -197,6 +208,18 @@ const AddressBook = () => {
         console.log(response.data);
         fetchAddress();
         toast.success("Address edited successfully!");
+        setProvince("Please select your province");
+        setCity("Please choose your city or municipality");
+        setLabel("");
+        setShippingAddress(false);
+        setBillingAddress(false);
+        setAddressDetail({
+          name: "",
+          address: "",
+          mobile: "",
+          landmark: "",
+          area: "",
+        });
       }
     } catch (error) {
       toast.error(error.response.data.error);
