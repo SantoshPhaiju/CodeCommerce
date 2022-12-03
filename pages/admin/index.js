@@ -1,7 +1,19 @@
 import React from "react";
+import Sidebar from "./components/Sidebar";
 
-const Admin = () => {
-  return <div>This is the admin page here</div>;
+const Index = () => {
+  return (
+    <>
+      <style jsx global>{`
+        footer, nav {
+          display: none;
+        }
+        
+      `}</style>
+      <Sidebar />
+      <div>This is the admin page here</div>
+    </>
+  );
 };
 
-export default Admin;
+export default Index;

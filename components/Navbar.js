@@ -56,7 +56,7 @@ const Navbar = ({
     Object.keys(cart).length !== 0 && sidebar !== true ? setSidebar(true) : setSidebar(false);
   }, [cartLength]);
   return (
-    <>
+    <nav>
       <div
         className={`flex flex-col justify-center items-center gap-2 md:flex-row md:justify-between shadow-lg w-full bg-white sticky top-0 z-20 ${
           sidebar && "overflow-hidden"
@@ -297,7 +297,7 @@ const Navbar = ({
           </div>
         </div>
       </div>
-    </>
+    </nav>
   );
 };
 
