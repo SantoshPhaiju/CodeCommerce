@@ -1,7 +1,7 @@
 import React from 'react'
 import Sidebar from './components/Sidebar';
 
-const AllProducts = () => {
+const addproducts = () => {
   return (
     <div>
       <style jsx global>{`
@@ -11,13 +11,11 @@ const AllProducts = () => {
         }
       `}</style>
       <div className="container h-[100vh] w-[100vw] flex gap-4">
-      <Sidebar />
-      <div className="allproducts">
-        This is the all products page here.
-      </div>
+        <Sidebar />
+        <div className="allproducts">This is the add products page here.</div>
       </div>
     </div>
   );
 }
 
-export default AllProducts
+export default addproducts
