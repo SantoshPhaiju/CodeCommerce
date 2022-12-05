@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import AdminNav from "./components/AdminNav";
 import Sidebar from "./components/Sidebar";
 
 const Index = () => {
+  const [showSideBar, setShowSidebar] = useState(true);
+  const sideBarRef = useRef();
   return (
     <>
       <style jsx global>{`
@@ -11,12 +13,23 @@ const Index = () => {
           display: none;
         }
       `}</style>
-      <Sidebar />
-      <AdminNav />
-      <div className="main pl-[260px] mt-20">
-      <div className="maindiv p-l-[260px] text-black pt-0 mt-10">
-       admin here
-      </div>
+
+      <Sidebar
+        showSideBar={showSideBar}
+        setShowSidebar={setShowSidebar}
+        sideBarRef={sideBarRef}
+      />
+      <AdminNav
+        showSideBar={showSideBar}
+        setShowSidebar={setShowSidebar}
+        sideBarRef={sideBarRef}
+       />
+      <div
+        className={`main pl-0 transition-all duration-300 mt-20 ${
+          showSideBar === false ? "sm:pl-[90px]" : "sm:pl-[260px]"
+        }`}
+      >
+        <div className="maindiv text-black pt-0 mt-10">admin here</div>
       </div>
     </>
   );

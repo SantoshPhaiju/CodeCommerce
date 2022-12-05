@@ -1,23 +1,38 @@
-import React from 'react'
-import Sidebar from './components/Sidebar';
+import React, { useRef, useState } from "react";
+import AdminNav from "./components/AdminNav";
+import Sidebar from "./components/Sidebar";
 
 const AllProducts = () => {
+  const [showSideBar, setShowSidebar] = useState(true);
+  const sideBarRef = useRef();
   return (
-    <div>
+    <>
       <style jsx global>{`
         footer,
         nav {
           display: none;
         }
       `}</style>
-      <div className="container h-[100vh] w-[100vw] flex gap-4">
-      <Sidebar />
-      <div className="allproducts">
-        This is the all products page here.
-      </div>
-      </div>
-    </div>
-  );
-}
 
-export default AllProducts
+      <Sidebar
+        showSideBar={showSideBar}
+        setShowSidebar={setShowSidebar}
+        sideBarRef={sideBarRef}
+      />
+      <AdminNav
+        showSideBar={showSideBar}
+        setShowSidebar={setShowSidebar}
+        sideBarRef={sideBarRef}
+      />
+      <div
+        className={`main pl-0 transition-all duration-300 mt-20 ${
+          showSideBar === false ? "sm:pl-[90px]" : "sm:pl-[260px]"
+        }`}
+      >
+        <div className="maindiv text-black pt-0 mt-10">admin here</div>
+      </div>
+    </>
+  );
+};
+
+export default AllProducts;

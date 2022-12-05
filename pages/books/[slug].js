@@ -178,7 +178,7 @@ const Slug = ({ buyNow, addToCart, product, error }) => {
                 <button
                   className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-3 sm:px-6 focus:outline-none hover:bg-pink-600 rounded font-firasans font-medium"
                   onClick={() => {
-                    if (product.availableQty > 1) {
+                    if (product.availableQty > 0) {
                       addToCart(
                         slug,
                         1,
@@ -212,7 +212,7 @@ const Slug = ({ buyNow, addToCart, product, error }) => {
               <div className="buyNow flex justify-center items-center my-3 md:justify-start">
                 <button
                   onClick={() => {
-                    if (product.availableQty > 1) {
+                    if (product.availableQty > 0) {
                       buyNow(
                         slug,
                         1,
