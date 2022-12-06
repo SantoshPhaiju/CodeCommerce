@@ -1,6 +1,8 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans&family=Roboto+Slab&family=Roboto:wght@700&family=Rubik:wght@500&family=Ubuntu&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

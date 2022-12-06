@@ -13,7 +13,7 @@ const AdminNav = ({showSideBar, setShowSidebar, sideBarRef}) => {
         }`}
       >
         <HiOutlineMenuAlt1
-          className="text-2xl"
+          className="text-2xl cursor-pointer"
           onClick={() => toggleSideBar()}
         />
       </div>
