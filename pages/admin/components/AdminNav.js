@@ -8,14 +8,15 @@ const AdminNav = ({showSideBar, setShowSidebar, sideBarRef}) => {
   return (
     <div>
       <div
-        className={`w-[100%] transition-all duration-300 bg-white py-6 px-4 fixed left-0 shadow-lg ${
+        className={`w-[100%] transition-all duration-300 bg-white py-6 px-4 fixed left-0 shadow-lg flex justify-between ${
           showSideBar === false ? "pl-0 sm:pl-[90px]" : "pl-[260px]"
         }`}
       >
         <HiOutlineMenuAlt1
-          className="text-2xl cursor-pointer"
+          className="text-2xl cursor-pointer ml-4"
           onClick={() => toggleSideBar()}
         />
+        <h1 className="mr-20 font-robotoslab">Hello Admin</h1>
       </div>
     </div>
   );

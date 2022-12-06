@@ -25,7 +25,7 @@ const handler = async (req, res) => {
       }
     }
   }
-  res.status(200).json({ tshirts });
+  res.status(200).json({ products: tshirts });
 };
 
 export default connectToDb(handler);

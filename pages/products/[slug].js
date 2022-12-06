@@ -12,9 +12,9 @@ const Slug = ({ buyNow, addToCart, product, variants, error }) => {
   // console.log(variants[1].color);
   const router = useRouter();
   const { slug } = router.query;
-  
-  if(error === 404){
-    return <Error statusCode={404} />
+
+  if (error === 404) {
+    return <Error statusCode={404} />;
   }
   const [pin, setPin] = useState("");
   const [service, setService] = useState(null);
@@ -22,20 +22,19 @@ const Slug = ({ buyNow, addToCart, product, variants, error }) => {
   const [color, setColor] = useState(product.color);
   const [size, setSize] = useState(product.size);
 
-
   const checkServiceability = async () => {
     let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
     let pinJson = await pins.json();
     console.log(pinJson);
     if (Object.keys(pinJson).includes(pin)) {
       setService(true);
-      toast.success("Your pincode is serviceable")
+      toast.success("Your pincode is serviceable");
       setTimeout(() => {
         setService(null);
       }, 5000);
     } else {
       setService(false);
-      toast.error("Sorry! Your pincode is not serviceable yet!")
+      toast.error("Sorry! Your pincode is not serviceable yet!");
       setTimeout(() => {
         setService(null);
       }, 5000);
@@ -46,21 +45,18 @@ const Slug = ({ buyNow, addToCart, product, variants, error }) => {
     setPin(e.target.value);
   };
 
-
-  
   const refreshVariant = (newColor, newSize) => {
     // console.log("Running refreshVariant function");
     setColor(newColor);
     setSize(newSize);
     // let url = `${process.env.NEXT_PUBLIC_HOST}/products/${variants[newColor][newSize]["slug"]}`;
     // window.location = url;
-    router.push(`/products/${variants[newColor][newSize]['slug']}`);
+    router.push(`/products/${variants[newColor][newSize]["slug"]}`);
     // router.push(url);
     // console.log(variants[newColor][newSize]['slug']);
     console.log(newColor, newSize);
   };
-  
-  
+
   return (
     <>
       <section className="text-gray-600 body-font overflow-hidden">
@@ -424,12 +420,12 @@ export async function getServerSideProps(context) {
   let error;
 
   let product = await Product.findOne({ slug: context.query.slug });
-  if(product === null){
-return {
-  props: {
-   error: 404
-  }, // will be passed to the page component as props
-};
+  if (product === null) {
+    return {
+      props: {
+        error: 404,
+      }, // will be passed to the page component as props
+    };
   }
   let variants = await Product.find({ title: product.title });
 
