@@ -8,6 +8,7 @@ import {
 import React, { useRef, useState } from "react";
 import AdminNav from "./components/AdminNav";
 import Sidebar from "./components/Sidebar";
+import { CgDollar } from "react-icons/cg";
 import {
   LineChart,
   Line,
@@ -17,11 +18,45 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts";
+import { MdShoppingCart } from "react-icons/md";
+import { FaBoxOpen } from "react-icons/fa";
 
 const Index = () => {
   const [showSideBar, setShowSidebar] = useState(true);
   const sideBarRef = useRef();
+
+  const data01 = [
+    {
+      name: "Tshirts",
+      value: 400,
+    },
+    {
+      name: "Books",
+      value: 300,
+    },
+    {
+      name: "Mugs",
+      value: 300,
+    },
+    {
+      name: "Pants",
+      value: 200,
+    },
+    {
+      name: "Hoodies",
+      value: 278,
+    },
+    {
+      name: "Electronics",
+      value: 189,
+    },
+  ];
 
   const data = [
     {
@@ -148,12 +183,49 @@ const Index = () => {
       orders: 20000,
     },
   ];
+
+  function currencyFormat(num) {
+    return "Rs. " + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  }
+
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "black", "purple"];
+
+  const RADIAN = Math.PI / 180;
+  const renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+    index,
+  }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > cx ? "start" : "end"}
+        dominantBaseline="central"
+      >
+        {`${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  };
+
   return (
     <>
       <style jsx global>{`
         footer,
         nav {
           display: none;
+        }
+        body {
+          background: #f7f7f7;
         }
       `}</style>
 
@@ -174,109 +246,239 @@ const Index = () => {
       >
         <div className="maindiv text-black pt-0 mt-10">
           <h1 className="my-4 font-roboto text-2xl text-blue-700">DASHBOARD</h1>
-          <Card
-            sx={{
-              background: "#ffaaff",
-              minWidth: 275,
-              width: 300,
-              height: 200,
-              boxShadow: "2px 2px 6px 2px rgba(0, 0, 0, 0.3)",
-            }}
-          >
-            <CardContent>
-              <Typography
-                sx={{ fontSize: 14 }}
-                color="text.secondary"
-                gutterBottom
-              >
-                Word of the Day
-              </Typography>
-              <Typography variant="h5" component="div"></Typography>
-              <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                adjective
-              </Typography>
-              <Typography variant="body2"></Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small" variant="outlined">
-                Learn More
-              </Button>
-            </CardActions>
-          </Card>
-
-<div className="flex space-x-4">
-
-          <div className="h-[350px] w-[300px] sm:w-[500px] border pr-2 sm:p-4 my-6 shadow-lg bg-purple-50 sm:pb-16 rounded-md">
-            <h2 className="text-center text-xl font-robotoslab">
-              Monthly Sales
-            </h2>
-            <p className="text-right font-firasans text-sm">In units</p>
-            <ResponsiveContainer width="100%" height="100%" className={""}>
-              <LineChart
-                width={500}
-                height={300}
-                data={data}
-                margin={{
-                  top: 10,
-                  right: 30,
-                  left: 0,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="sales"
-                  stroke="#8884d8"
-                  activeDot={{ r: 8 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+          <div className="flex cardContainer gap-4 justify-center items-center flex-wrap">
+            <Card
+              sx={{
+                background: "#ffffff",
+                minWidth: 275,
+                width: 300,
+                height: 100,
+              }}
+              className={"border-none rounded-md"}
+            >
+              <CardContent className="flex justify-start space-x-6 items-center">
+                <div className="border-8 border-green-200 p-4 rounded-full bg-yellow-500">
+                  <CgDollar className="text-xl shadow-lg text-white" />
+                </div>
+                <div className="flex flex-col">
+                  <Typography
+                    sx={{ fontSize: 20 }}
+                    color="text.secondary"
+                    gutterBottom
+                  >
+                    Total Sales
+                  </Typography>
+                  <Typography color="text.secondary">
+                    {currencyFormat(20000)}
+                  </Typography>
+                </div>
+              </CardContent>
+            </Card>
+            <Card
+              sx={{
+                background: "#ffffff",
+                minWidth: 275,
+                width: 300,
+                height: 100,
+              }}
+            >
+              <CardContent className="flex justify-start space-x-6 items-center">
+                <div className="border-8 border-green-200 p-4 rounded-full bg-yellow-500">
+                  <MdShoppingCart className="text-xl shadow-lg text-white" />
+                </div>
+                <div className="flex flex-col">
+                  <Typography
+                    sx={{ fontSize: 20 }}
+                    color="text.secondary"
+                    gutterBottom
+                  >
+                    Total Orders
+                  </Typography>
+                  <Typography color="text.secondary">3023</Typography>
+                </div>
+              </CardContent>
+            </Card>
+            <Card
+              sx={{
+                background: "#ffffff",
+                minWidth: 275,
+                width: 300,
+                height: 100,
+              }}
+            >
+              <CardContent className="flex justify-start space-x-6 items-center">
+                <div className="border-8 border-green-200 p-4 rounded-full bg-yellow-500">
+                  <FaBoxOpen className="text-xl shadow-lg text-white" />
+                </div>
+                <div className="flex flex-col">
+                  <Typography
+                    sx={{ fontSize: 20 }}
+                    color="text.secondary"
+                    gutterBottom
+                  >
+                    Total Products
+                  </Typography>
+                  <Typography color="text.secondary">123</Typography>
+                </div>
+              </CardContent>
+            </Card>
+            <Card
+              sx={{
+                background: "#ffffff",
+                minWidth: 275,
+                width: 300,
+                height: 100,
+              }}
+            >
+              <CardContent className="flex justify-start space-x-6 items-center">
+                <div className="border-8 border-green-200 p-4 rounded-full bg-yellow-500">
+                  <CgDollar className="text-xl shadow-lg text-white" />
+                </div>
+                <div className="flex flex-col">
+                  <Typography
+                    sx={{ fontSize: 20 }}
+                    color="text.secondary"
+                    gutterBottom
+                  >
+                    Total Revenue
+                  </Typography>
+                  <Typography color="text.secondary">
+                    {currencyFormat(34538334)}
+                  </Typography>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
-          <div className="h-[350px] w-[300px] sm:w-[800px] border pr-2 sm:p-4 my-6 shadow-lg   sm:pb-16 rounded-md">
-            <h2 className="text-center text-xl font-robotoslab">
-              Revenue vs Orders
-            </h2>
-            <p className="text-right font-firasans text-sm">In units</p>
-            <ResponsiveContainer width="100%" height="100%" className={""}>
-              <LineChart
-                width={500}
-                height={300}
-                data={salesData}
-                margin={{
-                  top: 10,
-                  right: 30,
-                  left: 0,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="revenue"
-                  stroke="#ff0000"
-                  activeDot={{ r: 8 }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="orders"
-                  stroke="#ff00aa"
-                  activeDot={{ r: 8 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+          <div className="grid grid-cols-12 gap-4 mx-0 lg:mx-8 overflow-y-hidden">
+            <div className="h-[350px] border pr-2 sm:p-4 my-6 shadow-lg bg-slate-50 pb-16 rounded-md col-span-12 lg:col-span-4">
+              <h2 className="text-center text-xl font-robotoslab">
+                Monthly Sales
+              </h2>
+              <p className="text-right font-firasans text-sm">In units</p>
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  width={500}
+                  height={300}
+                  data={data}
+                  margin={{
+                    top: 10,
+                    right: 30,
+                    left: 0,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="sales"
+                    stroke="#8884d8"
+                    activeDot={{ r: 8 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+
+            <div className="h-[350px] border pr-2 sm:p-4 my-6 shadow-lg bg-slate-50 pb-16 rounded-md col-span-12 lg:col-span-8">
+              <h2 className="text-center text-xl font-robotoslab">
+                Revenue vs Orders
+              </h2>
+              <p className="text-right font-firasans text-sm">In units</p>
+              <ResponsiveContainer width="100%" height="100%" className={""}>
+                <LineChart
+                  width={500}
+                  height={300}
+                  data={salesData}
+                  margin={{
+                    top: 10,
+                    right: 30,
+                    left: 0,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="revenue"
+                    stroke="#ff0000"
+                    activeDot={{ r: 8 }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="orders"
+                    stroke="#ff00aa"
+                    activeDot={{ r: 8 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+          <div className="grid grid-cols-12 sm:gap-4 mx-0 lg:mx-8 overflow-y-hidden">
+            <div className="salesStatistics h-[300px] py-6 my-5 bg-white border shadow-lg pb-10 col-span-12 lg:col-span-8">
+              <h2 className="my-3 text-left ml-4 text-xl font-robotoslab">
+                Sales Statistics
+              </h2>
+              <ResponsiveContainer width="100%" height="90%">
+                <BarChart
+                  width={500}
+                  height={300}
+                  data={salesData}
+                  margin={{
+                    top: 10,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="revenue" fill="#8884fa" />
+                  <Bar dataKey="orders" fill="#d3deed" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+
+            <div className="col-span-12 my-4 lg:col-span-4 border h-[300px] shadow-lg bg-white">
+              <h2 className="font-firasans text-xl text-center my-2">
+                Highest Selling Products
+              </h2>
+              <ResponsiveContainer>
+                <PieChart width={"100%"} height={"100%"}>
+                  <Legend verticalAlign="top" height={36} />
+                  <Tooltip />
+                  <Pie
+                    data={data01}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="40%"
+                    outerRadius={50}
+                    fill="#8884d8"
+                    label
+                  >
+                    {data01.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </div>
-</div>
       </div>
     </>
   );
