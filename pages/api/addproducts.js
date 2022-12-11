@@ -1,11 +1,12 @@
 import connectToDb from "../../middleware/db";
 import Product from "../../models/Product";
 
-const handler = async(req, res)=> {
+const handler = async (req, res) => {
   if (req.method === "POST") {
     // console.log(req.body);
+    let p;
     for (let i = 0; i < req.body.length; i++) {
-      let p = new Product({
+      p = new Product({
         title: req.body[i].title,
         slug: req.body[i].slug,
         desc: req.body[i].desc,
@@ -18,10 +19,10 @@ const handler = async(req, res)=> {
       });
       await p.save();
     }
-    res.status(200).json({ success: true });
+    res.status(200).json({ success: true, product: p });
   } else {
     res.status(400).json({ error: "Internal Server Error" });
   }
-}
+};
 
 export default connectToDb(handler);
