@@ -3,11 +3,13 @@ import Product from "../../models/Product";
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
-    // console.log(req.body);
-    for (let i = 0; i < req.body.length; i++) {
-      let p = await Product.findByIdAndUpdate(req.body[i]._id, req.body[i]);
+    console.log(req.body.data);
+    let p;
+    for (let i = 0; i < req.body.data.length; i++) {
+      p = await Product.findByIdAndUpdate(req.body.data[i]._id, req.body.data[i], {new: true});
     }
-    res.status(200).json({ success: true });
+    let slug = p.slug;
+    res.status(200).json({ success: true, result: p, slug});
   } else {
     res.status(400).json({ error: "Internal Server Error" });
   }
