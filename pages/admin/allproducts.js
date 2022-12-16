@@ -9,24 +9,12 @@ import { fetchProducts } from "../../slices/productSlice";
 import Spinner from "../../components/Spinner";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box } from "@mui/system";
-import {
-  Avatar,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  MenuItem,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Avatar } from "@mui/material";
 import { Save } from "@mui/icons-material";
 import UserActions from "./components/UserActions";
 
 const AllProducts = () => {
   const [showSideBar, setShowSidebar] = useState(true);
-  const [editable, setEditable] = useState(false);
   const [rows, setRows] = useState([]);
   const [rowId, setRowId] = useState(null);
   // const [products, setProducts] = useState({});
@@ -34,38 +22,19 @@ const AllProducts = () => {
   const status = useSelector((state) => state.products.status);
   const sideBarRef = useRef();
   const dispatch = useDispatch();
-  const [rowData, setRowData] = useState(null);
-  const [editedData, setEditedData] = useState({
-    title: "",
-    desc: "",
-    category: "",
-    price: "",
-    availabeQty: "",
-  });
-
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setEditable(false);
-    setOpen(false);
-  };
 
   const columns = [
     {
       field: "title",
       headerName: "Title",
       width: 300,
-      editable: false,
+      editable: true,
     },
     {
       field: "desc",
       headerName: "Description",
       width: 400,
-      editable: false,
+      editable: true,
     },
     {
       field: "img",
@@ -80,19 +49,19 @@ const AllProducts = () => {
       field: "category",
       headerName: "Category",
       width: 200,
-      editable: false,
+      editable: true,
     },
     {
       field: "price",
       headerName: "Price",
       width: 100,
-      editable: false,
+      editable: true,
     },
     {
       field: "availableQty",
       headerName: "Availabe Qty",
       width: 100,
-      editable: false,
+      editable: true,
     },
     {
       field: "action",
@@ -113,14 +82,6 @@ const AllProducts = () => {
     });
     setRows(productRow);
   }, [products]);
-
-  const capitalize = (str) =>{
-    return str.toUpperCase();
-  }
-
-  const handleImage = (e) =>{
-    console.log(e.target.files);
-  }
 
   return (
     <>
@@ -155,15 +116,6 @@ const AllProducts = () => {
               Total Products: {Object.keys(products).length}
             </span>
           </div>
-          <Button
-            variant="outlined"
-            color={"primary"}
-            sx={{ ml: 6 }}
-            disabled={editable === true ? false : true}
-            onClick={handleClickOpen}
-          >
-            Edit
-          </Button>
           <div className="productContainer flex flex-wrap gap-6 my-10 justify-center mx-12">
             {/* {products &&
               status === "succeded" &&
@@ -203,126 +155,6 @@ const AllProducts = () => {
                 );
               })} */}
 
-            {rowData && (
-              <Dialog
-                open={open}
-                onClose={handleClose}
-                fullWidth={true}
-                maxWidth="md"
-              >
-                <DialogTitle>Update Product</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    <Typography
-                      variant="h4"
-                      component={"div"}
-                      sx={{ color: "blue" }}
-                    >
-                      {capitalize(rowData?.title)}
-                    </Typography>
-                  </DialogContentText>
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="title"
-                    label="Title of the product"
-                    type="text"
-                    fullWidth
-                    variant="outlined"
-                    value={rowData.title}
-                  />
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="desc"
-                    label="Description of the product"
-                    type="text"
-                    fullWidth
-                    variant="outlined"
-                    multiline
-                    rows={3}
-                    value={rowData.desc}
-                  />
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="category"
-                    label="Category of the product"
-                    type="text"
-                    fullWidth
-                    variant="outlined"
-                    value={rowData.category}
-                  />
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="price"
-                    label="Price"
-                    type="number"
-                    fullWidth
-                    variant="outlined"
-                    value={rowData.price}
-                  />
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="availabeQty"
-                    label="AvailableQty"
-                    type="number"
-                    fullWidth
-                    variant="outlined"
-                    value={rowData.availableQty}
-                  />
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="size"
-                    label="Size"
-                    select
-                    fullWidth
-                    variant="outlined"
-                    defaultValue={rowData.size}
-                  >
-                    <MenuItem value={"S"}>S</MenuItem>
-                    <MenuItem value={"M"}>M</MenuItem>
-                    <MenuItem value={"L"}>L</MenuItem>
-                    <MenuItem value={"XL"}>XL</MenuItem>
-                    <MenuItem value={"XXL"}>XXL</MenuItem>
-                  </TextField>
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="color"
-                    label="Color"
-                    type="text"
-                    fullWidth
-                    variant="outlined"
-                    value={rowData.color}
-                  />
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="slug"
-                    label="Slug"
-                    type="text"
-                    fullWidth
-                    variant="outlined"
-                    value={rowData.slug}
-                  />
-
-                  <Button variant="contained" component="label">
-                      Change the image
-                    <input hidden accept="image/*" multiple type="file" onChange={handleImage} />
-                  </Button>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose}>Cancel</Button>
-                  <Button variant="outlined" onClick={handleClose}>
-                    Save
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            )}
             {status === "loading" && <Spinner />}
             {status === "idle" && <Spinner />}
 
@@ -333,13 +165,10 @@ const AllProducts = () => {
                   columns={columns}
                   pageSize={10}
                   rowsPerPageOptions={[10]}
-                  // checkboxSelection
+                  checkboxSelection
                   getRowId={(row) => row._id}
-                  disableSelectionOnClick={true}
-                  onRowClick={(item) => {
-                    setRowData(item.row);
-                    setEditable(true);
-                  }}
+                  disableSelectionOnClick
+                  onCellEditCommit={params => setRowId(params.id)}
                 />
               )}
             </Box>
