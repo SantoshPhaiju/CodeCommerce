@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint"
   },
@@ -28,6 +28,7 @@
     "khalti-checkout-web": "^2.2.0",
     "mongoose": "^6.7.1",
     "mongoose-unique-validator": "^3.1.0",
+    "multer": "^1.4.5-lts.1",
     "next": "^13.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

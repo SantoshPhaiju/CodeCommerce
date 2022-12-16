@@ -4,6 +4,7 @@ import Product from "../../models/Product";
 const handler = async (req, res) => {
   if (req.method === "POST") {
     console.log(req.body);
+    console.log(req.file);
     let p;
     for (let i = 0; i < req.body.length; i++) {
       p = new Product({

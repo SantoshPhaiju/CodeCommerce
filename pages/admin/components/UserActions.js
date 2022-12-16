@@ -1,6 +1,6 @@
 import { Check, Save } from "@mui/icons-material";
 import { CircularProgress, Fab } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts, updateProduct } from "../../../slices/productSlice";

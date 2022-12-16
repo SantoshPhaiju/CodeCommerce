@@ -2,27 +2,13 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import AdminNav from "./components/AdminNav";
 import Sidebar from "./components/Sidebar";
-import { BiEditAlt } from "react-icons/bi";
-import { AiOutlineDelete } from "react-icons/ai";
-import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../slices/productSlice";
 import Spinner from "../../components/Spinner";
 import { DataGrid } from "@mui/x-data-grid";
-import { Box } from "@mui/system";
-import {
-  Avatar,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  MenuItem,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { Save } from "@mui/icons-material";
+import Box from "@mui/material/Box";
 import UserActions from "./components/UserActions";
+import { useDispatch, useSelector } from "react-redux";
+import { Avatar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem, TextField, Typography } from "@mui/material";
 
 const AllProducts = () => {
   const [showSideBar, setShowSidebar] = useState(true);
@@ -221,6 +207,8 @@ const AllProducts = () => {
                       {capitalize(rowData?.title)}
                     </Typography>
                   </DialogContentText>
+
+                  <img src={rowData.img} width={"500px"} height={"500px"} className={"mx-auto"} alt="" />
                   <TextField
                     autoFocus
                     margin="dense"
