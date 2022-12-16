@@ -274,7 +274,6 @@ const Slug = ({ buyNow, addToCart, product, variants, error }) => {
                           color === "red" ? "border-black" : "border-gray-300"
                         }`}
                       ></button>
-
                     )}
                 </div>
                 <div className="flex ml-6 items-center">
