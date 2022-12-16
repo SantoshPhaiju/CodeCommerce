@@ -16,9 +16,7 @@ const AdminNav = ({ showSideBar, setShowSidebar }) => {
           className="text-2xl cursor-pointer ml-4"
           onClick={() => toggleSideBar()}
         />
-        <h1 className={`mr-0 sm:mr-20 font-robotoslab hidden sm:block`}>
-          Hello Admin
-        </h1>
+        <h1 className="mr-20 font-robotoslab">Hello Admin</h1>
       </div>
     </div>
   );
