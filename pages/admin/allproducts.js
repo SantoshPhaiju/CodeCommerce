@@ -10,45 +10,51 @@ import Spinner from "../../components/Spinner";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box } from "@mui/system";
 import { Avatar } from "@mui/material";
-import { Save } from "@mui/icons-material";
-import UserActions from "./components/UserActions";
 
 const AllProducts = () => {
   const [showSideBar, setShowSidebar] = useState(true);
-  const [rows, setRows] = useState([]);
-  const [rowId, setRowId] = useState(null);
+  const [rows, setRows] = useState([])
   // const [products, setProducts] = useState({});
   const products = useSelector((state) => state.products.products);
   const status = useSelector((state) => state.products.status);
   const sideBarRef = useRef();
   const dispatch = useDispatch();
 
+  // const fetchAllProducts = async () => {
+  //   const response = await axios.get(
+  //     `${process.env.NEXT_PUBLIC_HOST}/api/getproducts`
+  //   );
+  //   console.log(response.data);
+  //   setProducts(response.data.products);
+  //   setTimeout(() => {
+  //     console.log(products);
+  //   }, 3000);
+  // };
+
   const columns = [
     {
       field: "title",
       headerName: "Title",
-      width: 300,
+      width: 250,
       editable: true,
     },
     {
       field: "desc",
       headerName: "Description",
-      width: 400,
+      width: 300,
       editable: true,
     },
     {
       field: "img",
       headerName: "Image",
       renderCell: (params) => <Avatar src={params.row.img} />,
-      sortable: false,
-      filterable: false,
-      width: 100,
+      width: 80,
       editable: false,
     },
     {
       field: "category",
       headerName: "Category",
-      width: 200,
+      width: 100,
       editable: true,
     },
     {
@@ -63,25 +69,69 @@ const AllProducts = () => {
       width: 100,
       editable: true,
     },
-    {
-      field: "action",
-      headerName: "Action",
-      width: 100,
-      renderCell: (params) => <UserActions {...{ params, rowId, setRowId }} />,
-    },
   ];
+
+  // const rows = [
+  //   { id: 1, title: "Snow", desc: "Jon", img: 35 },
+  //   { id: 2, lastName: "Snow", firstName: "Jon", age: 35 },
+  // ];
+
+  // const columns = [
+  //   { field: "id", headerName: "ID", width: 90 },
+  //   {
+  //     field: "firstName",
+  //     headerName: "First name",
+  //     width: 150,
+  //     editable: true,
+  //   },
+  //   {
+  //     field: "lastName",
+  //     headerName: "Last name",
+  //     width: 150,
+  //     editable: true,
+  //   },
+  //   {
+  //     field: "age",
+  //     headerName: "Age",
+  //     type: "number",
+  //     width: 110,
+  //     editable: true,
+  //   },
+  //   {
+  //     field: "fullName",
+  //     headerName: "Full name",
+  //     description: "This column has a value getter and is not sortable.",
+  //     sortable: false,
+  //     width: 160,
+  //     valueGetter: (params) =>
+  //       `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+  //   },
+  // ];
+
+  // const rows = [
+  //   { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
+  //   { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
+  //   { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
+  //   { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
+  //   { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
+  //   { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
+  //   { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
+  //   { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
+  //   { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
+  // ];
 
   useEffect(() => {
     dispatch(fetchProducts());
+    
   }, []);
 
-  useEffect(() => {
+  useEffect(() =>{
     let productRow = [];
     Object.keys(products).forEach((product) => {
       productRow.push(products[product]);
     });
-    setRows(productRow);
-  }, [products]);
+    setRows(productRow)
+  }, [products])
 
   return (
     <>
@@ -117,7 +167,7 @@ const AllProducts = () => {
             </span>
           </div>
           <div className="productContainer flex flex-wrap gap-6 my-10 justify-center mx-12">
-            {/* {products &&
+            {products &&
               status === "succeded" &&
               Object.keys(products).map((product, index) => {
                 return (
@@ -153,10 +203,9 @@ const AllProducts = () => {
                     </div>
                   </div>
                 );
-              })} */}
+              })}
 
-            {status === "loading" && <Spinner />}
-            {status === "idle" && <Spinner />}
+            {status === "loading" || (status === "idle" && <Spinner />)}
 
             <Box sx={{ height: 400, width: "100%" }}>
               {rows.length > 0 && (
@@ -168,7 +217,7 @@ const AllProducts = () => {
                   checkboxSelection
                   getRowId={(row) => row._id}
                   disableSelectionOnClick
-                  onCellEditCommit={params => setRowId(params.id)}
+                  experimentalFeatures={{ newEditingApi: true }}
                 />
               )}
             </Box>

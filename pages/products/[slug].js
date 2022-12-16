@@ -415,7 +415,7 @@ const Slug = ({ buyNow, addToCart, product, variants, error }) => {
 
 export async function getServerSideProps(context) {
   if (!mongoose.connections[0].readyState) {
-    mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(process.env.MONGO_URI);
   }
   let error;
 
