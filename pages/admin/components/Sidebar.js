@@ -4,10 +4,6 @@ import React from "react";
 import { AiOutlineHome } from "react-icons/ai";
 import { RiEyeLine } from "react-icons/ri";
 import { RiUserLine } from "react-icons/ri";
-<<<<<<< HEAD
-import { MdDashboard } from 'react-icons/md'
-=======
->>>>>>> d11d37e5aac308441d2977ce769ed3b9dd8af6c0
 import { HiOutlineTemplate, HiOutlinePlusCircle } from "react-icons/hi";
 
 const Sidebar = ({ showSideBar, setShowSidebar, sideBarRef }) => {
