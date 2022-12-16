@@ -5,7 +5,6 @@ import { AiOutlineHome } from "react-icons/ai";
 // import { CiBoxList } from "react-icons/ci";
 import { RiEyeLine } from "react-icons/ri";
 import { RiUserLine } from "react-icons/ri";
-import {MdDashboard} from 'react-icons/md'
 import { HiOutlineTemplate, HiOutlinePlusCircle } from "react-icons/hi";
 
 const Sidebar = ({ showSideBar, setShowSidebar, sideBarRef }) => {
@@ -44,7 +43,7 @@ const Sidebar = ({ showSideBar, setShowSidebar, sideBarRef }) => {
                     : "text-slate-600"
                 }`}
               >
-                <MdDashboard />
+                <AiOutlineHome />
                 <span>Dashboard</span>
               </li>
             ) : (
