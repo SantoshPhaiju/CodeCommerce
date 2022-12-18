@@ -6,7 +6,9 @@ import Navbar from "../components/Navbar";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingBar from "react-top-loading-bar";
 import "../styles/globals.css";
-import axios from 'axios'
+import axios from "axios";
+import { store } from "../store";
+import { Provider } from "react-redux";
 
 function MyApp({ Component, pageProps }) {
   const [cart, setCart] = useState({});
@@ -116,52 +118,54 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
-      <LoadingBar
-        // color="#000"
-        color="#ec4899"
-        progress={progress}
-        waitingTime={400}
-        onLoaderFinished={() => setProgress(0)}
-      />
-      <Navbar
-        addToCart={addToCart}
-        cart={cart}
-        removeFromCart={removeFromCart}
-        clearCart={clearCart}
-        subTotal={subTotal}
-        cartLength={cartLength}
-        loggedIn={loggedIn}
-        logout={logout}
-        userData={userData}
-      />
-      <div className="min-h-[40vh] overflow-x-hidden">
-        <Component
-          buyNow={buyNow}
+      <Provider store={store}>
+        <LoadingBar
+          // color="#000"
+          color="#ec4899"
+          progress={progress}
+          waitingTime={400}
+          onLoaderFinished={() => setProgress(0)}
+        />
+        <Navbar
           addToCart={addToCart}
           cart={cart}
           removeFromCart={removeFromCart}
           clearCart={clearCart}
-          cartLength={cartLength}
           subTotal={subTotal}
+          cartLength={cartLength}
           loggedIn={loggedIn}
+          logout={logout}
           userData={userData}
-          {...pageProps}
         />
+        <div className="min-h-[40vh] overflow-x-hidden">
+          <Component
+            buyNow={buyNow}
+            addToCart={addToCart}
+            cart={cart}
+            removeFromCart={removeFromCart}
+            clearCart={clearCart}
+            cartLength={cartLength}
+            subTotal={subTotal}
+            loggedIn={loggedIn}
+            userData={userData}
+            {...pageProps}
+          />
 
-        <ToastContainer
-          position="bottom-left"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-      </div>
-      <Footer />
+          <ToastContainer
+            position="bottom-left"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+        </div>
+        <Footer />
+      </Provider>
     </>
   );
 }

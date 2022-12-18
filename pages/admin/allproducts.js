@@ -4,26 +4,20 @@ import AdminNav from "./components/AdminNav";
 import Sidebar from "./components/Sidebar";
 import {BiEditAlt} from 'react-icons/bi'
 import {AiOutlineDelete} from 'react-icons/ai'
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "../slices/productSlice";
 
 const AllProducts = () => {
   const [showSideBar, setShowSidebar] = useState(true);
-  const [products, setProducts] = useState({});
+  // const [products, setProducts] = useState({});
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.product.products);
   const sideBarRef = useRef();
 
-  const fetchAllProducts = async () => {
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_HOST}/api/getproducts`
-    );
-    console.log(response.data);
-    setProducts(response.data.products);
-    setTimeout(() => {
-      console.log(products);
-    }, 3000);
-  };
-
   useEffect(() => {
-    fetchAllProducts();
+    dispatch(fetchProducts());
   }, []);
+  // console.log(products)
 
   return (
     <>
@@ -54,31 +48,31 @@ const AllProducts = () => {
           <h1 className="font-roboto text-2xl my-4 mx-4 text-blue-800">
             All Products
           </h1>
-          <span className="text-lg font-robotoslab mt-0 sm:mt-4 ml-4 sm:ml-0">Total Products: {Object.keys(products).length}</span>
+          <span className="text-lg font-robotoslab mt-0 sm:mt-4 ml-4 sm:ml-0">Total Products: {products?.length}</span>
           </div>
           <div className="productContainer flex flex-wrap gap-6 my-10 justify-center mx-12">
-            {products &&
-              Object.keys(products).map((product, index) => {
+            {products.length !== 0 &&
+              products.map((product, index) => {
                 return (
                   <div className="product w-[300px] mt-4 border" key={index}>
                     <img
-                      src={products[product].img}
-                      width={300}
-                      className="object-top object-contain w-full h-[40vh] block mx-auto"
-                      height={400}
+                      src={product.img}
+                      width={400}
+                      className="object-top object-contain w-full h-[35vh] block mx-auto"
+                      height={500}
                       alt="This is the image here"
                     />
                     <hr />
                     <div className="ml-4 font-firasans mt-2">
-                      {products[product].category}
+                      {product.category}
                     </div>
                     <div className="content flex justify-center items-center h-[50px]">
                       <h2 className="text-xl font-firasans px-4 py-1 text-center">
-                        {products[product].title}
+                        {product.title}
                       </h2>
                     </div>
                       <h2 className="text-xl font-firasans px-4 py-1 text-left">
-                        AvailableQty: {products[product].availableQty}
+                        AvailableQty: {product.availableQty}
                       </h2>
                     <div className="buttons flex space-x-5 my-3 justify-center">
                       <button className="bg-pink-700 text-white py-2 px-8 rounded-sm shadow-lg cursor-pointer font-firasans hover:bg-pink-900 flex justify-center items-center space-x-2">
