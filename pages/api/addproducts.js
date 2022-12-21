@@ -1,5 +1,5 @@
 // import connectToDb from "../../middleware/db";
-// import Product from "../../models/Product";
+import Product from "../../models/Product";
 
 // // import multer from "multer";
 
@@ -46,36 +46,54 @@
 
 // export default connectToDb(handler);
 
-
-import nextConnect from 'next-connect';
-import multer from 'multer';
-import connectToDb from '../../middleware/db';
+import nextConnect from "next-connect";
+import multer from "multer";
+import path from "path";
 
 const upload = multer({
   storage: multer.diskStorage({
-    destination: './public/uploads',
+    destination: "./public/uploads",
     filename: (req, file, cb) => {
-      // console.log(req, file);
-      cb(null, file.originalname)
-    }
+      // console.log(req.files);
+      // console.log("files " + file);
+      cb(
+        null,
+        req.file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+      );
+    },
   }),
 });
 
 const apiRoute = nextConnect({
   onError(error, req, res) {
-    res.status(501).json({ error: `Sorry something Happened! ${error.message}` });
+    res
+      .status(501)
+      .json({ error: `Sorry something Happened! ${error.message}` });
   },
   onNoMatch(req, res) {
     res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
   },
 });
 
-apiRoute.use(upload.array('img'));
-apiRoute.use(connectToDb);
+apiRoute.use(upload.array("img"));
+// apiRoute.use(connectToDb);
 
-apiRoute.post((req, res) => {
-  console.log(req.body);
-  res.status(200).json({ data: 'success' });
+apiRoute.post(async (req, res) => {
+  const products = await Product.find();
+  console.log(req.files);
+  let p = new Product({
+    title: req.body.title,
+    slug: req.body.slug,
+    desc: req.body.desc,
+    img: `${process.env.NEXT_PUBLIC_HOST}/uploads/${req.files[0].filename}`,
+    category: req.body.category,
+    size: req.body.size,
+    color: req.body.color,
+    price: req.body.price,
+    availableQty: req.body.availableQty,
+  });
+  await p.save();
+  res.status(200).json({ data: "success", products });
 });
 
 export default apiRoute;
