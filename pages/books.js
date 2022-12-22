@@ -5,7 +5,7 @@ import Product from "../models/Product";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 
 const Books = ({ books, buyNow }) => {
-  // console.log(books);
+  console.log(books);
   return (
     <div>
       <h2 className="text-center mt-10 font-firasans text-3xl -mb-10 text-purple-900/75 font-semibold">
@@ -34,7 +34,7 @@ const Books = ({ books, buyNow }) => {
                     <img
                       alt="ecommerce"
                       className="object-top object-contain w-full h-[40vh] block mx-auto"
-                      src={books[product].img}
+                      src={books[product].img[0]}
                       width={300}
                       height={400}
                     />
@@ -98,7 +98,7 @@ const Books = ({ books, buyNow }) => {
 
 export async function getServerSideProps(context) {
   if (!mongoose.connections[0].readyState) {
-    await mongoose.connect(process.env.MONGO_URI);
+    mongoose.connect(process.env.MONGO_URI);
   }
 
   let products = await Product.find({ category: "books" });

@@ -5,7 +5,7 @@ import Sidebar from "./components/Sidebar";
 import {BiEditAlt} from 'react-icons/bi'
 import {AiOutlineDelete} from 'react-icons/ai'
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts } from "../slices/productSlice";
+import { deleteProduct, fetchProducts } from "../slices/productSlice";
 
 const AllProducts = () => {
   const [showSideBar, setShowSidebar] = useState(true);
@@ -18,6 +18,9 @@ const AllProducts = () => {
     dispatch(fetchProducts());
   }, []);
   // console.log(products)
+  const handleDelete = (id) =>{
+    dispatch(deleteProduct(id));
+  }
 
   return (
     <>
@@ -56,7 +59,7 @@ const AllProducts = () => {
                 return (
                   <div className="product w-[300px] mt-4 border" key={index}>
                     <img
-                      src={product.img}
+                      src={product?.img[0]}
                       width={400}
                       className="object-top object-contain w-full h-[35vh] block mx-auto"
                       height={500}
@@ -79,7 +82,7 @@ const AllProducts = () => {
                         <BiEditAlt />
                         <span>Edit</span>
                       </button>
-                      <button className="bg-orange-500 text-white py-2 px-8 rounded-sm shadow-lg cursor-pointer font-firasans hover:bg-orange-700 flex justify-center items-center space-x-2">
+                      <button className="bg-orange-500 text-white py-2 px-8 rounded-sm shadow-lg cursor-pointer font-firasans hover:bg-orange-700 flex justify-center items-center space-x-2" onClick={() => handleDelete(product._id)}>
                         <AiOutlineDelete />
                         <span>Delete</span>
                       </button>

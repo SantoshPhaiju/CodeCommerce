@@ -45,7 +45,7 @@ const AddProducts = () => {
       setSelectedImage(imgUrl);
       // setSelectedImage(URL.createObjectURL(e.target.files[0]));
       // setFile(files);
-      setFile(e.target.files[0]);
+      setFile(e.target.files);
       // console.log(selectedImage);
     }else{
       alert("You cannot upload more than 5 images");
@@ -57,7 +57,9 @@ const AddProducts = () => {
     if (!file) return;
     const formdata = new FormData();
     console.log(file);
-    formdata.append("img", file);
+    Object.values(file).forEach((file) => {
+      formdata.append("img", file);
+    });
     formdata.append("title", data.title);
     formdata.append("desc", data.desc);
     formdata.append("slug", data.slug);
@@ -169,7 +171,7 @@ const AddProducts = () => {
                   />
                 </label>
               </div>
-              <div className="border-2 flex justify-start gap-2 flex-wrap px-4">
+              <div className={`${selectedImage.length !== 0 && "border-2"} flex justify-start gap-2 flex-wrap px-4`}>
                 {selectedImage &&
                   selectedImage.map((image, index) => {
                     // console.log("image: ", selectedImage);
@@ -236,8 +238,8 @@ const AddProducts = () => {
                 <select
                   name="size"
                   id="size"
-                  className="w-full border-2 rounded-md text-lg py-2 px-4 outline-pink-500 border-blue-700"
-                  defaultValue={"Select size"}
+                  className="w-full border-2 cursor-pointer rounded-md text-lg py-2 px-4 outline-pink-500 border-blue-700"
+                  // defaultValue={"Select size"}
                   value={data.size}
                   onChange={handleChange}
                 >
@@ -259,8 +261,8 @@ const AddProducts = () => {
                 <select
                   name="category"
                   id="category"
-                  className="w-full border-2 text-lg py-2 rounded-md px-4 outline-pink-500 border-blue-700"
-                  defaultValue={"Select one category"}
+                  className="w-full border-2 text-lg py-2 cursor-pointer rounded-md px-4 outline-pink-500 border-blue-700"
+                  // defaultValue={"Select one category"}
                   value={data.category}
                   onChange={handleChange}
                 >
@@ -268,7 +270,7 @@ const AddProducts = () => {
                     Select one category
                   </option>
                   <option value="tshirt">Tshrit</option>
-                  <option value="book">Book</option>
+                  <option value="books">Book</option>
                   <option value="hoodie">Hoodie</option>
                   <option value="mugs">Mugs</option>
                 </select>

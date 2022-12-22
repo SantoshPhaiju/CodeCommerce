@@ -9,7 +9,9 @@ import Error from "next/error";
 
 const Slug = ({ buyNow, addToCart, product, error }) => {
   // console.log(product, variants);
+  console.log(product);
   // console.log(variants[1].color);
+  const [selectImage, setSelectImage] = useState(product.img[0]);
   const router = useRouter();
   const { slug } = router.query;
   if (error === 404) {
@@ -41,17 +43,40 @@ const Slug = ({ buyNow, addToCart, product, error }) => {
     setPin(e.target.value);
   };
 
-  
-
   return (
     <>
       <section className="text-gray-600 body-font overflow-hidden">
-        <div className="container px-5 py-24 mx-auto">
+        <div className="container px-5 py-24 mx-auto flex flex-wrap ">
+          <div className="images flex flex-wrap flex-row lg:flex-col gap-4 lg:space-y-2 justify-center lg:justify-start lg:w-[150px] w-[100%] h-auto mb-5 lg:mb-0">
+            {product.img.map((image, index) => {
+              return (
+                <div
+                  className={` transition-all duration-300 h-[100px] w-[150px] lg:w-full rounded border-gray-300 overflow-hidden cursor-pointer hover:shadow-lg hover:shadow-green-600/80 hover:border hover:border-black hover:scale-110 ${
+                    selectImage === image ?
+                    "border shadow-lg shadow-green-600/80 border-black scale-110": "border-2"
+                  }`}
+                >
+                  <img
+                    alt="ecommerce"
+                    key={index}
+                    className={`w-full h-full object-contain`}
+                    src={image}
+                    onClick={(e) => {
+                      setSelectImage(e.target.src);
+                    }}
+                    onMouseEnter={(e) => {
+                      setSelectImage(e.target.src);
+                    }}
+                  />
+                </div>
+              );
+            })}
+          </div>
           <div className="lg:w-4/5 mx-auto flex flex-wrap relative">
             <img
               alt="ecommerce"
-              className="lg:w-4/12 w-full h-[400px] object-contain object-top rounded"
-              src={product.img}
+              className="w-full h-[400px] object-contain object-top rounded"
+              src={selectImage}
               width={800}
               height={100}
             />
@@ -270,22 +295,22 @@ const Slug = ({ buyNow, addToCart, product, error }) => {
 
 export async function getServerSideProps(context) {
   if (!mongoose.connections[0].readyState) {
-    await mongoose.connect(process.env.MONGO_URI);
+    mongoose.connect(process.env.MONGO_URI);
   }
   let error;
 
   let product = await Product.findOne({ slug: context.query.slug });
-  if(product === null){
+  if (product === null) {
     return {
       props: {
-        error :404
+        error: 404,
       }, // will be passed to the page component as props
     };
   }
 
   return {
     props: {
-      product: JSON.parse(JSON.stringify(product))
+      product: JSON.parse(JSON.stringify(product)),
     }, // will be passed to the page component as props
   };
 }

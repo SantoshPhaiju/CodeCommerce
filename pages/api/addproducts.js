@@ -54,11 +54,11 @@ const upload = multer({
   storage: multer.diskStorage({
     destination: "./public/uploads",
     filename: (req, file, cb) => {
-      // console.log(req.files);
+      console.log(req.files);
       // console.log("files " + file);
       cb(
         null,
-        req.file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+        req.files[0].fieldname + "_" + Date.now() + path.extname(file.originalname)
       );
     },
   }),
@@ -75,17 +75,21 @@ const apiRoute = nextConnect({
   },
 });
 
-apiRoute.use(upload.array("img"));
+apiRoute.use(upload.array("img", 5));
 // apiRoute.use(connectToDb);
 
 apiRoute.post(async (req, res) => {
   const products = await Product.find();
   console.log(req.files);
+  let filenames = req.files.map((file) =>{
+    return `${process.env.NEXT_PUBLIC_HOST}/uploads/${file.filename}`;
+  })
+  console.log("filenames: ", filenames);
   let p = new Product({
     title: req.body.title,
     slug: req.body.slug,
     desc: req.body.desc,
-    img: `${process.env.NEXT_PUBLIC_HOST}/uploads/${req.files[0].filename}`,
+    img: filenames,
     category: req.body.category,
     size: req.body.size,
     color: req.body.color,
