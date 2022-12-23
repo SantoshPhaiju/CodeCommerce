@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import Link from "next/link";
 import React from "react";
 import { HiOutlineShoppingCart } from "react-icons/hi";
-import ProductCard from "../components/ProductCard";
 import Product from "../models/Product";
 
 const Tshirts = ({ tshirts }) => {
@@ -36,7 +35,7 @@ const Tshirts = ({ tshirts }) => {
                     <img
                       alt="ecommerce"
                       className="object-top object-contain w-full h-[40vh] block mx-auto"
-                      src={tshirts[product].img}
+                      src={tshirts[product].img[0]}
                       width={300}
                       height={400}
                     />

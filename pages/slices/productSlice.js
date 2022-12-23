@@ -5,7 +5,7 @@ export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
   async () => {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_HOST}/api/getproducts`
+      `${process.env.NEXT_PUBLIC_HOST}/api/getvariants`
     );
     return response.data;
   }

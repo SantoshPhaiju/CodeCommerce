@@ -72,7 +72,7 @@ const Books = ({ books, buyNow }) => {
                               books[product].title,
                               books[product]?.size,
                               books[product]?.variant,
-                              books[product]?.img
+                              books[product]?.img[0]
                             )
                           }
                           }

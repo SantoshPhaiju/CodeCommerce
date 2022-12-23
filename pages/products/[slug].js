@@ -13,6 +13,8 @@ const Slug = ({ buyNow, addToCart, product, variants, error }) => {
   const router = useRouter();
   const { slug } = router.query;
 
+  const [selectImage, setSelectImage] = useState(product.img[0]);
+
   if (error === 404) {
     return <Error statusCode={404} />;
   }
@@ -21,7 +23,7 @@ const Slug = ({ buyNow, addToCart, product, variants, error }) => {
 
   const [color, setColor] = useState(product.color);
   const [size, setSize] = useState(product.size);
-
+                     
   const checkServiceability = async () => {
     let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
     let pinJson = await pins.json();
@@ -49,11 +51,7 @@ const Slug = ({ buyNow, addToCart, product, variants, error }) => {
     // console.log("Running refreshVariant function");
     setColor(newColor);
     setSize(newSize);
-    // let url = `${process.env.NEXT_PUBLIC_HOST}/products/${variants[newColor][newSize]["slug"]}`;
-    // window.location = url;
     router.push(`/products/${variants[newColor][newSize]["slug"]}`);
-    // router.push(url);
-    // console.log(variants[newColor][newSize]['slug']);
     console.log(newColor, newSize);
   };
 
@@ -61,11 +59,37 @@ const Slug = ({ buyNow, addToCart, product, variants, error }) => {
     <>
       <section className="text-gray-600 body-font overflow-hidden">
         <div className="container px-5 py-24 mx-auto">
-          <div className="lg:w-4/5 mx-auto flex flex-wrap relative">
+          <div className="container px-5 py-24 mx-auto flex flex-wrap">
+            <div className="images flex flex-wrap flex-row lg:flex-col gap-4 lg:space-y-2 justify-center lg:justify-start lg:w-[150px] w-[100%] h-auto mb-5 lg:mb-0">
+              {product.img.map((image, index) => {
+                return (
+                  <div
+                    className={` transition-all duration-300 h-[100px] w-[150px] lg:w-full rounded border-gray-300 overflow-hidden cursor-pointer hover:shadow-lg hover:shadow-green-600/80 hover:border hover:border-black hover:scale-110 ${
+                      selectImage === image
+                        ? "border shadow-lg shadow-green-600/80 border-black scale-110"
+                        : "border-2"
+                    }`}
+                  >
+                    <img
+                      alt="ecommerce"
+                      key={image}
+                      className={`w-full h-full object-contain`}
+                      src={image}
+                      onClick={(e) => {
+                        setSelectImage(e.target.src);
+                      }}
+                      onMouseEnter={(e) => {
+                        setSelectImage(e.target.src);
+                      }}
+                    />
+                  </div>
+                );
+              })}
+            </div>
             <img
               alt="ecommerce"
               className="lg:w-4/12 w-full h-[400px] object-contain object-top rounded"
-              src={product.img}
+              src={selectImage}
               width={800}
               height={100}
             />
@@ -331,7 +355,7 @@ const Slug = ({ buyNow, addToCart, product, variants, error }) => {
                         product.title,
                         product.size,
                         product.color,
-                        product.img
+                        product.img[0]
                       );
                       toast.success("Item added to cart!");
                     } else {
@@ -365,7 +389,7 @@ const Slug = ({ buyNow, addToCart, product, variants, error }) => {
                         product.title,
                         product.size,
                         product.color,
-                        product.img
+                        product.img[0]
                       );
                     } else {
                       toast.warning("Sorry! Item is currently out of stock.");

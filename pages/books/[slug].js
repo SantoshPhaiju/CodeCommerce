@@ -211,7 +211,7 @@ const Slug = ({ buyNow, addToCart, product, error }) => {
                         product.title,
                         product.size,
                         product.color,
-                        product.img
+                        product.img[0]
                       );
                       toast.success("Item added to cart!");
                     } else {
@@ -245,7 +245,7 @@ const Slug = ({ buyNow, addToCart, product, error }) => {
                         product.title,
                         product.size,
                         product.color,
-                        product.img
+                        product.img[0]
                       );
                     } else {
                       toast.warning("Sorry! Item is currently out of stock.");
