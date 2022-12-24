@@ -5,11 +5,19 @@ import { BsFillImageFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { addProduct } from "../slices/productSlice";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 const AddProducts = () => {
   const [showSideBar, setShowSidebar] = useState(true);
   const sideBarRef = useRef();
   const dispatch = useDispatch();
+  const router = useRouter();
+
+   if (typeof window !== "undefined") {
+     if (!localStorage.getItem("admin-token")) {
+       router.push("/admin/login");
+     }
+   }
 
   const [data, setData] = useState({
     title: "",

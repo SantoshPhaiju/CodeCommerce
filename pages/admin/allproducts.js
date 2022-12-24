@@ -7,6 +7,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteProduct, fetchProducts } from "../slices/productSlice";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 const AllProducts = () => {
   const [showSideBar, setShowSidebar] = useState(true);
@@ -14,6 +15,13 @@ const AllProducts = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.product.products);
   const sideBarRef = useRef();
+  const router = useRouter();
+
+   if (typeof window !== "undefined") {
+     if (!localStorage.getItem("admin-token")) {
+       router.push("/admin/login");
+     }
+   }
 
   useEffect(() => {
     dispatch(fetchProducts());

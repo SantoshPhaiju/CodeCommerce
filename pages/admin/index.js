@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import AdminNav from "./components/AdminNav";
 import Sidebar from "./components/Sidebar";
@@ -5,6 +6,15 @@ import Sidebar from "./components/Sidebar";
 const Index = () => {
   const [showSideBar, setShowSidebar] = useState(true);
   const sideBarRef = useRef();
+  const router = useRouter();
+
+  console.log(typeof(window))
+
+  if (typeof(window) !== "undefined") {
+    if (!localStorage.getItem("admin-token")) {
+      router.push("/admin/login");
+    }
+  }
   return (
     <>
       <style jsx global>{`
@@ -31,7 +41,6 @@ const Index = () => {
       >
         <div className="maindiv text-black pt-0 mt-10">
           <h1 className="my-4 font-roboto text-2xl text-blue-700">DASHBOARD</h1>
-          
         </div>
       </div>
     </>

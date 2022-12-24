@@ -21,7 +21,7 @@ const handler = async (req, res) => {
           const token = generateToken(user._id);
           res
             .status(200)
-            .json({ success: true, email: user.email, name: user.name, token });
+            .json({ success: true, email: user.email, name: user.name, token, admin: user.admin });
         } else {
           res.status(400).send({
             success: false,
