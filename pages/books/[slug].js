@@ -75,7 +75,7 @@ const Slug = ({ buyNow, addToCart, product, error }) => {
           <div className="lg:w-4/5 mx-auto flex flex-wrap relative">
             <img
               alt="ecommerce"
-              className="w-full h-[400px] object-contain object-top rounded"
+              className="w-full h-[400px] object-contain object-top rounded ml-10"
               src={selectImage}
               width={800}
               height={100}

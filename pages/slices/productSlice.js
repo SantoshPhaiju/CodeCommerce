@@ -13,17 +13,18 @@ export const fetchProducts = createAsyncThunk(
 
 export const addProduct = createAsyncThunk(
   "products/addProduct",
-  async (data) => {
+  async ({formdata, toast}) => {
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_HOST}/api/addproducts`,
-        data,
+        formdata,
         {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         }
       );
+      toast.success("Your product is successfully published.");
       return response.data;
     } catch (error) {
       console.log(error);
@@ -33,7 +34,7 @@ export const addProduct = createAsyncThunk(
 
 export const deleteProduct = createAsyncThunk(
   "products/deleteProduct",
-  async (id) => {
+  async ({id, toast}) => {
     try {
       console.log(id);
       const response = await axios.delete(
@@ -41,6 +42,7 @@ export const deleteProduct = createAsyncThunk(
         { data: id }
       );
       // console.log(response.data, id);
+      toast.success("Product deleted successfully!");
       return response.data;
     } catch (error) {
       console.log(error);
@@ -100,14 +102,11 @@ export const productSlice = createSlice({
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.status = "succeded";
-        const products = state.products;
+        console.log("products" , state.products);
         const id = action.payload.deletedProduct._id;
-        console.log(action.payload);
-        const loadedProducts = Object.keys(products).filter((product) => {
-          return products[product]._id !== id;
-        });
-        console.log("loaded products", loadedProducts);
-        state.products = loadedProducts;
+        const products = state.products.filter((product) => product._id !== id);
+        console.log("loaded products", products);
+        state.products = products;
       })
       .addCase(deleteProduct.rejected, (state, action) => {
         state.error = action.error.message;

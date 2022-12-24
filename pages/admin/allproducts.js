@@ -6,6 +6,7 @@ import { BiEditAlt } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteProduct, fetchProducts } from "../slices/productSlice";
+import { toast } from "react-toastify";
 
 const AllProducts = () => {
   const [showSideBar, setShowSidebar] = useState(true);
@@ -18,7 +19,9 @@ const AllProducts = () => {
     dispatch(fetchProducts());
   }, []);
   const handleDelete = (id) => {
-    dispatch(deleteProduct(id));
+   if(confirm("Do you want to delete this product?")){
+     dispatch(deleteProduct({id, toast}));
+   }
   };
 
   return (

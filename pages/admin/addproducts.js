@@ -4,6 +4,7 @@ import Sidebar from "./components/Sidebar";
 import { BsFillImageFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { addProduct } from "../slices/productSlice";
+import { toast } from "react-toastify";
 
 const AddProducts = () => {
   const [showSideBar, setShowSidebar] = useState(true);
@@ -72,7 +73,19 @@ const AddProducts = () => {
       console.log(key[0] + ", " + key[1]);
     }
     console.log(file);
-    dispatch(addProduct(formdata));
+    dispatch(addProduct({formdata, toast}));
+    setData({
+      title: "",
+      slug: "",
+      desc: "",
+      category: "Select one category",
+      price: "",
+      availableQty: "",
+      color: "",
+      size: "Select size",
+    });
+    setFile("")
+    setSelectedImage([])
   };
   return (
     <>
@@ -271,7 +284,7 @@ const AddProducts = () => {
                   </option>
                   <option value="tshirt">Tshrit</option>
                   <option value="books">Book</option>
-                  <option value="hoodie">Hoodie</option>
+                  <option value="hoodies">Hoodie</option>
                   <option value="mugs">Mugs</option>
                 </select>
               </div>
