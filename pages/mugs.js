@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import Link from "next/link";
 import Product from "../models/Product";
 
-const Mugs = ({mugs}) => {
+const Mugs = ({ mugs }) => {
   return (
     <div>
       <h2 className="text-center mt-10 font-firasans text-3xl -mb-10 text-purple-900/75 font-semibold">
@@ -29,13 +29,15 @@ const Mugs = ({mugs}) => {
                     href={`/products/${mugs[product].slug}`}
                     className="block relative rounded overflow-hidden"
                   >
-                    <img
-                      alt="ecommerce"
-                      className="object-top object-contain w-full h-[40vh] block mx-auto"
-                      src={mugs[product].img}
-                      width={300}
-                      height={400}
-                    />
+                    <div className="image w-full h-[40vh] border">
+                      <img
+                        alt="ecommerce"
+                        className="object-top w-full h-[40vh] block mx-auto"
+                        src={mugs[product].img[0]}
+                        width={300}
+                        height={400}
+                      />
+                    </div>
                   </Link>
                   {!mugs[product].availableQty < 1 ? (
                     <div className="text-center text-white font-firasans mt-4 text-xl absolute top-0 -left-2 bg-yellow-600 px-2 py-1 rounded-md">
@@ -141,10 +143,7 @@ export async function getServerSideProps(context) {
       ) {
         mugs[item.title].color.push(item.color);
       }
-      if (
-        !mugs[item.title].size.includes(item.size) &&
-        item.availableQty > 0
-      ) {
+      if (!mugs[item.title].size.includes(item.size) && item.availableQty > 0) {
         mugs[item.title].size.push(item.size);
       }
     } else {

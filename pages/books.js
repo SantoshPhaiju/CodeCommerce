@@ -31,13 +31,15 @@ const Books = ({ books, buyNow }) => {
                     href={`/books/${books[product].slug}`}
                     className="block relative rounded overflow-hidden"
                   >
-                    <img
-                      alt="ecommerce"
-                      className="object-top object-contain w-full h-[40vh] block mx-auto"
-                      src={books[product].img[0]}
-                      width={300}
-                      height={400}
-                    />
+                    <div className="image w-full h-[40vh] border">
+                      <img
+                        alt="ecommerce"
+                        className="object-top w-full h-full block mx-auto"
+                        src={books[product].img[0]}
+                        width={300}
+                        height={400}
+                      />
+                    </div>
                   </Link>
                   {!books[product].availableQty < 1 ? (
                     <div className="text-center text-white font-firasans mt-4 text-xl absolute top-0 -left-2 bg-yellow-600 px-2 py-1 rounded-md">
@@ -63,7 +65,7 @@ const Books = ({ books, buyNow }) => {
 
                       {!books[product].availableQty < 1 && (
                         <button
-                          onClick={() =>{
+                          onClick={() => {
                             // console.log(books[product])
                             buyNow(
                               books[product].slug,
@@ -73,9 +75,8 @@ const Books = ({ books, buyNow }) => {
                               books[product]?.size,
                               books[product]?.variant,
                               books[product]?.img[0]
-                            )
-                          }
-                          }
+                            );
+                          }}
                           className="flex my-5 text-white shadow-lg shadow-gray-800/50 bg-green-700 border-0 py-2 px-8 sm:px-10 focus:outline-none hover:bg-green-900 rounded font-firasans font-medium space-x-2 justify-center items-center"
                         >
                           <HiOutlineShoppingCart className="text-xl rotate-12 text-pink-100 font-bold" />

@@ -46,7 +46,7 @@ const Slug = ({ buyNow, addToCart, product, error }) => {
   return (
     <>
       <section className="text-gray-600 body-font overflow-hidden">
-        <div className="container px-5 py-24 mx-auto flex flex-wrap ">
+        <div className="container px-5 py-10 mx-auto flex flex-wrap ">
           <div className="images flex flex-wrap flex-row lg:flex-col gap-4 lg:space-y-2 justify-center lg:justify-start lg:w-[150px] w-[100%] h-auto mb-5 lg:mb-0">
             {product.img.map((image, index) => {
               return (
@@ -75,7 +75,7 @@ const Slug = ({ buyNow, addToCart, product, error }) => {
           <div className="lg:w-4/5 mx-auto flex flex-wrap relative">
             <img
               alt="ecommerce"
-              className="w-full h-[400px] object-contain object-top rounded ml-10"
+              className="lg:w-4/5 w-full h-[400px] object-contain object-top rounded"
               src={selectImage}
               width={800}
               height={100}

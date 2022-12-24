@@ -31,13 +31,16 @@ const Hoodies = ({hoodies}) => {
                     href={`/products/${hoodies[product].slug}`}
                     className="block relative rounded overflow-hidden"
                   >
+                    <div className="image w-full h-[40vh] border">
+
                     <img
                       alt="ecommerce"
-                      className="object-top object-contain w-full h-[40vh] block mx-auto"
+                      className="object-top w-full h-full block mx-auto"
                       src={hoodies[product].img}
                       width={300}
                       height={400}
-                    />
+                      />
+                      </div>
                   </Link>
                   {!hoodies[product].availableQty < 1 ? (
                     <div className="text-center text-white font-firasans mt-4 text-xl absolute top-0 -left-2 bg-yellow-600 px-2 py-1 rounded-md">
