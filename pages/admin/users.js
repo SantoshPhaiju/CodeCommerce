@@ -1,18 +1,33 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUsers } from "../slices/userSlice";
 import AdminNav from "./components/AdminNav";
 import Sidebar from "./components/Sidebar";
 
 const users = () => {
   const [showSideBar, setShowSidebar] = useState(true);
   const sideBarRef = useRef();
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state.user.users);
 
   const router = useRouter();
-   if (typeof window !== "undefined") {
-     if (!localStorage.getItem("admin-token")) {
-       router.push("/admin/login");
-     }
-   }
+  if (typeof window !== "undefined") {
+    if (!localStorage.getItem("admin-token")) {
+      router.push("/admin/login");
+    }
+  }
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, []);
+  //  console.log(users);
+
+  const getFirstLetter = (str) =>{
+    return str.slice(0, 1).toUpperCase();
+  }
+
   return (
     <>
       <style jsx global>{`
@@ -52,16 +67,25 @@ const users = () => {
                         S.N.
                       </th>
                       <th scope="col" className="py-4 px-6">
-                        Order Id
+                        User Id
                       </th>
                       <th scope="col" className="py-4 px-6">
-                        email
+                        Avatar
                       </th>
                       <th scope="col" className="py-4 px-6">
-                        Amount
+                        Email
                       </th>
                       <th scope="col" className="py-4 px-6">
-                        Status
+                        Name
+                      </th>
+                      <th scope="col" className="py-4 px-6">
+                        Admin
+                      </th>
+                      <th scope="col" className="py-4 px-6">
+                        Gender
+                      </th>
+                      <th scope="col" className="py-4 px-6">
+                        Phone
                       </th>
                       <th scope="col" className="py-4 px-6">
                         Action
@@ -69,7 +93,7 @@ const users = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {/* {orders.map((item, index) => {
+                    {users && users.map((item, index) => {
                       // console.log(item);
                       return (
                         <tr
@@ -77,48 +101,56 @@ const users = () => {
                           className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 font-firasans"
                         >
                           <td className="py-4 px-6">{index + 1}</td>
-                          <th
-                            scope="row"
-                            className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white hover:text-blue-500 hover:underline"
-                          >
-                            <Link href={"/order?id=" + item?._id}>
-                              # {item?.orderId}
-                            </Link>
-                          </th>
+
+                          <td className="py-4 px-6">{item._id}</td>
+                          <td className="py-4 px-6 flex justify-center items-center">
+                            {item.gender !== "" ? (
+                              <img
+                                src={`/${item.gender}.png`}
+                                className="border rounded-full h-10"
+                                alt="Male Image"
+                              />
+                              // <div className="h-10 rounded-full text-lg flex items-center justify-center bg-pink-600 text-white w-10 border">
+                              //   {getFirstLetter(item.name)}
+                              // </div>
+                            ) : (
+                              <div className={`h-10 rounded-full text-lg flex items-center justify-center bg-pink-600 text-white w-10 border`}>
+                                {getFirstLetter(item.name)}
+                              </div>
+                            )}
+                          </td>
                           <td className="py-4 px-6">{item?.email}</td>
-                          <td className="py-4 px-6">Rs.{item?.amount}</td>
-                          <td className="py-4 px-6">{item?.status}</td>
+                          <td className="py-4 px-6">{item?.name}</td>
+                          <td className="py-4 px-6">
+                            {item?.admin === true ? "Admin" : "Normal User"}
+                          </td>
+                          <td className="py-4 px-6">
+                            {item?.gender !== "" ? item.gender : "not provided"}
+                          </td>
+                          <td className="py-4 px-6">
+                            {item?.phone !== null ? (
+                              item.phone
+                            ) : (
+                              <p className="text-start">---------</p>
+                            )}
+                          </td>
                           <td className="py-4 px-6 flex space-x-3">
-                            {item?.status === "Pending" && (
-                              <>
-                                {" "}
-                                <Link
-                                  href={"/order?id=" + item?._id}
-                                  className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                >
-                                  Details
-                                </Link>
-                                <button
-                                  onClick={() => deleteOrder(item?._id)}
-                                  className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                >
-                                  Delete
-                                </button>{" "}
-                              </>
-                            )}
-                            {item?.status === "Paid" && (
-                              <>
-                                <Link href={"/order?id=" + item?._id}>
-                                  <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                    Details
-                                  </button>
-                                </Link>
-                              </>
-                            )}
+                            <Link
+                              href={"/order?id=" + item?._id}
+                              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                            >
+                              Edit
+                            </Link>
+                            <button
+                              onClick={() => deleteOrder(item?._id)}
+                              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                            >
+                              Delete
+                            </button>
                           </td>
                         </tr>
                       );
-                    })} */}
+                    })}
                   </tbody>
                 </table>
               </div>
