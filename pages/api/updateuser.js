@@ -5,12 +5,12 @@ import User from "../../models/User";
 const handler = async (req, res) => {
   if (req.method === "POST") {
     try {
-      const { name, email, phone, gender, id, dob } = req.body.data;
+      const { name, email, phone, gender, id, dob, admin } = req.body.data;
       console.log(req.body);
 
       const user = await User.findById(id);
       console.log(id);
-      const updatedUser = await User.findByIdAndUpdate(id, {name, email, phone, gender, dob});
+      const updatedUser = await User.findByIdAndUpdate(id, {name, email, phone, gender, dob, admin});
       res.status(200).send({updatedUser, user, success: true});
     } catch (error) {
         console.log(error);

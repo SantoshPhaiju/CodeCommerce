@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+
+
+
 export const fetchUsers = createAsyncThunk("user/fetchUsers", async () =>{
   try {
     const response = await axios.get(`${process.env.NEXT_PUBLIC_HOST}/api/fetchallusers`, {
