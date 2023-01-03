@@ -10,7 +10,7 @@ const handler = async (req, res) => {
 
       const user = await User.findById(id);
       console.log(id);
-      const updatedUser = await User.findByIdAndUpdate(id, {name, email, phone, gender, dob, admin});
+      const updatedUser = await User.findByIdAndUpdate(id, {name: name || user.name, email: email || user.email, phone: phone || user.phone, gender: gender || user.gender, dob: dob || user.dob, admin: admin || user.admin}, {new: true});
       res.status(200).send({updatedUser, user, success: true});
     } catch (error) {
         console.log(error);

@@ -1,22 +1,44 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+export const editUser = createAsyncThunk(
+  "user/editUser",
+  async ({ id, admin }) => {
+    console.log(id, admin);
+    const data = { id, admin };
 
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST}/api/updateuser`,
+        { data },
+        {
+          headers: {
+            admintoken: localStorage.getItem("admin-token"),
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 
-
-export const fetchUsers = createAsyncThunk("user/fetchUsers", async () =>{
+export const fetchUsers = createAsyncThunk("user/fetchUsers", async () => {
   try {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_HOST}/api/fetchallusers`, {
-      headers: {
-        "admintoken": localStorage.getItem("admin-token")
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_HOST}/api/fetchallusers`,
+      {
+        headers: {
+          admintoken: localStorage.getItem("admin-token"),
+        },
       }
-    })
+    );
     return response.data;
   } catch (error) {
     console.log(error);
   }
-})
-
+});
 
 const initialState = {
   users: [],
@@ -25,28 +47,47 @@ const initialState = {
 };
 
 export const userSlice = createSlice({
-    name: "user",
-    initialState,
-    reducers: {},
-    extraReducers(builder){
-      builder.addCase(fetchUsers.pending, (state, action) =>{
+  name: "user",
+  initialState,
+  reducers: {},
+  extraReducers(builder) {
+    builder
+      .addCase(fetchUsers.pending, (state, action) => {
         state.status = "loading";
       })
-      .addCase(fetchUsers.fulfilled, (state, action) =>{
+      .addCase(fetchUsers.fulfilled, (state, action) => {
         state.status = "fulfilled";
         // console.log(action.payload);
-        if(action.payload.success === true){
+        if (action.payload.success === true) {
           state.users = action.payload.users;
         }
       })
-      .addCase(fetchUsers.rejected, (state, action) =>{
+      .addCase(fetchUsers.rejected, (state, action) => {
         state.status = "rejected";
         state.error = action.error.message;
         console.log(action.error.message);
       })
-    }
-})
-
+      .addCase(editUser.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(editUser.fulfilled, (state, action) => {
+        state.status = "fulfilled";
+        console.log(action.payload);
+        const admin = action.payload.updatedUser.admin;
+        if (action.payload.success === true) {
+          state.users.map((user) => {
+            if (user._id === action.payload.updatedUser._id) {
+              user.admin = admin;
+            }
+          });
+        }
+      })
+      .addCase(editUser.rejected, (state, action) => {
+        state.status = "rejected";
+        state.error = action.error.message;
+        console.log(action.error.message);
+      });
+  },
+});
 
 export default userSlice.reducer;
-
