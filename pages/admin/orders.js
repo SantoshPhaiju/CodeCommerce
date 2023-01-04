@@ -4,18 +4,45 @@ import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import AdminNav from "./components/AdminNav";
 import Sidebar from "./components/Sidebar";
-const orders = () => {
+import { AiOutlineEye, AiOutlineDelete } from "react-icons/ai";
+
+const Orders = () => {
   const [showSideBar, setShowSidebar] = useState(true);
   const sideBarRef = useRef();
 
   const router = useRouter();
 
-   if (typeof window !== "undefined") {
-     if (!localStorage.getItem("admin-token")) {
-       router.push("/admin/login");
-     }
-   }
-  const [orders, setOrders] = useState([]);
+  if (typeof window !== "undefined") {
+    if (!localStorage.getItem("admin-token")) {
+      router.push("/admin/login");
+    }
+  }
+  const [orders, setOrders] = useState([
+    {
+      orderId: "239579384d8ddvd8",
+      email: "santoshphaiju@gmail.com",
+      amount: 20000,
+      status: "Paid",
+      deliveryStatus: "Order Placed",
+      address: "Chabahil-7, Kathmandu",
+    },
+    {
+      orderId: "239579384d8ddvd8",
+      email: "santoshphaiju@gmail.com",
+      amount: 20000,
+      status: "Pending",
+      deliveryStatus: "Order Placed",
+      address: "Chabahil-7, Kathmandu",
+    },
+    {
+      orderId: "239579384d8ddvd8",
+      email: "santoshphaiju@gmail.com",
+      amount: 20000,
+      status: "Paid",
+      deliveryStatus: "Order Placed",
+      address: "Chabahil-7, Kathmandu",
+    },
+  ]);
 
   return (
     <>
@@ -56,84 +83,119 @@ const orders = () => {
               )} */}
 
               {/* {orders.length > 0 && ( */}
-                <div className="overflow-x-auto relative shadow-md shadow-gray-500/30 sm:rounded-lg mb-10">
-                  <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead className="text-base font-firasans text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
-                      <tr>
-                        <th scope="col" className="py-4 px-6">
-                          S.N.
-                        </th>
-                        <th scope="col" className="py-4 px-6">
-                          Order Id
-                        </th>
-                        <th scope="col" className="py-4 px-6">
-                          email
-                        </th>
-                        <th scope="col" className="py-4 px-6">
-                          Amount
-                        </th>
-                        <th scope="col" className="py-4 px-6">
-                          Status
-                        </th>
-                        <th scope="col" className="py-4 px-6">
-                          Action
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {orders.map((item, index) => {
-                        // console.log(item);
-                        return (
-                          <tr
-                            key={item?._id}
-                            className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 font-firasans"
+              <div className="overflow-x-auto relative shadow-md shadow-gray-500/30 mb-10">
+                <table className="border-collapse border border-gray-900 w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                  <thead className="text-base font-firasans text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                      <th
+                        scope="col"
+                        className="py-4 px-6 border-2 border-gray-700"
+                      >
+                        S.N.
+                      </th>
+                      <th
+                        scope="col"
+                        className="py-4 px-6 border-2 border-gray-700"
+                      >
+                        Order Id
+                      </th>
+                      <th
+                        scope="col"
+                        className="py-4 px-6 border-2 border-gray-700"
+                      >
+                        email
+                      </th>
+                      <th
+                        scope="col"
+                        className="py-4 px-6 border-2 border-gray-700"
+                      >
+                        Amount
+                      </th>
+                      <th
+                        scope="col"
+                        className="py-4 px-6 border-2 border-gray-700"
+                      >
+                        Status
+                      </th>
+                      <th
+                        scope="col"
+                        className="py-4 px-6 border-2 border-gray-700"
+                      >
+                        Delivery Status
+                      </th>
+                      <th
+                        scope="col"
+                        className="py-4 px-6 border-2 border-gray-700"
+                      >
+                        Address
+                      </th>
+                      <th
+                        scope="col"
+                        className="py-4 px-6 border-2 border-gray-700"
+                      >
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orders.map((item, index) => {
+                      // console.log(item);
+                      return (
+                        <tr
+                          key={index}
+                          className="bg-white dark:bg-gray-800 dark:border-gray-700 font-firasans"
+                        >
+                          <td className="py-4 px-6 border-2 border-gray-700">
+                            {index + 1}
+                          </td>
+                          <td
+                            scope="row"
+                            className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white hover:text-blue-500 hover:underline border-2 border-gray-700"
                           >
-                            <td className="py-4 px-6">{index + 1}</td>
-                            <th
-                              scope="row"
-                              className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white hover:text-blue-500 hover:underline"
+                            <Link href={"/order?id=" + item?._id}>
+                              # {item?.orderId}
+                            </Link>
+                          </td>
+                          <td className="py-4 px-6 border-2 border-gray-700">
+                            {item?.email}
+                          </td>
+                          <td className="py-4 px-6 border-2 border-gray-700">
+                            Rs.{item?.amount}
+                          </td>
+                          <td className="py-4 px-6 border-2 border-gray-700">
+                            <span className={`py-1 px-4 rounded-sm text-white ${item?.status === "Pending" ? "bg-yellow-500" : ""} ${item?.status === "Paid" ? "bg-yellow-600/80" : ""} `}>{item?.status}</span>
+                          </td>
+                          <td className="py-4 px-6 border-2 border-gray-700">
+                            {item?.deliveryStatus}
+                          </td>
+                          <td className="py-4 px-6 border-2 border-gray-700">
+                            {item?.address}
+                          </td>
+                          <td className="py-4 px-6 border-2 border-gray-700">
+                            <div className="flex space-x-3">
+
+                            <Link
+                              href={"/order?id=" + item?._id}
+                              className="font-medium rounded-sm flex items-center justify-center space-x-1 py-2 px-3 bg-yellow-600 text-white hover:bg-yellow-700 hover:scale-110"
+                              >
+                              <AiOutlineEye className="text-lg" />
+                              <span>View</span>
+                            </Link>
+                            <button
+                              onClick={() => deleteOrder(item?._id)}
+                              className="font-medium rounded-sm flex items-center justify-center space-x-1 py-2 px-3 bg-red-600 text-white hover:bg-red-800 hover:scale-110"
                             >
-                              <Link href={"/order?id=" + item?._id}>
-                                # {item?.orderId}
-                              </Link>
-                            </th>
-                            <td className="py-4 px-6">{item?.email}</td>
-                            <td className="py-4 px-6">Rs.{item?.amount}</td>
-                            <td className="py-4 px-6">{item?.status}</td>
-                            <td className="py-4 px-6 flex space-x-3">
-                              {item?.status === "Pending" && (
-                                <>
-                                  {" "}
-                                  <Link
-                                    href={"/order?id=" + item?._id}
-                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                  >
-                                    Details
-                                  </Link>
-                                  <button
-                                    onClick={() => deleteOrder(item?._id)}
-                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                  >
-                                    Delete
-                                  </button>{" "}
-                                </>
-                              )}
-                              {item?.status === "Paid" && (
-                                <>
-                                  <Link href={"/order?id=" + item?._id}>
-                                    <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                      Details
-                                    </button>
-                                  </Link>
-                                </>
-                              )}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
+                              <AiOutlineDelete className="text-lg" />
+                              <span>Delete</span>
+                            </button>
+                              </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
               {/* )} */}
             </div>
           </div>
@@ -143,5 +205,4 @@ const orders = () => {
   );
 };
 
-
-export default orders;
+export default Orders;
