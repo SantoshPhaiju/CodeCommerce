@@ -5,44 +5,64 @@ import React, { useEffect, useRef, useState } from "react";
 import AdminNav from "./components/AdminNav";
 import Sidebar from "./components/Sidebar";
 import { AiOutlineEye, AiOutlineDelete } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchOrders } from "../slices/orderSlice";
 
 const Orders = () => {
   const [showSideBar, setShowSidebar] = useState(true);
   const sideBarRef = useRef();
+  const orders = useSelector((state) => state.order.orders);
+
+  const dispatch = useDispatch();
 
   const router = useRouter();
+  let admintoken;
 
   if (typeof window !== "undefined") {
     if (!localStorage.getItem("admin-token")) {
       router.push("/admin/login");
     }
+    admintoken = localStorage.getItem("admin-token");
   }
-  const [orders, setOrders] = useState([
-    {
-      orderId: "239579384d8ddvd8",
-      email: "santoshphaiju@gmail.com",
-      amount: 20000,
-      status: "Paid",
-      deliveryStatus: "Order Placed",
-      address: "Chabahil-7, Kathmandu",
-    },
-    {
-      orderId: "239579384d8ddvd8",
-      email: "santoshphaiju@gmail.com",
-      amount: 20000,
-      status: "Pending",
-      deliveryStatus: "Order Placed",
-      address: "Chabahil-7, Kathmandu",
-    },
-    {
-      orderId: "239579384d8ddvd8",
-      email: "santoshphaiju@gmail.com",
-      amount: 20000,
-      status: "Paid",
-      deliveryStatus: "Order Placed",
-      address: "Chabahil-7, Kathmandu",
-    },
-  ]);
+
+
+  useEffect(() =>{
+    dispatch(fetchOrders(admintoken));
+
+  }, []);
+
+
+  // const [orders, setOrders] = useState([
+  //   {
+  //     orderId: "239579384d8ddvd8",
+  //     email: "santoshphaiju@gmail.com",
+  //     amount: 20000,
+  //     status: "Paid",
+  //     deliveryStatus: "Order Placed",
+  //     address: "Chabahil-7, Kathmandu",
+  //   },
+  //   {
+  //     orderId: "239579384d8ddvd8",
+  //     email: "santoshphaiju@gmail.com",
+  //     amount: 20000,
+  //     status: "Pending",
+  //     deliveryStatus: "Order Placed",
+  //     address: "Chabahil-7, Kathmandu",
+  //   },
+  //   {
+  //     orderId: "239579384d8ddvd8",
+  //     email: "santoshphaiju@gmail.com",
+  //     amount: 20000,
+  //     status: "Paid",
+  //     deliveryStatus: "Order Placed",
+  //     address: "Chabahil-7, Kathmandu",
+  //   },
+  // ]);
+
+  // const orderDate = new Date("2022-11-25T13:44:14.437+00:00");
+  const orderDate = (createdAt) =>{
+    return new Date(createdAt);
+  }
 
   return (
     <>
@@ -68,7 +88,7 @@ const Orders = () => {
           showSideBar === false ? "sm:pl-[90px]" : "sm:pl-[260px]"
         }`}
       >
-        <div className="maindiv text-black pt-0 mt-10">
+        <div className="maindiv text-black pt-0 mt-10 z-0">
           <div className="ordersTable py-10">
             <div className="container w-[96%] sm:w-[90%] mx-auto">
               <h1 className="font-roboto text-2xl text-center my-6 text-pink-700">
@@ -82,8 +102,8 @@ const Orders = () => {
                 </div>
               )} */}
 
-              {/* {orders.length > 0 && ( */}
-              <div className="overflow-x-auto relative shadow-md shadow-gray-500/30 mb-10">
+              {orders.length > 0 && (
+              <div className="overflow-x-auto shadow-md shadow-gray-500/30 mb-10">
                 <table className="border-collapse border border-gray-900 w-full text-sm text-left text-gray-500 dark:text-gray-400">
                   <thead className="text-base font-firasans text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
                     <tr>
@@ -110,6 +130,12 @@ const Orders = () => {
                         className="py-4 px-6 border-2 border-gray-700"
                       >
                         Amount
+                      </th>
+                      <th
+                        scope="col"
+                        className="py-4 px-6 border-2 border-gray-700"
+                      >
+                        Date
                       </th>
                       <th
                         scope="col"
@@ -163,32 +189,72 @@ const Orders = () => {
                             Rs.{item?.amount}
                           </td>
                           <td className="py-4 px-6 border-2 border-gray-700">
-                            <span className={`py-1 px-4 rounded-sm text-white ${item?.status === "Pending" ? "bg-yellow-500" : ""} ${item?.status === "Paid" ? "bg-yellow-600/80" : ""} `}>{item?.status}</span>
+                            {orderDate(item?.createdAt).toLocaleDateString()}
+                            <br />
+                            {orderDate(item?.createdAt).toLocaleTimeString()}
                           </td>
                           <td className="py-4 px-6 border-2 border-gray-700">
-                            {item?.deliveryStatus}
+                            <span
+                              className={`py-1 px-4 rounded-sm text-white ${
+                                item?.status === "Pending"
+                                  ? "bg-yellow-500"
+                                  : ""
+                              } ${
+                                item?.status === "Paid"
+                                  ? "bg-yellow-600/80"
+                                  : ""
+                              } `}
+                            >
+                              {item?.status}
+                            </span>
+                          </td>
+                          <td className={`py-4 px-6 border-2 border-gray-700 `}>
+                            <span
+                              className={`py-1 px-4 rounded-sm flex items-center justify-center text-center text-white ${
+                                item?.deliveryStatus === "Order Placed"
+                                  ? "bg-yellow-600"
+                                  : ""
+                              } ${
+                                item?.deliveryStatus === "Shipped"
+                                  ? "bg-blue-900"
+                                  : ""
+                              } ${
+                                item?.deliveryStatus === "Delivered"
+                                  ? "bg-yellow-400"
+                                  : ""
+                              } ${
+                                item?.deliveryStatus === "In Transit"
+                                  ? "bg-indigo-600"
+                                  : ""
+                              } ${
+                                item?.deliveryStatus === "Processing"
+                                  ? "bg-orange-600"
+                                  : ""
+                              }  `}
+                            >
+                              {item?.deliveryStatus}
+                            </span>
                           </td>
                           <td className="py-4 px-6 border-2 border-gray-700">
                             {item?.address}
                           </td>
                           <td className="py-4 px-6 border-2 border-gray-700">
                             <div className="flex space-x-3">
-
-                            <Link
-                              href={"/order?id=" + item?._id}
-                              className="font-medium rounded-sm flex items-center justify-center space-x-1 py-2 px-3 bg-yellow-600 text-white hover:bg-yellow-700 hover:scale-110"
+                              <Link
+                                href={"/admin/order?id=" + item?._id}
+                                className="font-medium rounded-sm flex items-center justify-center space-x-1 py-2 px-3 bg-yellow-600 text-white hover:bg-yellow-700 hover:scale-110"
                               >
-                              <AiOutlineEye className="text-lg" />
-                              <span>View</span>
-                            </Link>
-                            <button
-                              onClick={() => deleteOrder(item?._id)}
-                              className="font-medium rounded-sm flex items-center justify-center space-x-1 py-2 px-3 bg-red-600 text-white hover:bg-red-800 hover:scale-110"
-                            >
-                              <AiOutlineDelete className="text-lg" />
-                              <span>Delete</span>
-                            </button>
-                              </div>
+                                <AiOutlineEye className="text-lg" />
+                                <span>View</span>
+                              </Link>
+                              <button
+                                onClick={() => deleteOrder(item?._id)}
+                                className="font-medium rounded-sm flex items-center justify-center space-x-1 py-2 px-3 bg-red-600 text-white hover:bg-red-800 hover:scale-110"
+                              >
+                                <AiOutlineDelete className="text-lg" />
+                                <span>Delete</span>
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       );
@@ -196,7 +262,7 @@ const Orders = () => {
                   </tbody>
                 </table>
               </div>
-              {/* )} */}
+              )} 
             </div>
           </div>
         </div>

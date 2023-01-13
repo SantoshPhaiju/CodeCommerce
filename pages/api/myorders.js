@@ -8,8 +8,13 @@ const handler = async (req, res) => {
     const token = req.body.data;
     const data = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(data.id);
-    let orders = await Order.find({ email: user.email });
-    res.status(200).send({ orders, success: true });
+    if (user.admin === false) {
+      let orders = await Order.find({ email: user.email });
+      res.status(200).send({ orders, success: true });
+    }else{
+      let orders = await Order.find();
+      res.status(200).send({ orders, success: true, admin: true });
+    }
   }
 };
 

@@ -74,7 +74,7 @@ const AllProducts = () => {
                       src={product?.img[0]}
                       key={index}
                       width={400}
-                      className="object-top object-contain w-full h-[35vh] block mx-auto"
+                      className="w-full h-[35vh] block mx-auto"
                       height={500}
                       alt="This is the image here"
                     />
