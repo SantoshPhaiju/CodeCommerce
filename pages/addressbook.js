@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import AccountSideBar from "../components/AccountSideBar";
 import { AiOutlinePlus } from "react-icons/ai";
 import { toast } from "react-toastify";
+import baseUrl from "../helpers/baseUrl";
 
 const AddressBook = () => {
   const router = useRouter();
@@ -80,7 +81,7 @@ const AddressBook = () => {
 
   const fetchAddress = async () => {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_HOST}/api/fetchaddress`,
+      `${baseUrl}/api/fetchaddress`,
       {
         headers: {
           token: localStorage.getItem("token"),
@@ -126,7 +127,7 @@ const AddressBook = () => {
     setOpenModal(false);
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST}/api/addaddress`,
+        `${baseUrl}/api/addaddress`,
         { data: addressUserData },
         {
           headers: {
@@ -159,7 +160,7 @@ const AddressBook = () => {
 
   const handleDelete = async (id) =>{
     try {
-      const response = await axios.delete(`${process.env.NEXT_PUBLIC_HOST}/api/deleteaddress`, {data: id});
+      const response = await axios.delete(`${baseUrl}/api/deleteaddress`, {data: id});
       if(response.data.success === true){
         setUserAddress(userAddress.filter((item, index) =>{
           return item._id !== id;
@@ -194,7 +195,7 @@ const AddressBook = () => {
       console.log(addressUserData);
       try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST}/api/editaddress`,
+        `${baseUrl}/api/editaddress`,
         { data: addressUserData },
         {
           headers: {

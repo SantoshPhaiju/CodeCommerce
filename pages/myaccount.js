@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import AccountSideBar from "../components/AccountSideBar";
+import baseUrl from "../helpers/baseUrl";
 
 const MyAccount = ({ userData }) => {
   const router = useRouter();
@@ -18,7 +19,7 @@ const MyAccount = ({ userData }) => {
 
   const fetchAddress = async () => {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_HOST}/api/fetchaddress`,
+      `${baseUrl}/api/fetchaddress`,
       {
         headers: {
           token: localStorage.getItem("token"),

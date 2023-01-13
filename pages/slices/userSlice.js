@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import baseUrl from "../../helpers/baseUrl";
 
 export const editUser = createAsyncThunk(
   "user/editUser",
@@ -9,7 +10,7 @@ export const editUser = createAsyncThunk(
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST}/api/updateuser`,
+        `${baseUrl}/api/updateuser`,
         { data },
         {
           headers: {
@@ -27,7 +28,7 @@ export const editUser = createAsyncThunk(
 export const fetchUsers = createAsyncThunk("user/fetchUsers", async () => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_HOST}/api/fetchallusers`,
+      `${baseUrl}/api/fetchallusers`,
       {
         headers: {
           admintoken: localStorage.getItem("admin-token"),

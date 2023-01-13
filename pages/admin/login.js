@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import baseUrl from "../../helpers/baseUrl";
 
 const Login = () => {
   const [credentails, setCredentails] = useState({
@@ -24,7 +25,7 @@ const Login = () => {
     e.preventDefault();
     // console.log(credentails);
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/login`, {
+    const response = await fetch(`${baseUrl}/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

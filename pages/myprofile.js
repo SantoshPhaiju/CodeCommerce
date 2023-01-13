@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import AccountSideBar from "../components/AccountSideBar";
 import {RiEyeCloseLine, RiEyeLine} from 'react-icons/ri'
 import PasswordInput from "../components/PasswordInput";
+import baseUrl from "../helpers/baseUrl";
 
 const MyProfile = () => {
   const router = useRouter();
@@ -44,7 +45,7 @@ const MyProfile = () => {
   const fetchuser = async () => {
     const token = localStorage.getItem("token");
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_HOST}/api/fetchuserdata`,
+      `${baseUrl}/api/fetchuserdata`,
       { data: token }
     );
     // console.log("app",response.data);
@@ -97,7 +98,7 @@ const MyProfile = () => {
     console.log(updateData);
     setEditProfile(false);
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_HOST}/api/updateuser`,
+      `${baseUrl}/api/updateuser`,
       { data: updateData }
     );
     if (response) {
@@ -146,7 +147,7 @@ const MyProfile = () => {
     }
 
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_HOST}/api/changepassword`, {data: resetData})
+      const response = await axios.post(`${baseUrl}/api/changepassword`, {data: resetData})
       console.log(response.data);
       if(response.data.success === true){
         setEditPassword(false)

@@ -9,6 +9,7 @@ import "../styles/globals.css";
 import axios from "axios";
 import { store } from "../store";
 import { Provider } from "react-redux";
+import baseUrl from "../helpers/baseUrl";
 
 function MyApp({ Component, pageProps }) {
   const [cart, setCart] = useState({});
@@ -21,7 +22,7 @@ function MyApp({ Component, pageProps }) {
   const fetchuser = async () => {
     const token = localStorage.getItem("token");
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_HOST}/api/fetchuserdata`,
+      `${baseUrl}/api/fetchuserdata`,
       { data: token }
     );
     // console.log("app",response.data);

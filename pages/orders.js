@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import baseUrl from "../helpers/baseUrl";
 
 const Orders = () => {
   const router = useRouter();
@@ -11,7 +12,7 @@ const Orders = () => {
     const fetchorders = async () => {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST}/api/myorders`,
+        `${baseUrl}/api/myorders`,
         { data: token }
       );
       // console.log(response.data);
@@ -32,7 +33,7 @@ const Orders = () => {
       setOrders(orders.filter((item) =>{
         return item._id !== id;
       }))
-      const response = await axios.delete(`${process.env.NEXT_PUBLIC_HOST}/api/deleteorder`, {data: id});
+      const response = await axios.delete(`${baseUrl}/api/deleteorder`, {data: id});
       // console.log(response.data);
       if(response.data.success === true){
         toast.success("Order successfully deleted");

@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import mongoose from "mongoose";
 import Order from "../models/Order";
+import baseUrl from "../helpers/baseUrl";
 
 const Checkout = ({
   cart,
@@ -44,7 +45,7 @@ const Checkout = ({
 
   const fetchAddress = async () => {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_HOST}/api/fetchaddress`,
+      `${baseUrl}/api/fetchaddress`,
       {
         headers: {
           token: localStorage.getItem("token"),
@@ -71,7 +72,7 @@ const Checkout = ({
   const fetchuser = async () => {
     const token = localStorage.getItem("token");
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_HOST}/api/fetchuserdata`,
+      `${baseUrl}/api/fetchuserdata`,
       { data: token }
     );
     setUser(response.data.user);
@@ -111,7 +112,7 @@ const Checkout = ({
         // console.log(payload);
 
         axios
-          .post(`${process.env.NEXT_PUBLIC_HOST}/api/paymentverification`, {
+          .post(`${baseUrl}/api/paymentverification`, {
             data: payload,
           })
           .then((response) => {
@@ -156,7 +157,7 @@ const Checkout = ({
     if (e.target.name === "pincode") {
       setPincode(e.target.value);
       if (e.target.value.length === 5) {
-        let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
+        let pins = await fetch(`${baseUrl}/api/pincode`);
         let pinJson = await pins.json();
         // console.log(pinJson);
         if (Object.keys(pinJson).includes(e.target.value)) {
@@ -405,7 +406,7 @@ const Checkout = ({
           disabled={disabled}
           onClick={async () => {
             const response = await axios.post(
-              `${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`,
+              `${baseUrl}/api/pretransaction`,
               {
                 data: orderDetails,
               }
@@ -438,7 +439,7 @@ const Checkout = ({
             onClick={async () => {
               // console.log(orderDetails);
               const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`,
+                `${baseUrl}/api/pretransaction`,
                 {
                   data: orderDetails,
                 }

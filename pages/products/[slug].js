@@ -6,6 +6,7 @@ import Product from "../../models/Product";
 import mongoose from "mongoose";
 import { toast } from "react-toastify";
 import Error from "next/error";
+import baseUrl from "../../helpers/baseUrl";
 
 const Slug = ({ buyNow, addToCart, product, variants, error }) => {
   // console.log(product, variants);
@@ -25,7 +26,7 @@ const Slug = ({ buyNow, addToCart, product, variants, error }) => {
   const [size, setSize] = useState(product.size);
 
   const checkServiceability = async () => {
-    let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
+    let pins = await fetch(`${baseUrl}/api/pincode`);
     let pinJson = await pins.json();
     console.log(pinJson);
     if (Object.keys(pinJson).includes(pin)) {

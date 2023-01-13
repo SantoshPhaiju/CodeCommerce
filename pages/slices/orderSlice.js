@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import baseUrl from "../../helpers/baseUrl";
 
 export const fetchOrders = createAsyncThunk("order/fetchOrders", async (data) =>{
 
     try {
         const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_HOST}/api/myorders`,
+          `${baseUrl}/api/myorders`,
           { data }
         );
         return response.data;

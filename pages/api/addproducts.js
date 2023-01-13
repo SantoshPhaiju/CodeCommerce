@@ -49,6 +49,7 @@ import Product from "../../models/Product";
 import nextConnect from "next-connect";
 import multer from "multer";
 import path from "path";
+import baseUrl from "../../helpers/baseUrl";
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -82,7 +83,7 @@ apiRoute.post(async (req, res) => {
   const products = await Product.find();
   console.log(req.files);
   let filenames = req.files.map((file) =>{
-    return `${process.env.NEXT_PUBLIC_HOST}/uploads/${file.filename}`;
+    return `${baseUrl}/uploads/${file.filename}`;
   })
   console.log("filenames: ", filenames);
   let p = new Product({

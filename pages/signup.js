@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import baseUrl from "../helpers/baseUrl";
 
 const Signup = () => {
   const [credentails, setCredentails] = useState({
@@ -26,7 +27,7 @@ const Signup = () => {
     e.preventDefault();
     // console.log(credentails);
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/signup`, {
+    const response = await fetch(`${baseUrl}/api/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

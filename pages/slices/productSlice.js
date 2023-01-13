@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import baseUrl from "../../helpers/baseUrl";
 
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
   async () => {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_HOST}/api/getvariants`
+      `${baseUrl}/api/getvariants`
     );
     return response.data;
   }
@@ -16,7 +17,7 @@ export const addProduct = createAsyncThunk(
   async ({formdata, toast}) => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST}/api/addproducts`,
+        `${baseUrl}/api/addproducts`,
         formdata,
         {
           headers: {
@@ -38,7 +39,7 @@ export const deleteProduct = createAsyncThunk(
     try {
       console.log(id);
       const response = await axios.delete(
-        `${process.env.NEXT_PUBLIC_HOST}/api/deleteproduct`,
+        `${baseUrl}/api/deleteproduct`,
         { data: id }
       );
       // console.log(response.data, id);
