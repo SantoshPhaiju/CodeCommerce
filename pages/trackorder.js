@@ -1,22 +1,41 @@
 import mongoose from "mongoose";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Order from "../models/Order";
 import { AiTwotonePhone } from "react-icons/ai";
-import {TiTick} from "react-icons/ti"
+import { TiTick } from "react-icons/ti";
+import dynamic from "next/dynamic";
+
+const StepperComponent = dynamic(() => import("../components/CustomStepper"), {
+  ssr: false,
+});
 
 const TrackOrder = ({ order }) => {
   const router = useRouter();
 
   const { id } = router.query;
   console.log(id);
-  const steps = [
-    "Order Placed",
-    "Processing",
-    "In Transit",
-    "Shipped",
-    "Delivered",
-  ];
+
+  const [activeStep, setActiveStep] = useState(0);
+  useEffect(() => {
+    if(order.deliveryStatus === "Order Placed"){
+      setActiveStep(0);
+    }
+    if(order.deliveryStatus === "Processing"){
+      setActiveStep(1);
+    }
+    if(order.deliveryStatus === "In Transit"){
+      setActiveStep(2);
+    }
+    if(order.deliveryStatus === "Shipped"){
+      setActiveStep(3);
+    }
+    if(order.deliveryStatus === "Delivered"){
+      setActiveStep(4);
+    }
+
+  });
+  
   return (
     <>
       <div className="mainDiv min-h-[80vh]">
@@ -53,20 +72,8 @@ const TrackOrder = ({ order }) => {
                 <div>{order._id}</div>
               </div>
             </div>
-            <div className="stepper flex justify-between px-8 py-2 mt-12 relative">
-              {steps?.map((step, index) => {
-                return (
-                  <div key={index} className={"step-item mt-8"}>
-                    <div className="bar h-[3px] bg-slate-200 w-full absolute top-0 left-0"></div>
-                    <div className="progress h-[3px] bg-green-500 w-[50%] absolute top-0 left-0"></div>
-                    <div className="circle rounded-full border w-[40px] h-[40px] flex justify-center items-center absolute -top-5  font-bold z-20 ml-5 bg-yellow-500">
-                      {/* {index + 1} */}
-                      <TiTick className="text-2xl text-black" />
-                    </div>
-                    <p className="text-lg font-firasans">{step}</p>
-                  </div>
-                );
-              })}
+            <div className="stepper flex justify-between py-2 mt-12 relative w-full">
+              <StepperComponent active={activeStep} />
             </div>
           </div>
         </div>

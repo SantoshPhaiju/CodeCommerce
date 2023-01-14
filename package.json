@@ -24,6 +24,7 @@
     "next-connect": "^0.13.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-form-stepper": "^2.0.3",
     "react-icons": "^4.6.0",
     "react-redux": "^8.0.5",
     "react-toastify": "^9.1.1",
