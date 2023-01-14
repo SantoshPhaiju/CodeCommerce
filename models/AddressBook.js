@@ -6,15 +6,15 @@ const AddressBookSchema = mongoose.Schema(
     userid: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true
+      required: true,
     },
-    name: {type: String, default: "", required: true},
+    name: { type: String, default: "", required: true },
     address: { type: String, default: "", required: true },
     mobile: { type: Number, required: true },
     landmark: { type: String, default: "" },
     province: { type: String, default: "", required: true },
     label: { type: String, default: "" },
-    shippingAddress: { type: Boolean},
+    shippingAddress: { type: Boolean },
     billingAddress: { type: Boolean },
     city: { type: String, default: "", required: true },
     area: { type: String, default: "", required: true },
