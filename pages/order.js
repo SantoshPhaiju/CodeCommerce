@@ -2,23 +2,23 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import Order from "../models/Order";
 import mongoose from "mongoose";
+import Link from "next/link";
 
 const OrderPage = ({ order, addToCart, clearCart }) => {
   const router = useRouter();
 
   // console.log(order);
   useEffect(() => {
-    if(Object.keys(order).length === 0){
+    if (Object.keys(order).length === 0) {
       router.push("/404");
     }
   }, []);
 
-
   let orderedProducts;
   // console.log(order);
-  if(Object.keys(order).length !== 0){
+  if (Object.keys(order).length !== 0) {
     orderedProducts = order.products;
-  }else{
+  } else {
     orderedProducts = {};
   }
   // console.log(orderedProducts);
@@ -35,9 +35,9 @@ const OrderPage = ({ order, addToCart, clearCart }) => {
     day: "numeric",
   });
 
-  const handlePay = () =>{
+  const handlePay = () => {
     // console.log(order.products);
-    
+
     Object.keys(order.products).map((item) => {
       // console.log(orderedProducts[item]["qty"]);
       addToCart(
@@ -49,11 +49,11 @@ const OrderPage = ({ order, addToCart, clearCart }) => {
         order.products[item]?.variant,
         order.products[item]["img"]
       );
-    })
+    });
     // clearCart();
     router.push("/checkout?oid=" + order?.orderId + "&id=" + order?._id);
-  }
-  
+  };
+
   return (
     <div>
       <section className="text-gray-600 body-font overflow-hidden">
@@ -78,7 +78,6 @@ const OrderPage = ({ order, addToCart, clearCart }) => {
                 <span className="text-orange-600 font-semibold font-robotoslab text-lg">
                   {date} at {time}
                 </span>
-                
               </p>
 
               <div className="w-full mb-4 overflow-auto">
@@ -151,7 +150,9 @@ const OrderPage = ({ order, addToCart, clearCart }) => {
                 </span>
                 {order?.status === "Paid" ? (
                   <button className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-pink-600 rounded">
-                    Track Order
+                    <Link href={`/trackorder?id=${order._id}`} className="">
+                      Track Order
+                    </Link>
                   </button>
                 ) : (
                   <button
@@ -182,7 +183,7 @@ export async function getServerSideProps(context) {
 
   let order = await Order.findById(context.query.id);
   // console.log(order);
-  if(order === null){
+  if (order === null) {
     order = {};
   }
 
