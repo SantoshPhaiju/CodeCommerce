@@ -72,7 +72,7 @@ const TrackOrder = ({ order }) => {
                 <div>{order._id}</div>
               </div>
             </div>
-            <div className="stepper flex justify-between py-2 mt-12 relative w-full">
+            <div className="stepper flex justify-between py-2 mt-12 w-full">
               <StepperComponent active={activeStep} />
             </div>
           </div>

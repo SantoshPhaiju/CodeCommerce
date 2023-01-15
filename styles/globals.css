@@ -13,3 +13,7 @@
         @apply font-medium hover:underline-offset-2 text-sm md:text-lg hover:underline hover:text-blue-800;
     }
 }
+
+.stepper__step{
+    border: 2px solid rgb(114, 38, 220) !important;
+}
