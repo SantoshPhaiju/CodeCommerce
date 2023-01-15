@@ -4,9 +4,11 @@ import React, { useRef, useState } from "react";
 import AdminNav from "./components/AdminNav";
 import Sidebar from "./components/Sidebar";
 import Order from "../../models/Order";
+import Link from "next/link";
+import { AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
 
 const OrderPage = ({ order }) => {
-  //   console.log("order", order);
+  console.log("order", order);
   const [showSideBar, setShowSidebar] = useState(true);
   const sideBarRef = useRef();
 
@@ -65,7 +67,10 @@ const OrderPage = ({ order }) => {
               </div>
               <div className="flex items-center mb-4 font-firasans text-lg">
                 <div className="text-gray-600 mr-2">Ordered Date:</div>
-                <div className="text-gray-800 font-bold bg-gray-200 rounded-sm cursor-not-allowed px-2 py-2">{orderDate(order.createdAt).toLocaleDateString()} {orderDate(order.createdAt).toLocaleTimeString()}</div>
+                <div className="text-gray-800 font-bold bg-gray-200 rounded-sm cursor-not-allowed px-2 py-2">
+                  {orderDate(order.createdAt).toLocaleDateString()}{" "}
+                  {orderDate(order.createdAt).toLocaleTimeString()}
+                </div>
               </div>
               <div className="flex items-center mb-4 font-firasans text-lg">
                 <div className="text-gray-600 mr-2">Total:</div>
@@ -84,12 +89,137 @@ const OrderPage = ({ order }) => {
                 <div className="text-gray-600">{order.address}</div>
               </div>
               <div className="flex items-center font-firasans text-base">
-                <div className="text-gray-600">{order.state} Province, {order.city}</div>
+                <div className="text-gray-600">
+                  {order.state} Province, {order.city}
+                </div>
               </div>
               <div className="flex items-center font-firasans text-base">
                 <div className="text-gray-600">{order.phone}</div>
               </div>
+              <br />
+              <div className="editOrder text-xl font-firasans">
+                <h2>Change the Delivery Status: </h2>
+                <select
+                  className="w-[250px] mt-4 px-3 py-2 pr-4 border border-black"
+                  name="dStatus"
+                  id="dStatus"
+                  defaultValue={order.deliveryStatus}
+                >
+                  <option value="Order Placed">Order Placed</option>
+                  <option value="Processing">Processing</option>
+                  <option value="In Transit">In Transit</option>
+                  <option value="Shipped">Shipped</option>
+                  <option value="Delivered">Delivered</option>
+                </select>
+              </div>
             </div>
+          </div>
+
+          <h2 className="mt-10 mb-4 text-2xl font-roboto">
+            Ordered Products Details:-{" "}
+          </h2>
+
+          <div className="overflow-x-auto shadow-md shadow-gray-500/30 mb-10">
+            <table className="border-collapse border border-gray-900 w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-base font-firasans text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th
+                    scope="col"
+                    className="py-4 px-6 border-2 border-gray-700"
+                  >
+                    S.N.
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-4 px-6 border-2 border-gray-700"
+                  >
+                    Product Name
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-4 px-6 border-2 border-gray-700"
+                  >
+                    Price
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-4 px-6 border-2 border-gray-700"
+                  >
+                    Qty
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-4 px-6 border-2 border-gray-700"
+                  >
+                    Amount
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-4 px-6 border-2 border-gray-700"
+                  >
+                    Date
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-4 px-6 border-2 border-gray-700"
+                  >
+                    Image
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-4 px-6 border-2 border-gray-700"
+                  >
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.keys(order.products).map((item, index) => {
+                  // console.log(item);
+                  return (
+                    <tr
+                      key={index}
+                      className="bg-white dark:bg-gray-800 dark:border-gray-700 font-firasans"
+                    >
+                      <td className="py-4 px-6 border-2 border-gray-700">
+                        {index + 1}
+                      </td>
+                      <td
+                        scope="row"
+                        className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap border-2 border-gray-700"
+                      >
+                        {order.products[item].name}
+                      </td>
+                      <td className="py-4 px-6 border-2 border-gray-700">
+                        Rs.{order.products[item].price}
+                      </td>
+                      <td className="py-4 px-6 border-2 border-gray-700">
+                        {order.products[item].qty}
+                      </td>
+                      <td className="py-4 px-6 border-2 border-gray-700">
+                        Rs.
+                        {order.products[item].price * order.products[item].qty}
+                      </td>
+                      <td className="py-4 px-6 border-2 border-gray-700">
+                        {orderDate(order?.createdAt).toLocaleDateString()}
+                        <br />
+                        {orderDate(order?.createdAt).toLocaleTimeString()}
+                      </td>
+                      <td className={`py-4 px-2 border-2 border-gray-700 `}>
+                        <div className="imagecontainer w-full h-[12vh]">
+                          <img
+                            src={order.products[item].img}
+                            alt="Image here"
+                            className="object-contain object-top w-full h-full"
+                          />
+                        </div>
+                      </td>
+                      <td className="py-4 px-6 border-2 border-gray-700"></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

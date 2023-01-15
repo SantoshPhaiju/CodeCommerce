@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Order from "../models/Order";
 import { AiTwotonePhone } from "react-icons/ai";
-import { TiTick } from "react-icons/ti";
 import dynamic from "next/dynamic";
 
 const StepperComponent = dynamic(() => import("../components/CustomStepper"), {
