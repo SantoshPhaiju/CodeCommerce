@@ -4,20 +4,37 @@ import React, { useRef, useState } from "react";
 import AdminNav from "./components/AdminNav";
 import Sidebar from "./components/Sidebar";
 import Order from "../../models/Order";
-import Link from "next/link";
-import { AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
+// import Link from "next/link";
+// import { AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
+import { useDispatch } from "react-redux";
+import { updateOrder } from "../slices/orderSlice";
+import { toast } from "react-toastify";
 
 const OrderPage = ({ order }) => {
-  console.log("order", order);
+  // console.log("order", order);
   const [showSideBar, setShowSidebar] = useState(true);
   const sideBarRef = useRef();
+  const [orderState, setOrderState] = useState(order.deliveryStatus);
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const {id} = router.query;
 
   // Get the orderDate in date format of javascript to convert it to localestring
   const orderDate = (createdAt) => {
     return new Date(createdAt);
   };
 
-  const router = useRouter();
+  const handleChange = async (e) =>{
+    e.preventDefault();
+    setOrderState(e.target.value);
+    // console.log(orderState);
+  }
+
+  const handleUpdate = () =>{
+    console.log(id);
+    dispatch(updateOrder({id, orderState, toast}));
+  }
+
   return (
     <>
       <style jsx global>{`
@@ -103,7 +120,9 @@ const OrderPage = ({ order }) => {
                   className="w-[250px] mt-4 px-3 py-2 pr-4 border border-black"
                   name="dStatus"
                   id="dStatus"
-                  defaultValue={order.deliveryStatus}
+                  defaultValue={orderState}
+                  onChange={handleChange}
+                  disabled={orderState === "Delivered" && true}
                 >
                   <option value="Order Placed">Order Placed</option>
                   <option value="Processing">Processing</option>
@@ -111,6 +130,7 @@ const OrderPage = ({ order }) => {
                   <option value="Shipped">Shipped</option>
                   <option value="Delivered">Delivered</option>
                 </select>
+                <button className="py-2 px-10 ml-6 rounded-sm bg-pink-500 text-white hover:bg-pink-700 shadow-md shadow-gray-500" onClick={handleUpdate}>Save</button>
               </div>
             </div>
           </div>
@@ -157,20 +177,20 @@ const OrderPage = ({ order }) => {
                     scope="col"
                     className="py-4 px-6 border-2 border-gray-700"
                   >
-                    Date
-                  </th>
-                  <th
-                    scope="col"
-                    className="py-4 px-6 border-2 border-gray-700"
-                  >
                     Image
                   </th>
                   <th
                     scope="col"
                     className="py-4 px-6 border-2 border-gray-700"
                   >
-                    Action
+                    Date
                   </th>
+                  {/* <th
+                    scope="col"
+                    className="py-4 px-6 border-2 border-gray-700"
+                  >
+                    Action
+                  </th> */}
                 </tr>
               </thead>
               <tbody>
@@ -179,7 +199,7 @@ const OrderPage = ({ order }) => {
                   return (
                     <tr
                       key={index}
-                      className="bg-white dark:bg-gray-800 dark:border-gray-700 font-firasans"
+                      className="bg-white dark:bg-gray-800 dark:border-gray-700 font-firasans text-base"
                     >
                       <td className="py-4 px-6 border-2 border-gray-700">
                         {index + 1}
@@ -200,11 +220,6 @@ const OrderPage = ({ order }) => {
                         Rs.
                         {order.products[item].price * order.products[item].qty}
                       </td>
-                      <td className="py-4 px-6 border-2 border-gray-700">
-                        {orderDate(order?.createdAt).toLocaleDateString()}
-                        <br />
-                        {orderDate(order?.createdAt).toLocaleTimeString()}
-                      </td>
                       <td className={`py-4 px-2 border-2 border-gray-700 `}>
                         <div className="imagecontainer w-full h-[12vh]">
                           <img
@@ -214,7 +229,12 @@ const OrderPage = ({ order }) => {
                           />
                         </div>
                       </td>
-                      <td className="py-4 px-6 border-2 border-gray-700"></td>
+                      <td className="py-4 px-6 border-2 border-gray-700">
+                        {orderDate(order?.createdAt).toLocaleDateString()}
+                        <br />
+                        {orderDate(order?.createdAt).toLocaleTimeString()}
+                      </td>
+                      {/* <td className="py-4 px-6 border-2 border-gray-700"></td> */}
                     </tr>
                   );
                 })}

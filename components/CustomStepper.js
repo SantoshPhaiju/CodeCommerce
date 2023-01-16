@@ -21,7 +21,7 @@ const CustomStepper = ({ active }) => {
         activeTextColor: "#fff",
         inactiveBgColor: "#90f9f9",
         inactiveTextColor: "#2b7cff",
-        completedBgColor: "#1199ff",
+        completedBgColor: "#038303",
         completedTextColor: "#fff",
         size: "4em",
       }}
