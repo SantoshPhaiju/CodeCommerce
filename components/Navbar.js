@@ -157,6 +157,14 @@ const Navbar = ({
                     <li>Orders</li>
                   </Link>
                   <Link
+                    href={"/trackyourorder"}
+                    className={
+                      "hover:text-purple-700 hover:underline hover:underline-offset-2"
+                    }
+                  >
+                    <li>Track Your Order</li>
+                  </Link>
+                  <Link
                     href={"/login"}
                     onClick={() => {
                       setDropdown(false);

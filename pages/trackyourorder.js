@@ -1,10 +1,16 @@
-import mongoose from "mongoose";
+import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import Order from "../models/Order";
 import { AiTwotonePhone } from "react-icons/ai";
+import { toast } from "react-toastify";
+import baseUrl from "../helpers/baseUrl";
 
-const TrackOrder = ({ order }) => {
+const TrackYourOrder = () => {
+  const [order, setOrder] = useState([]);
+  const [trackData, setTrackData] = useState({
+    email: "",
+    trackingId: ""
+  })
   const [activeStep, setActiveStep] = useState(0);
   useEffect(() => {
     if (order.deliveryStatus === "Order Placed") {
@@ -63,14 +69,82 @@ const TrackOrder = ({ order }) => {
       selected: activeStep === 4 ? true : false,
     },
   ];
-  const router = useRouter();
-
-  const { id } = router.query;
   // console.log(id);
+
+  const handleTrackDataChange = (e) =>{
+    setTrackData({...trackData, [e.target.name]:e.target.value});
+  }
+
+  const handleSubmit = async (e) =>{
+    e.preventDefault();
+    // console.log(trackData);
+
+    try {
+        const response = await axios.post(`${baseUrl}/api/fetchsingleorder`, {data: trackData});
+        // console.log(response.data);
+        setOrder(response.data.order);
+    } catch (error) {
+        // console.log(error);
+        toast.error(error.response.data.error);
+    }
+  }
 
   return (
     <>
       <div className="mainDiv min-h-[80vh]">
+        <div className="trackerOrder px-4 py-4 my-10 bg-slate-100 mx-[100px] h-auto shadow-md border border-gray-300">
+          <div className="inner px-8 py-4 bg-white">
+            <h1 className="font-ubuntu text-2xl underline font-medium capitalize my-4">
+              Enter the detials to track your order:-
+            </h1>
+            <form onSubmit={handleSubmit}>
+              <div className="form w-full grid grid-cols-12 gap-6">
+                <div className="formGroup border-2 col-span-6 px-4 py-4 flex flex-col rounded-sm">
+                  <label htmlFor="email" className="font-robotoslab text-lg">
+                    Enter your email:-
+                  </label>
+                  <input
+                    className="border my-2 border-gray-300 py-2 px-4 rounded-sm font-firasans outline-gray-500"
+                    type="email"
+                    placeholder="abc@gmail.com"
+                    name="email"
+                    id="email"
+                    required={true}
+                    value={trackData.email}
+                    onChange={handleTrackDataChange}
+                  />
+                </div>
+                <div className="formGroup border-2 col-span-6 px-4 py-4 flex flex-col rounded-sm">
+                  <label
+                    htmlFor="trackingId"
+                    className="font-robotoslab text-lg"
+                  >
+                    Enter your tracking id:-
+                  </label>
+                  <input
+                    className="border my-2 border-gray-300 py-2 px-4 rounded-sm font-firasans outline-gray-500"
+                    type="text"
+                    placeholder="Enter your tracking id"
+                    name="trackingId"
+                    id="trackingId"
+                    required={true}
+                    value={trackData.trackingId}
+                    onChange={handleTrackDataChange}
+                  />
+                </div>
+              </div>
+              <div className="button w-full flex justify-end mt-4">
+                <button
+                  type="submit"
+                  className="py-2 px-8 bg-pink-500 rounded-sm text-white text-lg font-ubuntu hover:bg-pink-700"
+                >
+                  Track Order
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
         <div className="my-10 bg-white mx-[100px] h-auto shadow-md border border-t-gray-300">
           <div className="header px-8 flex items-center py-2">
             <h1 className="font-bold font-robotoslab text-2xl">
@@ -173,22 +247,4 @@ const TrackOrder = ({ order }) => {
   );
 };
 
-export async function getServerSideProps(context) {
-  if (!mongoose.connections[0].readyState) {
-    mongoose.connect(process.env.MONGO_URI);
-  }
-
-  let order = await Order.findById(context.query.id);
-  // console.log(order);
-  if (order === null) {
-    order = {};
-  }
-
-  return {
-    props: {
-      order: JSON.parse(JSON.stringify(order)),
-    }, // will be passed to the page component as props
-  };
-}
-
-export default TrackOrder;
+export default TrackYourOrder;

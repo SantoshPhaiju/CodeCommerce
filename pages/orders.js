@@ -103,7 +103,7 @@ const Orders = () => {
                       </Link>
                     </th>
                     <td className="py-4 px-6">{item?.email}</td>
-                    <td className="py-4 px-6">{item?._id}</td>
+                    <td className="py-4 px-6">{item?.trackingId}</td>
                     <td className="py-4 px-6">Rs.{item?.amount}</td>
                     <td className="py-4 px-6">
                       <span

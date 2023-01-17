@@ -3,6 +3,8 @@ import connectToDb from "../../middleware/db";
 import Order from "../../models/Order";
 import Product from "../../models/Product";
 import pincodes from "../../data/pincodes.json";
+import { v4 as uuidv4 } from "uuid";
+
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
@@ -139,6 +141,7 @@ const handler = async (req, res) => {
         products: cart,
         city,
         state,
+        trackingId: uuidv4(),
       });
       await order.save();
       res.status(200).send({ success: true });
