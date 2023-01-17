@@ -11,10 +11,9 @@ const Orders = () => {
   useEffect(() => {
     const fetchorders = async () => {
       const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${baseUrl}/api/myorders`,
-        { data: token }
-      );
+      const response = await axios.post(`${baseUrl}/api/myorders`, {
+        data: token,
+      });
       // console.log(response.data);
       if (response.data.success === true) {
         setOrders(response.data.orders);
@@ -28,18 +27,22 @@ const Orders = () => {
   }, []);
   // console.log(orders.length);
 
-  const deleteOrder = async (id) =>{
-    if(confirm("Are you sure want to delete this order: ")){
-      setOrders(orders.filter((item) =>{
-        return item._id !== id;
-      }))
-      const response = await axios.delete(`${baseUrl}/api/deleteorder`, {data: id});
+  const deleteOrder = async (id) => {
+    if (confirm("Are you sure want to delete this order: ")) {
+      setOrders(
+        orders.filter((item) => {
+          return item._id !== id;
+        })
+      );
+      const response = await axios.delete(`${baseUrl}/api/deleteorder`, {
+        data: id,
+      });
       // console.log(response.data);
-      if(response.data.success === true){
+      if (response.data.success === true) {
         toast.success("Order successfully deleted");
       }
     }
-  }
+  };
 
   return (
     <div className="container w-[96%] sm:w-[90%] mx-auto">
@@ -67,6 +70,9 @@ const Orders = () => {
                 </th>
                 <th scope="col" className="py-4 px-6">
                   email
+                </th>
+                <th scope="col" className="py-4 px-6">
+                  Tracking Id
                 </th>
                 <th scope="col" className="py-4 px-6">
                   Amount
@@ -97,8 +103,19 @@ const Orders = () => {
                       </Link>
                     </th>
                     <td className="py-4 px-6">{item?.email}</td>
+                    <td className="py-4 px-6">{item?._id}</td>
                     <td className="py-4 px-6">Rs.{item?.amount}</td>
-                    <td className="py-4 px-6">{item?.status}</td>
+                    <td className="py-4 px-6">
+                      <span
+                        className={`py-2 px-8 ${
+                          item?.status === "Paid"
+                            ? "bg-green-600 text-white"
+                            : "bg-yellow-400 text-white"
+                        }  rounded-sm font-medium font-ubuntu`}
+                      >
+                        {item?.status}
+                      </span>
+                    </td>
                     <td className="py-4 px-6 flex space-x-3">
                       {item?.status === "Pending" && (
                         <>

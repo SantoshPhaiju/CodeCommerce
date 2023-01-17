@@ -117,12 +117,12 @@ const OrderPage = ({ order }) => {
               <div className="editOrder text-xl font-firasans">
                 <h2>Change the Delivery Status: </h2>
                 <select
-                  className="w-[250px] mt-4 px-3 py-2 pr-4 border border-black"
+                  className={`w-[250px] transition-all duration-300 mt-4 px-3 py-2 pr-4 border ${order.status === "Pending" ? "cursor-not-allowed border-gray-400": "border-black"}`}
                   name="dStatus"
                   id="dStatus"
                   defaultValue={orderState}
                   onChange={handleChange}
-                  disabled={orderState === "Delivered" && true}
+                  disabled={order.status === "Pending" && true}
                 >
                   <option value="Order Placed">Order Placed</option>
                   <option value="Processing">Processing</option>
@@ -130,7 +130,7 @@ const OrderPage = ({ order }) => {
                   <option value="Shipped">Shipped</option>
                   <option value="Delivered">Delivered</option>
                 </select>
-                <button className="py-2 px-10 ml-6 rounded-sm bg-pink-500 text-white hover:bg-pink-700 shadow-md shadow-gray-500" onClick={handleUpdate}>Save</button>
+                <button className={`py-2 px-10 ml-6 rounded-sm bg-pink-500 text-white hover:bg-pink-700 shadow-md shadow-gray-500 ${order.status === "Pending" && "shadow-none bg-pink-300 hover:bg-pink-300 cursor-not-allowed"}`} onClick={handleUpdate} disabled={order.status === "Pending" && true}>Save</button>
               </div>
             </div>
           </div>

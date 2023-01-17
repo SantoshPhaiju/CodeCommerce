@@ -10,31 +10,69 @@ const StepperComponent = dynamic(() => import("../components/CustomStepper"), {
 });
 
 const TrackOrder = ({ order }) => {
+  const [activeStep, setActiveStep] = useState(0);
+  useEffect(() => {
+    if (order.deliveryStatus === "Order Placed") {
+      setActiveStep(0);
+    }
+    if (order.deliveryStatus === "Processing") {
+      setActiveStep(1);
+    }
+    if (order.deliveryStatus === "In Transit") {
+      setActiveStep(2);
+    }
+    if (order.deliveryStatus === "Shipped") {
+      setActiveStep(3);
+    }
+    if (order.deliveryStatus === "Delivered") {
+      setActiveStep(4);
+    }
+  });
+  const steps = [
+    "Order Placed",
+    "Processing",
+    "In Transit",
+    "Shipped",
+    "Delivered",
+  ];
+
+  const newSteps = [
+    {
+      description: "Order Placed",
+      completed: activeStep >= 0 ? true : false,
+      highlighted: activeStep === 0 ? true : false,
+      selected: activeStep === 0 ? true : false,
+    },
+    {
+      description: "Processing",
+      completed: activeStep >= 1 ? true : false,
+      highlighted: activeStep === 1 ? true : false,
+      selected: activeStep === 1 ? true : false,
+    },
+    {
+      description: "In Transit",
+      completed: activeStep >= 2 ? true : false,
+      highlighted: activeStep === 2 ? true : false,
+      selected: activeStep === 2 ? true : false,
+    },
+    {
+      description: "Shipped",
+      completed: activeStep >= 3 ? true : false,
+      highlighted: activeStep === 3 ? true : false,
+      selected: activeStep === 3 ? true : false,
+    },
+    {
+      description: "Delivered",
+      completed: activeStep >= 4 ? true : false,
+      highlighted: activeStep === 4 ? true : false,
+      selected: activeStep === 4 ? true : false,
+    },
+  ];
   const router = useRouter();
 
   const { id } = router.query;
   console.log(id);
 
-  const [activeStep, setActiveStep] = useState(0);
-  useEffect(() => {
-    if(order.deliveryStatus === "Order Placed"){
-      setActiveStep(0);
-    }
-    if(order.deliveryStatus === "Processing"){
-      setActiveStep(1);
-    }
-    if(order.deliveryStatus === "In Transit"){
-      setActiveStep(2);
-    }
-    if(order.deliveryStatus === "Shipped"){
-      setActiveStep(3);
-    }
-    if(order.deliveryStatus === "Delivered"){
-      setActiveStep(4);
-    }
-
-  });
-  
   return (
     <>
       <div className="mainDiv min-h-[80vh]">
@@ -71,8 +109,60 @@ const TrackOrder = ({ order }) => {
                 <div>{order._id}</div>
               </div>
             </div>
-            <div className="stepper flex justify-between py-2 mt-12 w-full">
-              <StepperComponent active={activeStep} />
+
+            <div className="px-10 py-10 my-12 border flex justify-center items-center">
+              <div className="relative flex justify-between py-2 w-full items-center">
+                {newSteps.map((step, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className={`${
+                        index !== steps.length - 1
+                          ? "w-full flex items-center"
+                          : "flex items-center"
+                      } z-20`}
+                    >
+                      <div className="relative flex flex-col items-center justify-between text-teal-600">
+                        <div
+                          className={`border-2 border-gray-300 rounded-full w-12 h-12 flex items-center justify-center py-3 font-bold bg-gray-100  ${
+                            step.completed &&
+                            "border-gray-300 bg-green-600 text-white"
+                          } ${
+                            step.completed &&
+                            step.selected &&
+                            "border-4 border-yellow-500 bg-yellow-300 text-white scale-125"
+                          }`}
+                        >
+                          {/* Display number */}
+                          {step.completed ? (
+                            <span>&#10003;</span>
+                          ) : (
+                            <span>{index + 1}</span>
+                          )}
+                        </div>
+                        <div className={`absolute flex justify-center items-center flex-wrap top-0 text-center mt-16 w-32 uppercase ${step.completed ? "font-firasans text-black text-base" : "text-xs font-medium"}`}>
+                          {/* Display description */}
+                          {step.description}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+                <div className="flex-auto border-t-2 absolute border-gray-300 w-full z-0">
+                  {/* Display line */}
+                </div>
+                <div
+                  className={`flex-auto border-t-2 absolute border-green-600 z-0 ${
+                    order.deliveryStatus === "Order Placed" && "w-[0%]"
+                  } ${order.deliveryStatus === "Processing" && "w-[25%]"} ${
+                    order.deliveryStatus === "In Transit" && "w-[50%]"
+                  } ${order.deliveryStatus === "Shipped" && "w-[75%]"} ${
+                    order.deliveryStatus === "Delivered" && "w-[100%]"
+                  }`}
+                >
+                  {/* Display line */}
+                </div>
+              </div>
             </div>
           </div>
         </div>
