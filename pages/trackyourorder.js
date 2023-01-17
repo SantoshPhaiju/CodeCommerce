@@ -89,12 +89,19 @@ const TrackYourOrder = () => {
     }
   }
 
+  const orderDate = (createdAt) => {
+    let date = new Date(createdAt);
+    date.setDate(date.getDate() + 5);
+    return date;
+    // return new Date(createdAt);
+  }; 
+
   return (
     <>
       <div className="mainDiv min-h-[80vh]">
         <div className="trackerOrder px-4 py-4 my-10 bg-slate-100 mx-[100px] h-auto shadow-md border border-gray-300">
           <div className="inner px-8 py-4 bg-white">
-            <h1 className="font-ubuntu text-2xl underline font-medium capitalize my-4">
+            <h1 className="font-robotoslab text-2xl font-bold capitalize my-4">
               Enter the detials to track your order:-
             </h1>
             <form onSubmit={handleSubmit}>
@@ -145,10 +152,10 @@ const TrackYourOrder = () => {
           </div>
         </div>
 
-        <div className="my-10 bg-white mx-[100px] h-auto shadow-md border border-t-gray-300">
+        {order.length !== 0 && <div className="my-10 bg-white mx-[100px] h-auto shadow-md border border-t-gray-300">
           <div className="header px-8 flex items-center py-2">
             <h1 className="font-bold font-robotoslab text-2xl">
-              Track your order{" "}
+              Your Order Tracking Status
             </h1>
           </div>
           <hr className="border-gray-400" />
@@ -159,7 +166,11 @@ const TrackYourOrder = () => {
             <div className="border py-4 px-10 my-3 flex flex-wrap gap-2 justify-between items-start">
               <div className="font-ubuntu text-lg">
                 <div>Estimated Delivery Time: </div>
-                <div>29 Nov, 2023</div>
+                <div>{orderDate(order.createdAt).toDateString()}</div>
+              </div>
+              <div className="font-ubuntu text-lg">
+                <div>Payment Status: </div>
+                <div className="bg-yellow-500 text-white rounded-sm text-center shadow-sm">{order.status}</div>
               </div>
               <div className="font-ubuntu text-lg">
                 <div>Shipping By: </div>
@@ -175,7 +186,7 @@ const TrackYourOrder = () => {
               </div>
               <div className="font-ubuntu text-lg">
                 <div>Tracking Id: </div>
-                <div>{order._id}</div>
+                <div>{order.trackingId}</div>
               </div>
             </div>
 
@@ -241,7 +252,7 @@ const TrackYourOrder = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div>}
       </div>
     </>
   );
