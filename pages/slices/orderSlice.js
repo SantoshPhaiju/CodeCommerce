@@ -63,7 +63,7 @@ const orderSlice = createSlice({
       })
       .addCase(updateOrder.fulfilled, (state, action) => {
         state.status = "successed";
-        console.log(action.payload);
+        // console.log(action.payload);
         // if (action.payload.success === true) {
         //   state.orders = action.payload.orders;
         // }

@@ -3,7 +3,7 @@ import Order from "../../models/Order";
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
-    console.log(req.body.data);
+    // console.log(req.body.data);
     const { id, orderState } = req.body.data;
     const order = await Order.findById(id);
     if (order !== null) {

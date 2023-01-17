@@ -71,7 +71,7 @@ const TrackOrder = ({ order }) => {
   const router = useRouter();
 
   const { id } = router.query;
-  console.log(id);
+  // console.log(id);
 
   return (
     <>
@@ -124,13 +124,14 @@ const TrackOrder = ({ order }) => {
                     >
                       <div className="relative flex flex-col items-center justify-between text-teal-600">
                         <div
-                          className={`border-2 border-gray-300 rounded-full w-12 h-12 flex items-center justify-center py-3 font-bold bg-gray-100  ${
-                            step.completed &&
-                            "border-gray-300 bg-green-600 text-white"
+                          className={`border-2 border-gray-300 rounded-full w-12 h-12 flex items-center justify-center py-3 font-bold   ${
+                            step.completed === true
+                              ? "border-gray-300 bg-green-600 text-white"
+                              : "bg-gray-100"
                           } ${
-                            step.completed &&
-                            step.selected &&
-                            "border-4 border-yellow-500 bg-yellow-300 text-white scale-125"
+                            step.completed && step.selected
+                              ? "border-4 border-yellow-500 bg-yellow-300 text-white scale-125"
+                              : ""
                           }`}
                         >
                           {/* Display number */}
@@ -140,7 +141,13 @@ const TrackOrder = ({ order }) => {
                             <span>{index + 1}</span>
                           )}
                         </div>
-                        <div className={`absolute flex justify-center items-center flex-wrap top-0 text-center mt-16 w-32 uppercase ${step.completed ? "font-firasans text-black text-base" : "text-xs font-medium"}`}>
+                        <div
+                          className={`absolute flex justify-center items-center flex-wrap top-0 text-center mt-16 w-32 uppercase ${
+                            step.completed
+                              ? "font-firasans text-black text-base"
+                              : "text-xs font-medium"
+                          }`}
+                        >
                           {/* Display description */}
                           {step.description}
                         </div>
