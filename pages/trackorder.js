@@ -66,6 +66,13 @@ const TrackOrder = ({ order }) => {
   const router = useRouter();
 
   const { id } = router.query;
+
+   const orderDate = (createdAt) => {
+     let date = new Date(createdAt);
+     date.setDate(date.getDate() + 5);
+     return date;
+     // return new Date(createdAt);
+   }; 
   // console.log(id);
 
   return (
@@ -85,7 +92,13 @@ const TrackOrder = ({ order }) => {
             <div className="border py-4 px-10 my-3 flex flex-wrap gap-2 justify-between items-start">
               <div className="font-ubuntu text-lg">
                 <div>Estimated Delivery Time: </div>
-                <div>29 Nov, 2023</div>
+                <div>{orderDate(order.createdAt).toDateString()}</div>
+              </div>
+              <div className="font-ubuntu text-lg">
+                <div>Payment Status: </div>
+                <div className="bg-yellow-500 text-white rounded-sm text-center shadow-sm">
+                  {order.status}
+                </div>
               </div>
               <div className="font-ubuntu text-lg">
                 <div>Shipping By: </div>
@@ -101,7 +114,7 @@ const TrackOrder = ({ order }) => {
               </div>
               <div className="font-ubuntu text-lg">
                 <div>Tracking Id: </div>
-                <div>{order._id}</div>
+                <div>{order.trackingId}</div>
               </div>
             </div>
 

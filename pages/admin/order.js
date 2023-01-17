@@ -12,28 +12,31 @@ import { toast } from "react-toastify";
 
 const OrderPage = ({ order }) => {
   // console.log("order", order);
+  const router = useRouter();
+  const { id } = router.query;
+  if(order === {}){
+    router.push("/admin/orders");
+  }
   const [showSideBar, setShowSidebar] = useState(true);
   const sideBarRef = useRef();
   const [orderState, setOrderState] = useState(order.deliveryStatus);
   const dispatch = useDispatch();
-  const router = useRouter();
-  const {id} = router.query;
 
   // Get the orderDate in date format of javascript to convert it to localestring
   const orderDate = (createdAt) => {
     return new Date(createdAt);
   };
 
-  const handleChange = async (e) =>{
+  const handleChange = async (e) => {
     e.preventDefault();
     setOrderState(e.target.value);
     // console.log(orderState);
-  }
+  };
 
-  const handleUpdate = () =>{
+  const handleUpdate = () => {
     console.log(id);
-    dispatch(updateOrder({id, orderState, toast}));
-  }
+    dispatch(updateOrder({ id, orderState, toast }));
+  };
 
   return (
     <>
@@ -117,7 +120,11 @@ const OrderPage = ({ order }) => {
               <div className="editOrder text-xl font-firasans">
                 <h2>Change the Delivery Status: </h2>
                 <select
-                  className={`w-[250px] transition-all duration-300 mt-4 px-3 py-2 pr-4 border ${order.status === "Pending" ? "cursor-not-allowed border-gray-400": "border-black"}`}
+                  className={`w-[250px] transition-all duration-300 mt-4 px-3 py-2 pr-4 border ${
+                    order.status === "Pending"
+                      ? "cursor-not-allowed border-gray-400"
+                      : "border-black"
+                  }`}
                   name="dStatus"
                   id="dStatus"
                   defaultValue={orderState}
@@ -130,7 +137,16 @@ const OrderPage = ({ order }) => {
                   <option value="Shipped">Shipped</option>
                   <option value="Delivered">Delivered</option>
                 </select>
-                <button className={`py-2 px-10 ml-6 rounded-sm bg-pink-500 text-white hover:bg-pink-700 shadow-md shadow-gray-500 ${order.status === "Pending" && "shadow-none bg-pink-300 hover:bg-pink-300 cursor-not-allowed"}`} onClick={handleUpdate} disabled={order.status === "Pending" && true}>Save</button>
+                <button
+                  className={`py-2 px-10 ml-6 rounded-sm bg-pink-500 text-white hover:bg-pink-700 shadow-md shadow-gray-500 ${
+                    order.status === "Pending" &&
+                    "shadow-none bg-pink-300 hover:bg-pink-300 cursor-not-allowed"
+                  }`}
+                  onClick={handleUpdate}
+                  disabled={order.status === "Pending" && true}
+                >
+                  Save
+                </button>
               </div>
             </div>
           </div>
@@ -183,7 +199,7 @@ const OrderPage = ({ order }) => {
                     scope="col"
                     className="py-4 px-6 border-2 border-gray-700"
                   >
-                    Date
+                    Ordered Date
                   </th>
                   {/* <th
                     scope="col"
@@ -194,7 +210,7 @@ const OrderPage = ({ order }) => {
                 </tr>
               </thead>
               <tbody>
-                {Object.keys(order.products).map((item, index) => {
+                {Object.keys(order).length !== 0 ? Object.keys(order?.products).map((item, index) => {
                   // console.log(item);
                   return (
                     <tr
@@ -237,7 +253,7 @@ const OrderPage = ({ order }) => {
                       {/* <td className="py-4 px-6 border-2 border-gray-700"></td> */}
                     </tr>
                   );
-                })}
+                }) : <div className="text-red-700 text-2xl text-center font-ubuntu font-bold my-5">Invalid Order Id</div>}
               </tbody>
             </table>
           </div>
@@ -254,6 +270,7 @@ export async function getServerSideProps(context) {
 
   let order = await Order.findById(context.query.id);
   //   console.log(context.query.id);
+  console.log(order);
   if (order === null) {
     order = {};
   }
