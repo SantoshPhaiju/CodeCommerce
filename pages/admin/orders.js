@@ -182,7 +182,7 @@ const Orders = () => {
                     onClick={showOptions}
                   />
                   <div
-                    className={`options absolute top-7 shadow-md shadow-gray-600 left-20 text-black border-2 flex flex-col bg-slate-100 font-firasans transition-all duration-500 ease-in-out transform ${
+                    className={`options w-[200px] absolute top-7 shadow-md shadow-gray-600 left-20 text-black border-2 flex flex-col bg-slate-100 font-firasans transition-all duration-500 ease-in-out transform ${
                       options === true
                         ? "opacity-100 translate-y-0"
                         : "opacity-0 -translate-y-96"
@@ -227,11 +227,12 @@ const Orders = () => {
 
                 <div className="search">
                   <div className="formGroup">
+                    <p className="text-xs flex flex-wrap w-[250px] text-red-400 font-firasans">Search by amount, email, orderId, status and deliverystatus</p>
                     <input
                       name="query"
                       value={query}
                       onChange={handleSearchChange}
-                      className="py-2 px-4 font-firasans border-2 my-2 mr-2 rounded-sm text-lg border-gray-400 outline-gray-600"
+                      className="py-2 px-4 font-firasans border-2 mb-2 mr-2 rounded-sm text-lg border-gray-400 outline-gray-600"
                       type="text"
                       placeholder="Search......"
                     />
