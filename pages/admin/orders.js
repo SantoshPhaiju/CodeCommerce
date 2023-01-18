@@ -19,6 +19,8 @@ const Orders = () => {
   const sideBarRef = useRef();
   const ordersSelState = useSelector((state) => state.order.orders);
   const [orders, setOrders] = useState("");
+  const [dataLimit, setDataLimit] = useState(5);
+  const remaining = useSelector((state) => state.order.remaining);
 
   useEffect(() => {
     setOrders(ordersSelState);
@@ -36,8 +38,8 @@ const Orders = () => {
   }
 
   useEffect(() => {
-    dispatch(fetchOrders(admintoken));
-  }, []);
+    dispatch(fetchOrders({token: admintoken, dataLimit}));
+  }, [dataLimit]);
 
   // const orderDate = new Date("2022-11-25T13:44:14.437+00:00");
   const orderDate = (createdAt) => {
@@ -423,8 +425,14 @@ const Orders = () => {
                         })}
                     </tbody>
                   </table>
+
                 </div>
               )}
+              <button className={`py-2 px-6 shadow-md bg-pink-500 hover:bg-pink-700 font-ubuntu text-lg text-white rounded-sm ${remaining === false && "cursor-not-allowed shadow-none bg-pink-300 hover:bg-pink-300"}`} onClick={() => {
+                setDataLimit(dataLimit + 5);
+              }} disabled={remaining === false && true}>
+                <span>{remaining === true? "Load More Data" : "All Data Loaded"}</span>
+              </button>
             </div>
           </div>
         </div>

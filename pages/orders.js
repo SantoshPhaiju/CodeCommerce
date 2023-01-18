@@ -8,15 +8,23 @@ import baseUrl from "../helpers/baseUrl";
 const Orders = () => {
   const router = useRouter();
   const [orders, setOrders] = useState([]);
+  const [dataLimit, setDataLimit] = useState(5);
+  const [remaining, setRemaining] = useState("");
   useEffect(() => {
     const fetchorders = async () => {
       const token = localStorage.getItem("token");
       const response = await axios.post(`${baseUrl}/api/myorders`, {
-        data: token,
+        data: { token, dataLimit },
       });
-      // console.log(response.data);
+      console.log(response.data);
       if (response.data.success === true) {
-        setOrders(response.data.orders);
+        if (response.data.remaining === true) {
+          setRemaining(true)
+          setOrders(response.data.orders);
+        } else {
+          setRemaining(false);
+          setOrders(response.data.orders);
+        }
       }
     };
     if (!localStorage.getItem("token")) {
@@ -24,7 +32,7 @@ const Orders = () => {
     } else {
       fetchorders();
     }
-  }, []);
+  }, [dataLimit]);
   // console.log(orders.length);
 
   const deleteOrder = async (id) => {
@@ -151,6 +159,19 @@ const Orders = () => {
           </table>
         </div>
       )}
+
+      <button
+        className={`py-2 mb-8 px-6 shadow-md bg-pink-500 hover:bg-pink-700 font-ubuntu text-lg text-white rounded-sm ${
+          remaining === false &&
+          "cursor-not-allowed shadow-none bg-pink-300 hover:bg-pink-300"
+        }`}
+        onClick={() => {
+          setDataLimit(dataLimit + 5);
+        }}
+        disabled={remaining === false && true}
+      >
+        <span>{remaining === true ? "Load More Data" : "All Data Loaded"}</span>
+      </button>
     </div>
   );
 };
