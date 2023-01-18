@@ -13,6 +13,20 @@ export const fetchOrders = createAsyncThunk(
     }
   }
 );
+export const deleteOrder = createAsyncThunk(
+  "order/deleteOrder",
+  async ({id, toast}) => {
+    try {
+      const response = await axios.delete(`${baseUrl}/api/deleteorder`, { data: id });
+      if(response.data.success === true){
+        toast.success("Order deleted successfully");
+      }
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 
 export const updateOrder = createAsyncThunk(
   "order/updateOrder",
@@ -69,6 +83,26 @@ const orderSlice = createSlice({
         // }
       })
       .addCase(updateOrder.rejected, (state, action) => {
+        state.status = "rejected";
+        state.error = action.error.message;
+        console.log(action.error.message);
+      })
+      .addCase(deleteOrder.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(deleteOrder.fulfilled, (state, action) => {
+        state.status = "successed";
+        console.log(action.payload);
+        if (action.payload.success === true) {
+          const orders = state.orders;
+          let newOrders = orders.filter((order, index) =>{
+            return order._id !== action.payload.order._id;
+          })
+          console.log("neworders", newOrders);
+          state.orders = newOrders;
+        }
+      })
+      .addCase(deleteOrder.rejected, (state, action) => {
         state.status = "rejected";
         state.error = action.error.message;
         console.log(action.error.message);

@@ -11,7 +11,7 @@ const Sidebar = ({ showSideBar, setShowSidebar, sideBarRef }) => {
   return (
     <div
       ref={sideBarRef}
-      className={`sidebar transform  sm:translate-x-0 sm:block bg-[#0e0e23] h-[100vh] py-4 px-4 shadow-lg shadow-gray-900 fixed top-0 bottom-0 left-0 transition-all duration-300 -mb-[50px] z-20 ${
+      className={`sidebar transform  sm:translate-x-0 sm:block bg-[#0e0e23] h-[100vh] py-4 px-4 shadow-lg shadow-gray-900 fixed top-0 bottom-0 left-0 transition-all duration-300 -mb-[50px] z-40 ${
         showSideBar === false ? "w-[80px] -translate-x-96" : "w-[250px] translate-x-0"
       }`}
     >
