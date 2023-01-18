@@ -67,12 +67,12 @@ const TrackOrder = ({ order }) => {
 
   const { id } = router.query;
 
-   const orderDate = (createdAt) => {
-     let date = new Date(createdAt);
-     date.setDate(date.getDate() + 5);
-     return date;
-     // return new Date(createdAt);
-   }; 
+  const orderDate = (createdAt) => {
+    let date = new Date(createdAt);
+    date.setDate(date.getDate() + 5);
+    return date;
+    // return new Date(createdAt);
+  };
   // console.log(id);
 
   return (
@@ -138,7 +138,7 @@ const TrackOrder = ({ order }) => {
                               : "bg-gray-100"
                           } ${
                             step.completed && step.selected
-                              ? "border-4 border-yellow-500 bg-yellow-300 text-white scale-125"
+                              ? "border-4 border-yellow-500 bg-yellow-300 text-white scale-125 animate-bounce"
                               : ""
                           }`}
                         >

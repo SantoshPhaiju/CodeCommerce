@@ -160,7 +160,7 @@ const Orders = () => {
         </div>
       )}
 
-      <button
+      {orders.length !== 0 && <button
         className={`py-2 mb-8 px-6 shadow-md bg-pink-500 hover:bg-pink-700 font-ubuntu text-lg text-white rounded-sm ${
           remaining === false &&
           "cursor-not-allowed shadow-none bg-pink-300 hover:bg-pink-300"
@@ -171,7 +171,7 @@ const Orders = () => {
         disabled={remaining === false && true}
       >
         <span>{remaining === true ? "Load More Data" : "All Data Loaded"}</span>
-      </button>
+      </button>}
     </div>
   );
 };

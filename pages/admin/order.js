@@ -67,8 +67,8 @@ const OrderPage = ({ order }) => {
           <div className="font-medium mb-2 text-3xl font-roboto">
             Order Details:
           </div>
-          <div className="bg-white p-4 rounded-lg grid grid-cols-12 gap-2">
-            <div className="orderDetail col-span-5">
+          <div className="bg-white p-4 rounded-lg grid md:grid-cols-12 gap-8 md:gap-2">
+            <div className="orderDetail col-span-12 md:col-span-5 border-2 p-4 md:border-none md:p-0">
               <div className="flex items-center mb-4 font-firasans text-lg ">
                 <div className="text-gray-600 mr-2">Order ID:</div>
                 <div className="text-gray-800 font-bold">#{order.orderId}</div>
@@ -98,7 +98,7 @@ const OrderPage = ({ order }) => {
               </div>
             </div>
 
-            <div className="shippingDetails col-span-7">
+            <div className="shippingDetails col-span-12 md:col-span-7 border-2 p-4 md:border-none md:p-0">
               <div className="font-medium mb-2 text-xl font-rubik">
                 SHIPPING ADDRESS
               </div>
@@ -210,50 +210,57 @@ const OrderPage = ({ order }) => {
                 </tr>
               </thead>
               <tbody>
-                {Object.keys(order).length !== 0 ? Object.keys(order?.products).map((item, index) => {
-                  // console.log(item);
-                  return (
-                    <tr
-                      key={index}
-                      className="bg-white dark:bg-gray-800 dark:border-gray-700 font-firasans text-base"
-                    >
-                      <td className="py-4 px-6 border-2 border-gray-700">
-                        {index + 1}
-                      </td>
-                      <td
-                        scope="row"
-                        className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap border-2 border-gray-700"
+                {Object.keys(order).length !== 0 ? (
+                  Object.keys(order?.products).map((item, index) => {
+                    // console.log(item);
+                    return (
+                      <tr
+                        key={index}
+                        className="bg-white dark:bg-gray-800 dark:border-gray-700 font-firasans text-base"
                       >
-                        {order.products[item].name}
-                      </td>
-                      <td className="py-4 px-6 border-2 border-gray-700">
-                        Rs.{order.products[item].price}
-                      </td>
-                      <td className="py-4 px-6 border-2 border-gray-700">
-                        {order.products[item].qty}
-                      </td>
-                      <td className="py-4 px-6 border-2 border-gray-700">
-                        Rs.
-                        {order.products[item].price * order.products[item].qty}
-                      </td>
-                      <td className={`py-4 px-2 border-2 border-gray-700 `}>
-                        <div className="imagecontainer w-full h-[12vh]">
-                          <img
-                            src={order.products[item].img}
-                            alt="Image here"
-                            className="object-contain object-top w-full h-full"
-                          />
-                        </div>
-                      </td>
-                      <td className="py-4 px-6 border-2 border-gray-700">
-                        {orderDate(order?.createdAt).toLocaleDateString()}
-                        <br />
-                        {orderDate(order?.createdAt).toLocaleTimeString()}
-                      </td>
-                      {/* <td className="py-4 px-6 border-2 border-gray-700"></td> */}
-                    </tr>
-                  );
-                }) : <div className="text-red-700 text-2xl text-center font-ubuntu font-bold my-5">Invalid Order Id</div>}
+                        <td className="py-4 px-6 border-2 border-gray-700">
+                          {index + 1}
+                        </td>
+                        <td
+                          scope="row"
+                          className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap border-2 border-gray-700"
+                        >
+                          {order.products[item].name}
+                        </td>
+                        <td className="py-4 px-6 border-2 border-gray-700">
+                          Rs.{order.products[item].price}
+                        </td>
+                        <td className="py-4 px-6 border-2 border-gray-700">
+                          {order.products[item].qty}
+                        </td>
+                        <td className="py-4 px-6 border-2 border-gray-700">
+                          Rs.
+                          {order.products[item].price *
+                            order.products[item].qty}
+                        </td>
+                        <td className={`py-4 px-2 border-2 border-gray-700 `}>
+                          <div className="imagecontainer w-full h-[12vh]">
+                            <img
+                              src={order.products[item].img}
+                              alt="Image here"
+                              className="object-contain object-top w-full h-full"
+                            />
+                          </div>
+                        </td>
+                        <td className="py-4 px-6 border-2 border-gray-700">
+                          {orderDate(order?.createdAt).toLocaleDateString()}
+                          <br />
+                          {orderDate(order?.createdAt).toLocaleTimeString()}
+                        </td>
+                        {/* <td className="py-4 px-6 border-2 border-gray-700"></td> */}
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <div className="text-red-700 text-2xl text-center font-ubuntu font-bold my-5">
+                    Invalid Order Id
+                  </div>
+                )}
               </tbody>
             </table>
           </div>
