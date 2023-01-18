@@ -207,13 +207,13 @@ const TrackYourOrder = () => {
                     >
                       <div className="relative flex flex-col items-center justify-between text-teal-600">
                         <div
-                          className={`border-2 border-gray-300 rounded-full w-12 h-12 flex items-center justify-center py-3 font-bold   ${
+                          className={`border-2 border-gray-300 rounded-full w-12 h-12 flex items-center justify-center py-3 font-bold transition-all duration-300  ${
                             step.completed === true
                               ? "border-gray-300 bg-green-600 text-white"
                               : "bg-gray-100"
                           } ${
                             step.completed && step.selected
-                              ? "border-4 border-yellow-500 bg-yellow-300 text-white scale-125"
+                              ? "border-4 border-yellow-500 bg-yellow-300 text-white scale-125 animate-bounce"
                               : ""
                           }`}
                         >
@@ -242,7 +242,7 @@ const TrackYourOrder = () => {
                   {/* Display line */}
                 </div>
                 <div
-                  className={`flex-auto border-t-2 absolute border-green-600 z-0 ${
+                  className={`flex-auto border-t-2 absolute border-green-600 z-0 transition-all duration-300 ${
                     order.deliveryStatus === "Order Placed" && "w-[0%]"
                   } ${order.deliveryStatus === "Processing" && "w-[25%]"} ${
                     order.deliveryStatus === "In Transit" && "w-[50%]"
