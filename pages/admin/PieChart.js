@@ -6,7 +6,7 @@ const PieChart = ({ chartData }) => {
   return (
     <div className="w-full">
       <h2 className="text-2xl font-firasans font-bold text-center text-pink-800">
-        Users Status
+        Total Orders
       </h2>
 
       <Pie data={chartData} />

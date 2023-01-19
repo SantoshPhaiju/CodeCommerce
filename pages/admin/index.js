@@ -10,6 +10,7 @@ import { MdLocalShipping } from "react-icons/md";
 import BarChart from "../../components/BarChart";
 import { UserData } from "./Data";
 import PieChart from "./PieChart";
+import { OrderData } from "./OrdersData";
 
 const Index = () => {
   const [showSideBar, setShowSidebar] = useState(true);
@@ -24,24 +25,39 @@ const Index = () => {
     admintoken = localStorage.getItem("admin-token");
   }
 
+  // #e60049 #0bb4ff #50e991 #e6d800 #9b19f5 #ffa300 #dc0ab4 #b3d4ff #00bfa0
+
   const [userData, setUserData] = useState({
     labels: UserData.map((data) => data.year),
     datasets: [
       {
         label: "Users Gained",
         data: UserData.map((data) => data.userGain),
-        backgroundColor: "rgba(0, 255, 0, 0.7)",
-        borderColor: "rgba(0, 0, 0, 1)",
-        borderWidth: 1,
-        borderRadius: 2,
+        backgroundColor: " #e6d800",
+        // borderColor: "rgba(0, 0, 0, 1)",
+        // borderWidth: 1,
+        // borderRadius: 2,
       },
       {
         label: "Users Lost",
         data: UserData.map((data) => data.userLost),
-        backgroundColor: "red",
-        borderColor: "rgba(0, 0, 0, 1)",
-        borderWidth: 1,
-        borderRadius: 2
+        backgroundColor: "#e60049",
+        // borderColor: "rgba(0, 0, 0, 1)",
+        // borderWidth: 1,
+        // borderRadius: 2,
+      },
+    ],
+  });
+  const [ordersData, setOrdersData] = useState({
+    labels: OrderData.map((data) => data.month),
+    datasets: [
+      {
+        label: "Total Orders",
+        data: OrderData.map((data) => data.totalOrdersReceived),
+        backgroundColor: ["#e60049", "#0bb4ff", "#50e991", "#00bfa0", "#50e991", "#e6d800", "#ffa300", "#dc0ab4", "#9b19f5"],
+        // borderColor: "rgba(0, 0, 0, 1)",
+        // borderWidth: 1,
+        // borderRadius: 2,
       },
     ],
   });
@@ -169,12 +185,12 @@ const Index = () => {
                 </div>
               </div>
 
-              <div className="charts w-full shadow-md shadow-gray-400 p-4 my-4 flex gap-4 items-center justify-center bg-slate-50">
+              <div className="charts w-full p-4 my-4 flex gap-4 items-center justify-center bg-slate-50">
                 <div className="barchart w-[65%] border-2 p-2 bg-white rounded-md">
                   <BarChart chartData={userData} />
                 </div>
-                <div className="piechart w-[33%] border-2 p-2 bg-white rounded-md"> 
-                  <PieChart chartData={userData} />
+                <div className="piechart w-[33%] border-2 p-2 bg-white rounded-md">
+                  <PieChart chartData={ordersData} />
                 </div>
               </div>
             </div>
