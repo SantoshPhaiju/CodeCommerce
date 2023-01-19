@@ -21,6 +21,8 @@ const Orders = () => {
   const [orders, setOrders] = useState("");
   const [dataLimit, setDataLimit] = useState(5);
   const remaining = useSelector((state) => state.order.remaining);
+  const totalOrders = useSelector((state) => state.order.totalOrders);
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
     setOrders(ordersSelState);
@@ -38,8 +40,8 @@ const Orders = () => {
   }
 
   useEffect(() => {
-    dispatch(fetchOrders({token: admintoken, dataLimit}));
-  }, [dataLimit]);
+    dispatch(fetchOrders({ token: admintoken, dataLimit, page }));
+  }, [dataLimit, page]);
 
   // const orderDate = new Date("2022-11-25T13:44:14.437+00:00");
   const orderDate = (createdAt) => {
@@ -229,7 +231,10 @@ const Orders = () => {
 
                 <div className="search">
                   <div className="formGroup">
-                    <p className="text-xs flex flex-wrap w-[250px] text-red-400 font-firasans">Search by amount, email, orderId, status and deliverystatus</p>
+                    <p className="text-xs flex flex-wrap w-[250px] text-red-400 font-firasans">
+                      Search by amount, email, orderId, status and
+                      deliverystatus
+                    </p>
                     <input
                       name="query"
                       value={query}
@@ -425,14 +430,50 @@ const Orders = () => {
                         })}
                     </tbody>
                   </table>
-
                 </div>
               )}
-              <button className={`py-2 px-6 shadow-md bg-pink-500 hover:bg-pink-700 font-ubuntu text-lg text-white rounded-sm ${remaining === false && "cursor-not-allowed shadow-none bg-pink-300 hover:bg-pink-300"}`} onClick={() => {
-                setDataLimit(dataLimit + 5);
-              }} disabled={remaining === false && true}>
-                <span>{remaining === true? "Load More Data" : "All Data Loaded"}</span>
-              </button>
+              {/* <button
+                className={`py-2 px-6 shadow-md bg-pink-500 hover:bg-pink-700 font-ubuntu text-lg text-white rounded-sm ${
+                  remaining === false &&
+                  "cursor-not-allowed shadow-none bg-pink-300 hover:bg-pink-300"
+                }`}
+                onClick={() => {
+                  setDataLimit(dataLimit + 5);
+                }}
+                disabled={remaining === false && true}
+              >
+                <span>
+                  {remaining === true ? "Load More Data" : "All Data Loaded"}
+                </span>
+              </button> */}
+              <br />
+              <div>Page: {page}</div> <span>Showing {dataLimit * page + orders.length} of {totalOrders}</span>
+              <div className="paginationButtons flex items-center gap-5 my-3">
+                <button
+                  className={`py-2 px-6 shadow-md bg-pink-500 hover:bg-pink-700 font-ubuntu text-lg text-white rounded-sm ${
+                    page === 0 &&
+                    "cursor-not-allowed shadow-none bg-pink-300 hover:bg-pink-300"
+                  }`}
+                  onClick={() => {
+                    setPage(page - 1);
+                  }}
+                  disabled={page === 0 && true}
+                >
+                  <span>{remaining === true ? "Previous" : "Previous"}</span>
+                </button>
+                <button
+                  className={`py-2 px-6 shadow-md bg-pink-500 hover:bg-pink-700 font-ubuntu text-lg text-white rounded-sm ${
+                    remaining === false &&
+                    "cursor-not-allowed shadow-none bg-pink-300 hover:bg-pink-300"
+                  }`}
+                  onClick={() => {
+                    setPage(page + 1);
+                  }}
+                  disabled={remaining === false && true}
+                >
+                  <span>{remaining === true ? "Next" : "Next"}</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>

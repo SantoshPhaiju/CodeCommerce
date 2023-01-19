@@ -4,10 +4,11 @@ import baseUrl from "../../helpers/baseUrl";
 
 export const fetchOrders = createAsyncThunk(
   "order/fetchOrders",
-  async ({token, dataLimit}) => {
+  async ({token, dataLimit, page}) => {
     try {
       // console.log(token, dataLimit);
-      const response = await axios.post(`${baseUrl}/api/myorders`, { data: {token, dataLimit} });
+      console.log(page);
+      const response = await axios.post(`${baseUrl}/api/myorders?page=${page}`, { data: {token, dataLimit} });
       return response.data;
     } catch (error) {
       console.log(error);
@@ -51,6 +52,7 @@ const initialState = {
   status: "idle",
   error: null,
   remaining: "",
+  totalOrders: 0,
 };
 
 const orderSlice = createSlice({
@@ -64,7 +66,8 @@ const orderSlice = createSlice({
       })
       .addCase(fetchOrders.fulfilled, (state, action) => {
         state.status = "successed";
-        // console.log(action.payload);
+        console.log(action.payload);
+        state.totalOrders = action.payload.totalOrders;
         if (action.payload.success === true) {
           if(action.payload.remaining === true){
             state.remaining = true;
