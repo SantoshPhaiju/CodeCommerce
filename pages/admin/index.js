@@ -94,7 +94,7 @@ const Index = () => {
               </h1>
 
               <div className="w-full gap-2 xl:gap-0 h-auto flex flex-wrap flex-row items-center justify-center">
-                <div className="sales w-full sm:w-3/4 md:w-[49%] xl:w-[25%] my-2 py-4 px-6 rounded-lg xl:rounded-l-lg xl:rounded-r-none cursor-pointer bg-blue-100 hover:bg-blue-300 xl:border-r border-gray-400">
+                <div className="sales w-full sm:w-3/4 md:w-[49%] xl:w-[25%] my-2 py-4 px-6 rounded-lg xl:rounded-l-lg xl:rounded-r-none cursor-pointer bg-blue-100 hover:bg-blue-300 xl:border-r border-gray-400 h-[22vh]">
                   <div className="text-black flex gap-4 items-center">
                     <div className="rounded-full p-1 bg-black">
                       <RiShoppingBag2Line className="text-white" />
@@ -117,7 +117,7 @@ const Index = () => {
                   </div>
                 </div>
 
-                <div className="orders w-full sm:w-3/4 md:w-[49%] xl:w-[25%] my-2 py-4 px-6 rounded-lg xl:rounded-none cursor-pointer bg-blue-100 hover:bg-blue-300 border-r border-gray-400">
+                <div className="orders w-full sm:w-3/4 md:w-[49%] xl:w-[25%] my-2 py-4 px-6 rounded-lg xl:rounded-none cursor-pointer bg-blue-100 hover:bg-blue-300 border-r border-gray-400 h-[22vh]">
                   <div className="text-black flex gap-4 items-center">
                     <div className="rounded-full p-1 bg-black">
                       <BsCartCheck className="text-white" />
@@ -139,7 +139,7 @@ const Index = () => {
                     </div>
                   </div>
                 </div>
-                <div className="sales w-full sm:w-3/4 md:w-[49%] xl:w-[25%] my-2 py-4 px-6 rounded-lg xl:rounded-none cursor-pointer bg-blue-100 hover:bg-blue-300 border-r border-gray-400">
+                <div className="customers w-full sm:w-3/4 md:w-[49%] xl:w-[25%] my-2 py-4 px-6 rounded-lg xl:rounded-none cursor-pointer bg-blue-100 hover:bg-blue-300 border-r border-gray-400 h-[22vh]">
                   <div className="text-black flex gap-4 items-center">
                     <div className="rounded-full p-1 bg-black">
                       <BiGroup className="text-white" />
@@ -161,7 +161,7 @@ const Index = () => {
                     </div>
                   </div>
                 </div>
-                <div className="sales w-full sm:w-3/4 md:w-[49%] xl:w-[25%] my-2 py-4 px-6 rounded-lg xl:rounded-l-none xl:rounded-r-lg cursor-pointer bg-blue-100 hover:bg-blue-300 border-r border-gray-400">
+                <div className="pendingOrders w-full sm:w-3/4 md:w-[49%] xl:w-[25%] my-2 py-4 px-6 rounded-lg xl:rounded-l-none xl:rounded-r-lg cursor-pointer bg-blue-100 hover:bg-blue-300 border-r border-gray-400 h-[22vh]">
                   <div className="text-black flex gap-4 items-center">
                     <div className="rounded-full p-1 bg-black">
                       <MdLocalShipping className="text-white" />
@@ -185,11 +185,11 @@ const Index = () => {
                 </div>
               </div>
 
-              <div className="charts w-full p-4 my-4 flex gap-4 items-center justify-center bg-slate-50">
-                <div className="barchart w-[65%] border-2 p-2 bg-white rounded-md">
+              <div className="charts w-full p-4 my-4 flex flex-wrap gap-4 items-center justify-center bg-slate-50">
+                <div className="barchart w-full xl:w-[65%] border-2 p-2 bg-white rounded-md">
                   <BarChart chartData={userData} />
                 </div>
-                <div className="piechart w-[33%] border-2 p-2 bg-white rounded-md">
+                <div className="piechart w-full xl:w-[33%] border-2 p-2 bg-white rounded-md">
                   <PieChart chartData={ordersData} />
                 </div>
               </div>
