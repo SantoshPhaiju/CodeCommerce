@@ -17,6 +17,7 @@ const OrderSchema = mongoose.Schema(
     status: { type: String, default: "Pending", required: true },
     deliveryStatus: { type: String, default: "Order Placed", required: true },
     trackingId: {type: String, required: true},
+    deliveryDate: {type: Date, default: "", required: false},
   },
   { timestamps: true }
 );

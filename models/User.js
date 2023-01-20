@@ -9,7 +9,8 @@ const UserSchema = mongoose.Schema(
     phone: {type: Number, default: ""},
     dob: {type: String, default: ""},
     gender: {type: String, default: ""},
-    admin: { type: Boolean, default: false }
+    admin: { type: Boolean, default: false },
+    status: {type: String, default: "active"}
   },
   { timestamps: true }
 );

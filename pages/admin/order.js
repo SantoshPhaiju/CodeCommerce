@@ -14,13 +14,14 @@ const OrderPage = ({ order }) => {
   // console.log("order", order);
   const router = useRouter();
   const { id } = router.query;
-  if(order === {}){
+  if (order === {}) {
     router.push("/admin/orders");
   }
   const [showSideBar, setShowSidebar] = useState(true);
   const sideBarRef = useRef();
   const [orderState, setOrderState] = useState(order.deliveryStatus);
   const dispatch = useDispatch();
+  const [orderDelivery, setOrderDelivery] = useState(order.deliveryStatus);
 
   // Get the orderDate in date format of javascript to convert it to localestring
   const orderDate = (createdAt) => {
@@ -32,10 +33,17 @@ const OrderPage = ({ order }) => {
     setOrderState(e.target.value);
     // console.log(orderState);
   };
+  // Call this function whenever you want to
+  // refresh props!
+  const refreshData = () => {
+    router.replace(router.asPath);
+  };
 
   const handleUpdate = () => {
     console.log(id);
     dispatch(updateOrder({ id, orderState, toast }));
+    setOrderDelivery(orderState);
+    refreshData();
   };
 
   return (
@@ -118,35 +126,48 @@ const OrderPage = ({ order }) => {
               </div>
               <br />
               <div className="editOrder text-xl font-firasans">
-                <h2>Change the Delivery Status: </h2>
-                <select
-                  className={`w-[250px] transition-all duration-300 mt-4 px-3 py-2 pr-4 border ${
-                    order.status === "Pending"
-                      ? "cursor-not-allowed border-gray-400"
-                      : "border-black"
-                  }`}
-                  name="dStatus"
-                  id="dStatus"
-                  defaultValue={orderState}
-                  onChange={handleChange}
-                  disabled={order.status === "Pending" && true}
-                >
-                  <option value="Order Placed">Order Placed</option>
-                  <option value="Processing">Processing</option>
-                  <option value="In Transit">In Transit</option>
-                  <option value="Shipped">Shipped</option>
-                  <option value="Delivered">Delivered</option>
-                </select>
-                <button
-                  className={`py-2 px-10 ml-6 rounded-sm bg-pink-500 text-white hover:bg-pink-700 shadow-md shadow-gray-500 ${
-                    order.status === "Pending" &&
-                    "shadow-none bg-pink-300 hover:bg-pink-300 cursor-not-allowed"
-                  }`}
-                  onClick={handleUpdate}
-                  disabled={order.status === "Pending" && true}
-                >
-                  Save
-                </button>
+                {orderDelivery !== "Delivered" && (
+                  <h2>Change the Delivery Status: </h2>
+                )}
+                {orderDelivery !== "Delivered" ? (
+                  <>
+                    <select
+                      className={`w-[250px] transition-all duration-300 mt-4 px-3 py-2 pr-4 border ${
+                        order.status === "Pending"
+                          ? "cursor-not-allowed border-gray-400"
+                          : "border-black"
+                      }`}
+                      name="dStatus"
+                      id="dStatus"
+                      defaultValue={orderState}
+                      onChange={handleChange}
+                      disabled={order.status === "Pending" && true}
+                    >
+                      <option value="Order Placed">Order Placed</option>
+                      <option value="Processing">Processing</option>
+                      <option value="In Transit">In Transit</option>
+                      <option value="Shipped">Shipped</option>
+                      <option value="Delivered">Delivered</option>
+                    </select>
+                    <button
+                      className={`py-2 px-10 ml-6 rounded-sm bg-pink-500 text-white hover:bg-pink-700 shadow-md shadow-gray-500 ${
+                        order.status === "Pending" &&
+                        "shadow-none bg-pink-300 hover:bg-pink-300 cursor-not-allowed"
+                      }`}
+                      onClick={handleUpdate}
+                      disabled={order.status === "Pending" && true}
+                    >
+                      Save
+                    </button>
+                  </>
+                ) : (
+                  <div className="bg-yellow-600 text-white py-2 px-8 w-[350px] rounded-sm cursor-not-allowed">
+                    Order Delivered at{" "}
+                    {orderDate(order?.deliveryDate).toLocaleDateString()} &nbsp;
+                    &nbsp;
+                    {orderDate(order?.deliveryDate).toLocaleTimeString()}
+                  </div>
+                )}
               </div>
             </div>
           </div>

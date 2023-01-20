@@ -10,9 +10,6 @@ import { fetchOrders } from "../slices/orderSlice";
 import { BsFilterSquare } from "react-icons/bs";
 import { deleteOrder } from "../slices/orderSlice";
 import { toast } from "react-toastify";
-// import Table from "../../components/Table";
-// import {tableData} from "../../components/dummyTableData";
-import DataTable from "react-data-table-component";
 
 const Orders = () => {
   const [showSideBar, setShowSidebar] = useState(true);
@@ -26,6 +23,8 @@ const Orders = () => {
   const remaining = useSelector((state) => state.order.remaining);
   const totalOrders = useSelector((state) => state.order.totalOrders);
   const [page, setPage] = useState(0);
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
 
   useEffect(() => {
     setOrders(ordersSelState);
@@ -43,7 +42,13 @@ const Orders = () => {
   }
 
   useEffect(() => {
-    dispatch(fetchOrders({ token: admintoken, dataLimit, page }));
+    if (fromDate && toDate !== "") {
+      let from = new Date(fromDate).toISOString();
+      let to = new Date(toDate).toISOString();
+      dispatch(fetchOrders({ token: admintoken, dataLimit, page, from, to }));
+    } else {
+      dispatch(fetchOrders({ token: admintoken, dataLimit, page }));
+    }
   }, [dataLimit, page]);
 
   // const orderDate = new Date("2022-11-25T13:44:14.437+00:00");
@@ -55,7 +60,7 @@ const Orders = () => {
     setOptions(!options);
   };
   const sorting = (order) => {
-    console.log(order);
+    // console.log(order);
     if (order === "oldFirst") {
       const sorted = [...orders].sort((a, b) => {
         // console.log(
@@ -85,7 +90,7 @@ const Orders = () => {
       });
       setOrders(sorted);
       setSortOrder(order);
-      console.log(sorted);
+      // console.log(sorted);
     }
     if (order === "newFirst") {
       const sorted = [...orders].sort((a, b) => {
@@ -114,41 +119,8 @@ const Orders = () => {
       });
       setOrders(sorted);
       setSortOrder(order);
-      console.log(sorted);
+      // console.log(sorted);
     }
-  };
-
-  const customSort = (rows, selector, direction) => {
-    return rows.sort((rowA, rowB) => {
-      // use the selector function to resolve your field names by passing the sort comparitors
-      const aField = selector(rowA);
-      const bField = selector(rowB);
-      const aDate =
-        orderDate(aField.createdAt).getFullYear() +
-        "/" +
-        (orderDate(aField.createdAt).getMonth() +
-          "/" +
-          orderDate(aField.createdAt).getDate());
-      const bDate =
-        orderDate(bField.createdAt).getFullYear() +
-        "/" +
-        (orderDate(bField.createdAt).getMonth() +
-          "/" +
-          orderDate(bField.createdAt).getDate());
-      // console.log(aDate, bDate);
-
-      let comparison = 0;
-
-      if (aDate > bDate) {
-        comparison = 1;
-      } else if (aDate < bDate) {
-        comparison = 1;
-      } else {
-        comparison = -1;
-      }
-      // return aDate > bDate ? 1 : -1;
-      return direction === "desc" ? comparison * -1 : comparison;
-    });
   };
 
   const deleteSingleOrder = (id) => {
@@ -157,74 +129,25 @@ const Orders = () => {
 
   const handleSearchChange = (e) => {
     setQuery(e.target.value);
-    // console.log(e.target.value);
-    // console.log(
-    //   orders.filter((order, index) => {
-    //     return order.email.toLowerCase().includes(e.target.value);
-    //     // return order.email.indludes(e.target.value);
-    //   })
-    // );
-    // if (query !== "") {
-    //   setOrders(
-    //     orders.filter((order, index) => {
-    //       return order.email.toLowerCase().includes(query.toLowerCase());
-    //       // return order.email.indludes(e.target.value);
-    //     })
-    //   );
-    // } else {
-    //   setOrders(ordersSelState);
-    // }
   };
 
-  const columns = [
-    {
-      name: "Id",
-      selector: (row) => (
-        <Link className="link" href={"/admin/orders"}>
-          #{row._id}
-        </Link>
-      ),
-    },
-    { name: "Name", selector: (row) => row.name },
-    {
-      name: "Date",
-      selector: (row) => (
-        <span>{orderDate(row.createdAt).toLocaleDateString()}</span>
-      ),
-      sortable: true,
-    },
-    {
-      name: "Email",
-      selector: (row) => (
-        <span className="bg-yellow-500 text-white py-2 px-4 text-lg">
-          {row.email}
-        </span>
-      ),
-    },
-  ];
+  const fromDateChange = (e) => {
+    setFromDate(e.target.value);
+    // console.log(e.target.value)
+  };
+  const toDateChange = (e) => {
+    setToDate(e.target.value);
+    // console.log(e.target.value)
+  };
 
-  const customStyles = {
-    rows: {
-      style: {
-        minHeight: "72px", // override the row height
-      },
-    },
-    headCells: {
-      style: {
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
-        fontSize: "30px",
-        fontFamily: "roboto",
-      },
-    },
-    cells: {
-      style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
-        fontFamily: "roboto",
-        color: "blue",
-      },
-    },
+  const handleDateSearch = () => {
+    // console.log(new Date(fromDate).toISOString())
+    // console.log(fromDate, toDate)
+
+    let from = new Date(fromDate).toISOString();
+    let to = new Date(toDate).toISOString();
+
+    dispatch(fetchOrders({ token: admintoken, dataLimit, page, from, to }));
   };
 
   return (
@@ -314,6 +237,27 @@ const Orders = () => {
                       )}
                     </button>
                   </div>
+                </div>
+
+                <div className="datePicker flex items-center space-x-2">
+                  <span className="text-lg font-firasans ">Search From: </span>
+                  <input
+                    type="date"
+                    className="border border-gray-300 outline-gray-400 px-4 py-2 font-firasans cursor-pointer"
+                    onChange={fromDateChange}
+                  />
+                  <span className="text-lg font-firasans ">Search To:</span>
+                  <input
+                    type="date"
+                    className="border border-gray-300 outline-gray-400 px-4 py-2 font-firasans cursor-pointer"
+                    onChange={toDateChange}
+                  />
+                  <button
+                    className="btn py-2 px-6 shadow-md bg-pink-500 hover:bg-pink-700 font-ubuntu text-lg text-white rounded-sm"
+                    onClick={handleDateSearch}
+                  >
+                    Search
+                  </button>
                 </div>
 
                 <div className="search">
@@ -428,9 +372,7 @@ const Orders = () => {
                                 scope="row"
                                 className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white hover:text-blue-500 hover:underline border-2 border-gray-700 text-center"
                               >
-                                <Link href={"/order?id=" + item?._id}>
-                                  # {item?.orderId}
-                                </Link>
+                                # {item?.orderId}
                               </td>
                               <td className="py-4 px-6 border-2 border-gray-700 text-center">
                                 {item?.email}
@@ -567,17 +509,6 @@ const Orders = () => {
                 </button>
               </div>
             </div>
-
-            {/* <Table tableData={tableData} columns={columns} />*/}
-
-            <DataTable
-              data={orders}
-              columns={columns}
-              customStyles={customStyles}
-              pagination={true}
-              striped={true}
-              sortFunction={customSort}
-            />
           </div>
         </div>
       </div>

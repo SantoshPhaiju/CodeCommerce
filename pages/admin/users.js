@@ -16,6 +16,7 @@ const Users = () => {
   const [admin, setAdmin] = useState();
   const [userId, setUserId] = useState();
   const router = useRouter();
+  const [userStatus, setUserStatus] = useState("");
   if (typeof window !== "undefined") {
     if (!localStorage.getItem("admin-token")) {
       router.push("/admin/login");
@@ -30,15 +31,16 @@ const Users = () => {
     return str.slice(0, 1).toUpperCase();
   };
 
-  const handleEdit = (id, adminVal) => {
+  const handleEdit = (id, adminVal, status) => {
     console.log(id);
     setShowModal(true);
     setUserId(id);
     setAdmin(adminVal);
+    setUserStatus(status)
   };
   
   const handleUpdate = () =>{
-    dispatch(editUser({id: userId, admin}))
+    dispatch(editUser({id: userId, admin, status: userStatus}))
     setShowModal(false)
   }
 
@@ -121,6 +123,31 @@ const Users = () => {
                           </option>
                         </select>
                       </div>
+                      <div className="inputGroup mx-4 my-2">
+                        <label
+                          className="font-firasans text-base"
+                          htmlFor="name"
+                        >
+                          User Status:
+                        </label>
+                        <select
+                          className="w-full border-2 rounded-md my-1 border-pink-500 outline-blue-600 py-2 px-4"
+                          type="text"
+                          name="name"
+                          id="name"
+                          value={userStatus}
+                          onChange={(e) => {
+                            setUserStatus(e.target.value)
+                          }}
+                        >
+                          <option value="active">
+                            Active
+                          </option>
+                          <option value="inactive">
+                            InActive
+                          </option>
+                        </select>
+                      </div>
                     </form>
                   </div>
                   <hr />
@@ -167,6 +194,9 @@ const Users = () => {
                       </th>
                       <th scope="col" className="py-4 px-6">
                         Gender
+                      </th>
+                      <th scope="col" className="py-4 px-6">
+                        Status
                       </th>
                       <th scope="col" className="py-4 px-6">
                         Phone
@@ -216,6 +246,11 @@ const Users = () => {
                                 ? item.gender
                                 : "not provided"}
                             </td>
+                            <td className="py-4 px-6 text-center">
+                              {item?.status !== "inactive"
+                                ? <span className="px-4 rounded-sm py-1 bg-yellow-500 text-white font-firasans">Active</span>
+                                : <span className="px-4 rounded-sm py-1 bg-red-800 text-white font-firasans">InActive</span>}
+                            </td>
                             <td className="py-4 px-6">
                               {item?.phone !== null ? (
                                 item.phone
@@ -226,7 +261,7 @@ const Users = () => {
                             <td className="py-4 px-6">
                               <button
                                 className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
-                                onClick={() => handleEdit(item._id, item.admin)}
+                                onClick={() => handleEdit(item._id, item.admin, item.status)}
                               >
                                 <FaUserEdit className="text-2xl text-orange-500 hover:scale-110" />
                               </button>

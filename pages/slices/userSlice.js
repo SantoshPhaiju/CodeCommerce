@@ -4,9 +4,9 @@ import baseUrl from "../../helpers/baseUrl";
 
 export const editUser = createAsyncThunk(
   "user/editUser",
-  async ({ id, admin }) => {
+  async ({ id, admin, status }) => {
     console.log(id, admin);
-    const data = { id, admin };
+    const data = { id, admin, status };
 
     try {
       const response = await axios.post(
@@ -75,10 +75,12 @@ export const userSlice = createSlice({
         state.status = "fulfilled";
         console.log(action.payload);
         const admin = action.payload.updatedUser.admin;
+        const status = action.payload.updatedUser.status;
         if (action.payload.success === true) {
           state.users.map((user) => {
             if (user._id === action.payload.updatedUser._id) {
               user.admin = admin;
+              user.status = status;
             }
           });
         }

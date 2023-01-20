@@ -4,11 +4,11 @@ import baseUrl from "../../helpers/baseUrl";
 
 export const fetchOrders = createAsyncThunk(
   "order/fetchOrders",
-  async ({token, dataLimit, page}) => {
+  async ({token, dataLimit, page, from, to}) => {
     try {
       // console.log(token, dataLimit);
-      console.log(page);
-      const response = await axios.post(`${baseUrl}/api/myorders?page=${page}`, { data: {token, dataLimit} });
+      // console.log(page);
+      const response = await axios.post(`${baseUrl}/api/myorders?page=${page}`, { data: {token, dataLimit, from, to} });
       return response.data;
     } catch (error) {
       console.log(error);

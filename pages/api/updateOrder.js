@@ -9,7 +9,7 @@ const handler = async (req, res) => {
     if (order !== null) {
       const updatedOrder = await Order.findByIdAndUpdate(
         id,
-        { deliveryStatus: orderState },
+        { deliveryStatus: orderState, deliveryDate: new Date() },
         { new: true }
       );
       res.status(200).json({ success: true, updatedOrder });
