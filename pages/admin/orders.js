@@ -10,11 +10,14 @@ import { fetchOrders } from "../slices/orderSlice";
 import { BsFilterSquare } from "react-icons/bs";
 import { deleteOrder } from "../slices/orderSlice";
 import { toast } from "react-toastify";
+// import Table from "../../components/Table";
+// import {tableData} from "../../components/dummyTableData";
+import DataTable from "react-data-table-component";
 
 const Orders = () => {
   const [showSideBar, setShowSidebar] = useState(true);
   const [query, setQuery] = useState("");
-  const [sortOrder, setSortOrder] = useState("");
+  const [sortOrder, setSortOrder] = useState("oldFirst");
   const [options, setOptions] = useState(false);
   const sideBarRef = useRef();
   const ordersSelState = useSelector((state) => state.order.orders);
@@ -115,6 +118,39 @@ const Orders = () => {
     }
   };
 
+  const customSort = (rows, selector, direction) => {
+    return rows.sort((rowA, rowB) => {
+      // use the selector function to resolve your field names by passing the sort comparitors
+      const aField = selector(rowA);
+      const bField = selector(rowB);
+      const aDate =
+        orderDate(aField.createdAt).getFullYear() +
+        "/" +
+        (orderDate(aField.createdAt).getMonth() +
+          "/" +
+          orderDate(aField.createdAt).getDate());
+      const bDate =
+        orderDate(bField.createdAt).getFullYear() +
+        "/" +
+        (orderDate(bField.createdAt).getMonth() +
+          "/" +
+          orderDate(bField.createdAt).getDate());
+      // console.log(aDate, bDate);
+
+      let comparison = 0;
+
+      if (aDate > bDate) {
+        comparison = 1;
+      } else if (aDate < bDate) {
+        comparison = 1;
+      } else {
+        comparison = -1;
+      }
+      // return aDate > bDate ? 1 : -1;
+      return direction === "desc" ? comparison * -1 : comparison;
+    });
+  };
+
   const deleteSingleOrder = (id) => {
     dispatch(deleteOrder({ id, toast }));
   };
@@ -138,6 +174,57 @@ const Orders = () => {
     // } else {
     //   setOrders(ordersSelState);
     // }
+  };
+
+  const columns = [
+    {
+      name: "Id",
+      selector: (row) => (
+        <Link className="link" href={"/admin/orders"}>
+          #{row._id}
+        </Link>
+      ),
+    },
+    { name: "Name", selector: (row) => row.name },
+    {
+      name: "Date",
+      selector: (row) => (
+        <span>{orderDate(row.createdAt).toLocaleDateString()}</span>
+      ),
+      sortable: true,
+    },
+    {
+      name: "Email",
+      selector: (row) => (
+        <span className="bg-yellow-500 text-white py-2 px-4 text-lg">
+          {row.email}
+        </span>
+      ),
+    },
+  ];
+
+  const customStyles = {
+    rows: {
+      style: {
+        minHeight: "72px", // override the row height
+      },
+    },
+    headCells: {
+      style: {
+        paddingLeft: "8px", // override the cell padding for head cells
+        paddingRight: "8px",
+        fontSize: "30px",
+        fontFamily: "roboto",
+      },
+    },
+    cells: {
+      style: {
+        paddingLeft: "8px", // override the cell padding for data cells
+        paddingRight: "8px",
+        fontFamily: "roboto",
+        color: "blue",
+      },
+    },
   };
 
   return (
@@ -248,61 +335,61 @@ const Orders = () => {
               </div>
 
               {orders.length > 0 && (
-                <div className="overflow-x-auto shadow-md shadow-gray-500/30 mb-10">
+                <div className="overflow-x-auto shadow-md shadow-gray-500/30 mb-3">
                   <table className="border-collapse border border-gray-900 w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead className="text-base font-firasans text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+                    <thead className="text-base font-firasans text-white bg-indigo-900 uppercase dark:bg-gray-700 dark:text-gray-400">
                       <tr>
                         <th
                           scope="col"
-                          className="py-4 px-6 border-2 border-gray-700"
+                          className="py-4 px-6 border-2 border-gray-700 text-center"
                         >
                           S.N.
                         </th>
                         <th
                           scope="col"
-                          className="py-4 px-6 border-2 border-gray-700"
+                          className="py-4 px-6 border-2 border-gray-700 text-center"
                         >
                           Order Id
                         </th>
                         <th
                           scope="col"
-                          className="py-4 px-6 border-2 border-gray-700"
+                          className="py-4 px-6 border-2 border-gray-700 text-center"
                         >
                           email
                         </th>
                         <th
                           scope="col"
-                          className="py-4 px-6 border-2 border-gray-700"
+                          className="py-4 px-6 border-2 border-gray-700 text-center"
                         >
                           Amount
                         </th>
                         <th
                           scope="col"
-                          className="py-4 px-6 border-2 border-gray-700"
+                          className="py-4 px-6 border-2 border-gray-700 text-center"
                         >
                           Date
                         </th>
                         <th
                           scope="col"
-                          className="py-4 px-6 border-2 border-gray-700"
+                          className="py-4 px-6 border-2 border-gray-700 text-center"
                         >
                           Status
                         </th>
                         <th
                           scope="col"
-                          className="py-4 px-6 border-2 border-gray-700"
+                          className="py-4 px-6 border-2 border-gray-700 text-center"
                         >
                           Delivery Status
                         </th>
                         <th
                           scope="col"
-                          className="py-4 px-6 border-2 border-gray-700"
+                          className="py-4 px-6 border-2 border-gray-700 text-center"
                         >
                           Address
                         </th>
                         <th
                           scope="col"
-                          className="py-4 px-6 border-2 border-gray-700"
+                          className="py-4 px-6 border-2 border-gray-700 text-center"
                         >
                           Action
                         </th>
@@ -332,26 +419,26 @@ const Orders = () => {
                           return (
                             <tr
                               key={index}
-                              className="bg-white dark:bg-gray-800 dark:border-gray-700 font-firasans"
+                              className="bg-white dark:bg-gray-800 dark:border-gray-700 text-center font-firasans hover:bg-blue-200/80 cursor-pointer odd:bg-gray-200 even:bg-white"
                             >
-                              <td className="py-4 px-6 border-2 border-gray-700">
+                              <td className="py-4 px-6 border-2 border-gray-700 text-center">
                                 {index + 1}
                               </td>
                               <td
                                 scope="row"
-                                className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white hover:text-blue-500 hover:underline border-2 border-gray-700"
+                                className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white hover:text-blue-500 hover:underline border-2 border-gray-700 text-center"
                               >
                                 <Link href={"/order?id=" + item?._id}>
                                   # {item?.orderId}
                                 </Link>
                               </td>
-                              <td className="py-4 px-6 border-2 border-gray-700">
+                              <td className="py-4 px-6 border-2 border-gray-700 text-center">
                                 {item?.email}
                               </td>
-                              <td className="py-4 px-6 border-2 border-gray-700">
+                              <td className="py-4 px-6 border-2 border-gray-700 text-center">
                                 Rs.{item?.amount}
                               </td>
-                              <td className="py-4 px-6 border-2 border-gray-700">
+                              <td className="py-4 px-6 border-2 border-gray-700 text-center">
                                 {orderDate(
                                   item?.createdAt
                                 ).toLocaleDateString()}
@@ -360,7 +447,7 @@ const Orders = () => {
                                   item?.createdAt
                                 ).toLocaleTimeString()}
                               </td>
-                              <td className="py-4 px-6 border-2 border-gray-700">
+                              <td className="py-4 px-6 border-2 border-gray-700 text-center">
                                 <span
                                   className={`py-1 px-4 rounded-sm text-white ${
                                     item?.status === "Pending"
@@ -376,7 +463,7 @@ const Orders = () => {
                                 </span>
                               </td>
                               <td
-                                className={`py-4 px-6 border-2 border-gray-700 `}
+                                className={`py-4 px-6 border-2 border-gray-700 text-center `}
                               >
                                 <span
                                   className={`py-1 px-4 rounded-sm flex items-center justify-center text-center text-white ${
@@ -404,10 +491,10 @@ const Orders = () => {
                                   {item?.deliveryStatus}
                                 </span>
                               </td>
-                              <td className="py-4 px-6 border-2 border-gray-700">
+                              <td className="py-4 px-6 border-2 border-gray-700 text-center">
                                 {item?.address}
                               </td>
-                              <td className="py-4 px-6 border-2 border-gray-700">
+                              <td className="py-4 px-6 border-2 border-gray-700 text-center">
                                 <div className="flex space-x-3">
                                   <Link
                                     href={"/admin/order?id=" + item?._id}
@@ -446,8 +533,13 @@ const Orders = () => {
                   {remaining === true ? "Load More Data" : "All Data Loaded"}
                 </span>
               </button> */}
-              <br />
-              <div>Page: {page}</div> <span>Showing {dataLimit * page + orders.length} of {totalOrders}</span>
+              <div className="downTableDetails flex justify-start items-center gap-4 text-lg font-ubuntu text-gray-600">
+                <div>Page: {page}</div>|
+                <span>
+                  Showing {dataLimit * page + orders.length} of {totalOrders}{" "}
+                  results.
+                </span>
+              </div>
               <div className="paginationButtons flex items-center gap-5 my-3">
                 <button
                   className={`py-2 px-6 shadow-md bg-pink-500 hover:bg-pink-700 font-ubuntu text-lg text-white rounded-sm ${
@@ -475,6 +567,17 @@ const Orders = () => {
                 </button>
               </div>
             </div>
+
+            {/* <Table tableData={tableData} columns={columns} />*/}
+
+            <DataTable
+              data={orders}
+              columns={columns}
+              customStyles={customStyles}
+              pagination={true}
+              striped={true}
+              sortFunction={customSort}
+            />
           </div>
         </div>
       </div>
