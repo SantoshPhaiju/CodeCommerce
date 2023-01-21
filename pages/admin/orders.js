@@ -252,10 +252,7 @@ const Orders = () => {
                     className="border border-gray-300 outline-gray-400 px-4 py-2 font-firasans cursor-pointer"
                     onChange={toDateChange}
                   />
-                  <button
-                    className="btn py-2 px-6 shadow-md bg-pink-500 hover:bg-pink-700 font-ubuntu text-lg text-white rounded-sm"
-                    onClick={handleDateSearch}
-                  >
+                  <button className="normal_btn" onClick={handleDateSearch}>
                     Search
                   </button>
                 </div>
@@ -280,66 +277,39 @@ const Orders = () => {
 
               {orders.length > 0 && (
                 <div className="overflow-x-auto shadow-md shadow-gray-500/30 mb-3">
-                  <table className="border-collapse border border-gray-900 w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead className="text-base font-firasans text-white bg-indigo-900 uppercase dark:bg-gray-700 dark:text-gray-400">
+                  <table className="table">
+                    <thead className="table_head">
                       <tr>
-                        <th
-                          scope="col"
-                          className="py-4 px-6 border-2 border-gray-700 text-center"
-                        >
+                        <th scope="col" className="table_heading">
                           S.N.
                         </th>
-                        <th
-                          scope="col"
-                          className="py-4 px-6 border-2 border-gray-700 text-center"
-                        >
+                        <th scope="col" className="table_heading">
                           Order Id
                         </th>
-                        <th
-                          scope="col"
-                          className="py-4 px-6 border-2 border-gray-700 text-center"
-                        >
+                        <th scope="col" className="table_heading">
                           email
                         </th>
-                        <th
-                          scope="col"
-                          className="py-4 px-6 border-2 border-gray-700 text-center"
-                        >
+                        <th scope="col" className="table_heading">
                           Amount
                         </th>
-                        <th
-                          scope="col"
-                          className="py-4 px-6 border-2 border-gray-700 text-center"
-                        >
+                        <th scope="col" className="table_heading">
                           Date
                         </th>
-                        <th
-                          scope="col"
-                          className="py-4 px-6 border-2 border-gray-700 text-center"
-                        >
+                        <th scope="col" className="table_heading">
                           Status
                         </th>
-                        <th
-                          scope="col"
-                          className="py-4 px-6 border-2 border-gray-700 text-center"
-                        >
+                        <th scope="col" className="table_heading">
                           Delivery Status
                         </th>
-                        <th
-                          scope="col"
-                          className="py-4 px-6 border-2 border-gray-700 text-center"
-                        >
+                        <th scope="col" className="table_heading">
                           Address
                         </th>
-                        <th
-                          scope="col"
-                          className="py-4 px-6 border-2 border-gray-700 text-center"
-                        >
+                        <th scope="col" className="table_heading">
                           Action
                         </th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="">
                       {orders
                         .filter((order) => {
                           return (
@@ -361,26 +331,17 @@ const Orders = () => {
                         .map((item, index) => {
                           // console.log(item);
                           return (
-                            <tr
-                              key={index}
-                              className="bg-white dark:bg-gray-800 dark:border-gray-700 text-center font-firasans hover:bg-blue-200/80 cursor-pointer odd:bg-gray-200 even:bg-white"
-                            >
-                              <td className="py-4 px-6 border-2 border-gray-700 text-center">
-                                {index + 1}
-                              </td>
+                            <tr key={index} className="table_body_tr">
+                              <td className="table_data">{index + 1}</td>
                               <td
                                 scope="row"
-                                className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white hover:text-blue-500 hover:underline border-2 border-gray-700 text-center"
+                                className="table_data font-medium text-gray-900 whitespace-nowrap dark:text-white hover:text-blue-500 hover:underline border-gray-700"
                               >
                                 # {item?.orderId}
                               </td>
-                              <td className="py-4 px-6 border-2 border-gray-700 text-center">
-                                {item?.email}
-                              </td>
-                              <td className="py-4 px-6 border-2 border-gray-700 text-center">
-                                Rs.{item?.amount}
-                              </td>
-                              <td className="py-4 px-6 border-2 border-gray-700 text-center">
+                              <td className="table_data">{item?.email}</td>
+                              <td className="table_data">Rs.{item?.amount}</td>
+                              <td className="table_data">
                                 {orderDate(
                                   item?.createdAt
                                 ).toLocaleDateString()}
@@ -389,7 +350,7 @@ const Orders = () => {
                                   item?.createdAt
                                 ).toLocaleTimeString()}
                               </td>
-                              <td className="py-4 px-6 border-2 border-gray-700 text-center">
+                              <td className="table_data">
                                 <span
                                   className={`py-1 px-4 rounded-sm text-white ${
                                     item?.status === "Pending"
@@ -404,9 +365,7 @@ const Orders = () => {
                                   {item?.status}
                                 </span>
                               </td>
-                              <td
-                                className={`py-4 px-6 border-2 border-gray-700 text-center `}
-                              >
+                              <td className={`table_data `}>
                                 <span
                                   className={`py-1 px-4 rounded-sm flex items-center justify-center text-center text-white ${
                                     item?.deliveryStatus === "Order Placed"
@@ -433,21 +392,19 @@ const Orders = () => {
                                   {item?.deliveryStatus}
                                 </span>
                               </td>
-                              <td className="py-4 px-6 border-2 border-gray-700 text-center">
-                                {item?.address}
-                              </td>
-                              <td className="py-4 px-6 border-2 border-gray-700 text-center">
+                              <td className="table_data">{item?.address}</td>
+                              <td className="table_data">
                                 <div className="flex space-x-3">
                                   <Link
                                     href={"/admin/order?id=" + item?._id}
-                                    className="font-medium rounded-sm flex items-center justify-center space-x-1 py-2 px-3 bg-yellow-600 text-white hover:bg-yellow-700 hover:scale-110"
+                                    className="view_btn"
                                   >
                                     <AiOutlineEye className="text-lg" />
                                     <span>View</span>
                                   </Link>
                                   <button
                                     onClick={() => deleteSingleOrder(item?._id)}
-                                    className="font-medium rounded-sm flex items-center justify-center space-x-1 py-2 px-3 bg-red-600 text-white hover:bg-red-800 hover:scale-110"
+                                    className="delete_btn"
                                   >
                                     <AiOutlineDelete className="text-lg" />
                                     <span>Delete</span>
@@ -484,7 +441,7 @@ const Orders = () => {
               </div>
               <div className="paginationButtons flex items-center gap-5 my-3">
                 <button
-                  className={`py-2 px-6 shadow-md bg-pink-500 hover:bg-pink-700 font-ubuntu text-lg text-white rounded-sm ${
+                  className={`normal_btn ${
                     page === 0 &&
                     "cursor-not-allowed shadow-none bg-pink-300 hover:bg-pink-300"
                   }`}
@@ -496,7 +453,7 @@ const Orders = () => {
                   <span>{remaining === true ? "Previous" : "Previous"}</span>
                 </button>
                 <button
-                  className={`py-2 px-6 shadow-md bg-pink-500 hover:bg-pink-700 font-ubuntu text-lg text-white rounded-sm ${
+                  className={`normal_btn ${
                     remaining === false &&
                     "cursor-not-allowed shadow-none bg-pink-300 hover:bg-pink-300"
                   }`}
