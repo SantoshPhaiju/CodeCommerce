@@ -1,8 +1,5 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import AdminNav from "./components/AdminNav";
-import Sidebar from "./components/Sidebar";
-import { BiEditAlt } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteProduct, fetchProducts } from "../slices/productSlice";
@@ -10,14 +7,16 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { AiOutlineEye } from "react-icons/ai";
 import { TiArrowUnsorted } from "react-icons/ti";
+import Link from "next/link";
+import MainConfig from "./components/MainConfig";
 
 const AllProducts = () => {
   const [showSideBar, setShowSidebar] = useState(true);
   // const [products, setProducts] = useState({});
   const dispatch = useDispatch();
   const products = useSelector((state) => state.product.products);
-  const sideBarRef = useRef();
   const router = useRouter();
+  const [query, setQuery] = useState("");
 
   if (typeof window !== "undefined") {
     if (!localStorage.getItem("admin-token")) {
@@ -34,25 +33,13 @@ const AllProducts = () => {
     }
   };
 
+   const handleSearchChange = (e) => {
+     setQuery(e.target.value);
+   };
+
   return (
     <>
-      <style jsx global>{`
-        footer,
-        nav {
-          display: none;
-        }
-      `}</style>
-
-      <Sidebar
-        showSideBar={showSideBar}
-        setShowSidebar={setShowSidebar}
-        sideBarRef={sideBarRef}
-      />
-      <AdminNav
-        showSideBar={showSideBar}
-        setShowSidebar={setShowSidebar}
-        sideBarRef={sideBarRef}
-      />
+      <MainConfig showSideBar={showSideBar} setShowSidebar={setShowSidebar} />
       <div
         className={`main pl-0 transition-all duration-300 mt-20 ${
           showSideBar === false ? "sm:pl-[90px]" : "sm:pl-[260px]"
@@ -111,9 +98,104 @@ const AllProducts = () => {
               })}
           </div> */}
 
-          
+          <div className="search mx-10">
+            <div className="formGroup">
+              <p className="text-xs flex flex-wrap w-[250px] text-red-400 font-firasans">
+                Search by title or name
+              </p>
+              <input
+                name="query"
+                value={query}
+                onChange={handleSearchChange}
+                className="py-2 px-4 font-firasans border-2 mb-2 mr-2 rounded-sm text-lg border-gray-400 outline-gray-600"
+                type="text"
+                placeholder="Search......"
+              />
+            </div>
+          </div>
 
-          
+          {/* Creating table to show the products details */}
+          <div className="overflow-x-auto shadow-md shadow-gray-500/30 mb-3 mx-10">
+            <table className="table">
+              <thead className="table_head">
+                <tr>
+                  <th scope="col" className="table_heading">
+                    S.N.
+                  </th>
+                  <th scope="col" className="table_heading">
+                    Product Id
+                  </th>
+                  <th scope="col" className="table_heading">
+                    Title
+                  </th>
+                  <th scope="col" className="table_heading">
+                    Price
+                  </th>
+                  <th scope="col" className="table_heading">
+                    Image
+                  </th>
+                  <th scope="col" className="table_heading">
+                    Stock
+                  </th>
+                  <th scope="col" className="table_heading">
+                    Category
+                  </th>
+                  <th scope="col" className="table_heading">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="">
+                {products
+                  .filter((product) => {
+                    return (
+                      product.title
+                        .toLowerCase()
+                        .includes(query.toLowerCase())
+                    );
+                  })
+                  .map((item, index) => {
+                    // console.log(item);
+                    return (
+                      <tr key={index} className="table_body_tr">
+                        <td className="table_data">{index + 1}</td>
+                        <td
+                          scope="row"
+                          className="table_data font-medium text-gray-900 whitespace-nowrap dark:text-white hover:text-blue-500 hover:underline border-gray-700"
+                        >
+                          # {item?._id}
+                        </td>
+                        <td className="table_data">{item?.title}</td>
+                        <td className="table_data">Rs.{item?.price}</td>
+                        <td className="table_data">
+                          <img className="w-auto h-[100px] mx-auto" src={item?.img[0]} alt="This is the product image here" />
+                        </td>
+                        <td className="table_data">{item.availableQty !== 0 ? item.availableQty : <span className="py-1 px-4 bg-red-600 text-white">Out of Stock</span> }</td>
+                        <td className="table_data">{item?.category}</td>
+                        <td className="table_data">
+                          <div className="flex space-x-3">
+                            <Link
+                              href={"/admin/product?id=" + item?._id}
+                              className="view_btn"
+                            >
+                              <AiOutlineEye className="text-lg" />
+                              <span>View</span>
+                            </Link>
+                            <button
+                              onClick={() => handleDelete(item?._id)}
+                              className="delete_btn"
+                            >
+                              <AiOutlineDelete className="text-lg" />
+                              <span>Delete</span>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </>
