@@ -79,7 +79,7 @@ const Users = () => {
                 className={`modalContainer flex justify-center items-center relative mx-auto z-50 transition-all duration-300 ${
                   showModal === true
                     ? "opacity-100"
-                    : "opacity-0 -translate-y-20"
+                    : "opacity-0 -translate-y-[500px]"
                 }`}
               >
                 <div className="modal absolute -top-10 left-auto right-auto h-auto w-[500px] shadow-lg shadow-gray-700 z-50 bg-slate-50 rounded-md">

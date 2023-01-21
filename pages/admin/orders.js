@@ -19,7 +19,7 @@ const Orders = () => {
   const sideBarRef = useRef();
   const ordersSelState = useSelector((state) => state.order.orders);
   const [orders, setOrders] = useState("");
-  const [dataLimit, setDataLimit] = useState(5);
+  const [dataLimit, setDataLimit] = useState(10);
   const remaining = useSelector((state) => state.order.remaining);
   const totalOrders = useSelector((state) => state.order.totalOrders);
   const [page, setPage] = useState(0);
@@ -188,7 +188,7 @@ const Orders = () => {
                 </div>
               )}
 
-              <div className="searchandsort flex items-center justify-between">
+              <div className="searchandsort flex items-center justify-between flex-wrap">
                 <div className="relative flex items-center gap-4 text-lg font-ubuntu mb-2 z-0">
                   <span className="text-xl z-0">Sort By</span>{" "}
                   <BsFilterSquare
@@ -239,7 +239,7 @@ const Orders = () => {
                   </div>
                 </div>
 
-                <div className="datePicker flex items-center space-x-2">
+                <div className="datePicker flex items-center flex-wrap gap-4 mb-4 lg:mb-0">
                   <span className="text-lg font-firasans ">Search From: </span>
                   <input
                     type="date"
@@ -432,13 +432,22 @@ const Orders = () => {
                   {remaining === true ? "Load More Data" : "All Data Loaded"}
                 </span>
               </button> */}
-              <div className="downTableDetails flex justify-start items-center gap-4 text-lg font-ubuntu text-gray-600">
+              <div className="downTableDetails flex justify-start items-center gap-4 text-lg font-ubuntu text-gray-600 flex-wrap">
                 <div>Page: {page}</div>|
                 <span>
                   Showing {dataLimit * page + orders.length} of {totalOrders}{" "}
-                  results.
+                  results
                 </span>
+                <div className="showRow flex items-center space-x-4">
+                  <label htmlFor="dataLimitRow">Show Rows per page: </label>
+                  <select value={dataLimit} onChange={(e) => setDataLimit(e.target.value)} name="dataLimitRow" id="dataLimitRow" className="border-2 py-1 px-4">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                  </select>
+                </div>
               </div>
+
               <div className="paginationButtons flex items-center gap-5 my-3">
                 <button
                   className={`normal_btn ${
