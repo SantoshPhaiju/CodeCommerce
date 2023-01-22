@@ -13,15 +13,14 @@ const AddProducts = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-   if (typeof window !== "undefined") {
-     if (!localStorage.getItem("admin-token")) {
-       router.push("/admin/login");
-     }
-   }
+  if (typeof window !== "undefined") {
+    if (!localStorage.getItem("admin-token")) {
+      router.push("/admin/login");
+    }
+  }
 
   const [data, setData] = useState({
     title: "",
-    slug: "",
     desc: "",
     category: "Select one category",
     price: "",
@@ -31,7 +30,9 @@ const AddProducts = () => {
   });
 
   const [selectedImage, setSelectedImage] = useState([]);
+  const [selectedMainImage, setSelectedMainImage] = useState("");
   const [file, setFile] = useState("");
+  const [mainFile, setMainFile] = useState("");
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -41,22 +42,45 @@ const AddProducts = () => {
     // console.log(e.target.files[0]);
     if (e.target.files && selectedImage.length <= 5) {
       let files = [];
-      Object.keys(e.target.files).map((img) =>{
+      Object.keys(e.target.files).map((img) => {
         console.log(e.target.files[img]);
         files.push(e.target.files[img]);
-      })
+      });
       // console.log(files);
-      const imgUrl = files.map((file, index) =>{
+      const imgUrl = files.map((file, index) => {
         // console.log("file", file);
         // console.log("urls: ", URL.createObjectURL(file));
         return URL.createObjectURL(file);
-      })
+      });
       setSelectedImage(imgUrl);
       // setSelectedImage(URL.createObjectURL(e.target.files[0]));
       // setFile(files);
       setFile(e.target.files);
       // console.log(selectedImage);
-    }else{
+    } else {
+      alert("You cannot upload more than 5 images");
+    }
+  };
+  const handleUploadMainImage = (e) => {
+    // console.log(e.target.files[0]);
+    if (e.target.files) {
+      let files = [];
+      Object.keys(e.target.files).map((img) => {
+        console.log(e.target.files[img]);
+        files.push(e.target.files[img]);
+      });
+      // console.log(files);
+      const imgUrl = files.map((file, index) => {
+        // console.log("file", file);
+        // console.log("urls: ", URL.createObjectURL(file));
+        return URL.createObjectURL(file);
+      });
+      setSelectedImage(imgUrl);
+      // setSelectedImage(URL.createObjectURL(e.target.files[0]));
+      // setFile(files);
+      setFile(e.target.files);
+      // console.log(selectedImage);
+    } else {
       alert("You cannot upload more than 5 images");
     }
   };
@@ -71,7 +95,6 @@ const AddProducts = () => {
     });
     formdata.append("title", data.title);
     formdata.append("desc", data.desc);
-    formdata.append("slug", data.slug);
     formdata.append("price", data.price);
     formdata.append("category", data.category);
     formdata.append("color", data.color);
@@ -81,10 +104,9 @@ const AddProducts = () => {
       console.log(key[0] + ", " + key[1]);
     }
     console.log(file);
-    dispatch(addProduct({formdata, toast}));
+    dispatch(addProduct({ formdata, toast }));
     setData({
       title: "",
-      slug: "",
       desc: "",
       category: "Select one category",
       price: "",
@@ -92,8 +114,8 @@ const AddProducts = () => {
       color: "",
       size: "Select size",
     });
-    setFile("")
-    setSelectedImage([])
+    setFile("");
+    setSelectedImage([]);
   };
   return (
     <>
@@ -145,21 +167,7 @@ const AddProducts = () => {
                   required
                 />
               </div>
-              <div className="formGroup mx-auto font-firasans w-full flex flex-col my-2 space-y-1">
-                <label htmlFor="slug" className="text-xl">
-                  Enter Slug
-                </label>
-                <input
-                  className="w-full rounded-md border-2 text-lg py-1 px-4 outline-pink-500 border-blue-700"
-                  type="text"
-                  name="slug"
-                  id="slug"
-                  placeholder="Enter the slug of the product"
-                  value={data.slug}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+
               <div className="formGroup mx-auto font-firasans w-full flex flex-col my-2 space-y-1">
                 <label htmlFor="desc" className="text-xl">
                   Enter Description
@@ -177,6 +185,30 @@ const AddProducts = () => {
               </div>
 
               <div className="formGroup mx-auto font-firasans w-full flex flex-col my-2 space-y-1">
+                <label htmlFor="mainImage">
+                  <div className="label flex py-2 rounded-md justify-start items-center border-2 mt-3 border-blue-700 space-x-6 px-6 cursor-pointer">
+                    <BsFillImageFill className="text-xl" />
+                    <p>Select Main Image</p>
+                  </div>
+                  <input
+                    className="hidden"
+                    type="file"
+                    name="mainImage"
+                    id="mainImage"
+                    onChange={handleUploadMainImage}
+                  />
+                </label>
+              </div>
+              <div
+                className={`${
+                  selectedImage.length !== 0 && "border-2"
+                } flex justify-start gap-2 flex-wrap px-4`}
+              >
+                {selectedMainImage && (
+                  <img className="h-28 my-4" src={selectedMainImage} alt="" />
+                )}
+              </div>
+              <div className="formGroup mx-auto font-firasans w-full flex flex-col my-2 space-y-1">
                 <label htmlFor="img">
                   <div className="label flex py-2 rounded-md justify-start items-center border-2 mt-3 border-blue-700 space-x-6 px-6 cursor-pointer">
                     <BsFillImageFill className="text-xl" />
@@ -192,7 +224,11 @@ const AddProducts = () => {
                   />
                 </label>
               </div>
-              <div className={`${selectedImage.length !== 0 && "border-2"} flex justify-start gap-2 flex-wrap px-4`}>
+              <div
+                className={`${
+                  selectedImage.length !== 0 && "border-2"
+                } flex justify-start gap-2 flex-wrap px-4`}
+              >
                 {selectedImage &&
                   selectedImage.map((image, index) => {
                     // console.log("image: ", selectedImage);
