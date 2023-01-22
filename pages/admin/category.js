@@ -3,17 +3,19 @@ import { useState } from "react";
 import MainConfig from "./components/MainConfig";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addCategory, fetchCategories } from "../slices/categorySlice";
+import { addCategory, deleteCategory, fetchCategories } from "../slices/categorySlice";
 import { AiOutlineClose, AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { toast } from "react-toastify";
 import Link from "next/link";
+import Spinner from '../../components/Spinner'
 
 const CategoryPage = () => {
   const [showSideBar, setShowSidebar] = useState(true);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const categories = useSelector((state) => state.category.categories);
-  // console.log(categories);
+  const status = useSelector((state) => state.category.status);
+  // console.log(status);
   const [categoryData, setCategoryData] = useState({
     cName: "",
     cDesc: "",
@@ -35,6 +37,12 @@ const CategoryPage = () => {
     }
   };
 
+  const handleDelete = (id) =>{
+    if(confirm("Do you really want to delete this category")){
+      dispatch(deleteCategory({id, toast}));
+    }
+  }
+
   return (
     <>
       {showModal && (
@@ -54,6 +62,11 @@ const CategoryPage = () => {
           <h1 className="text-3xl text-gray-700 font-firasans my-4">
             All Categories
           </h1>
+          {(status === "idle" || status === "loading") && (
+            <div className="flex justify-center my-5">
+              <Spinner />
+            </div>
+          )}
 
           <div
             className={`modalContainer flex justify-center items-center relative mx-auto z-50 transition-all duration-300 ${
@@ -139,6 +152,7 @@ const CategoryPage = () => {
           >
             + Add new Category
           </button>
+
           <div className="categoryTable overflow-x-auto  mb-3">
             {categories.length !== 0 ? (
               <table className="table">

@@ -14,6 +14,26 @@ export const fetchCategories = createAsyncThunk(
     }
   }
 );
+
+export const deleteCategory = createAsyncThunk(
+  "category/deleteCategory",
+  async ({ id, toast }) => {
+    try {
+      const response = await axios.delete(`${baseUrl}/api/deletecategory`, {
+        data: id,
+      });
+      // console.log(response)
+      if (response.data.success === true) {
+        toast.success("Category deleted successfully");
+      }
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return error.response.data;
+    }
+  }
+);
+
 export const addCategory = createAsyncThunk(
   "category/addCategory",
   async ({ categoryData, toast }) => {
@@ -21,13 +41,15 @@ export const addCategory = createAsyncThunk(
       const response = await axios.post(`${baseUrl}/api/addcategory`, {
         data: categoryData,
       });
-      // console.log(response)
+      console.log(response.data);
       if (response.data.success === true) {
         toast.success("Category added successfully");
       }
       return response.data;
     } catch (error) {
-      console.log(error);
+      console.log("error", error);
+      toast.error(error.response.data.error);
+      return error.response.data;
     }
   }
 );
@@ -63,15 +85,36 @@ const categorySlice = createSlice({
       })
       .addCase(addCategory.fulfilled, (state, action) => {
         state.status = "successed";
-        console.log(action.payload);
+        console.log("action.payload", action.payload);
         if (action.payload.success === true) {
-          state.categories.push(action.payload.category)
+          state.categories.push(action.payload.category);
         }
       })
       .addCase(addCategory.rejected, (state, action) => {
         state.status = "rejected";
-        console.log(error);
+        state.error = error.response.data.error;
+        console.log("error", error);
       })
+      .addCase(deleteCategory.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(deleteCategory.fulfilled, (state, action) => {
+        state.status = "successed";
+        console.log("action.payload", action.payload);
+
+        if (action.payload.success === true) {
+          let newCategories = state.categories.filter((category) => {
+
+            return category._id !== action.payload.category._id;
+          });
+          state.categories = newCategories;
+        }
+      })
+      .addCase(deleteCategory.rejected, (state, action) => {
+        state.status = "rejected";
+        state.error = error.response.data.error;
+        console.log("error", error);
+      });
   },
 });
 
