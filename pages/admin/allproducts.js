@@ -9,9 +9,19 @@ import { AiOutlineEye } from "react-icons/ai";
 import { TiArrowUnsorted } from "react-icons/ti";
 import Link from "next/link";
 import MainConfig from "./components/MainConfig";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { AiOutlineClose } from "react-icons/ai";
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
+// import required modules
+import { Pagination, Navigation } from "swiper";
 
 const AllProducts = () => {
   const [showSideBar, setShowSidebar] = useState(true);
+  const [showSlider, setShowSlider] = useState(false);
   // const [products, setProducts] = useState({});
   const dispatch = useDispatch();
   const products = useSelector((state) => state.product.products);
@@ -33,12 +43,29 @@ const AllProducts = () => {
     }
   };
 
-   const handleSearchChange = (e) => {
-     setQuery(e.target.value);
-   };
+  const handleSearchChange = (e) => {
+    setQuery(e.target.value);
+  };
+
+  const [images, setImages] = useState([]);
+
+  const showAllImages = (index) => {
+    console.log(products[index]);
+    setShowSlider(true);
+
+    setImages(products[index].img);
+  };
 
   return (
     <>
+      {showSlider && (
+        <style jsx global>{`
+          html {
+            overflow: hidden;
+          }
+        `}</style>
+      )}
+
       <MainConfig showSideBar={showSideBar} setShowSidebar={setShowSidebar} />
       <div
         className={`main pl-0 transition-all duration-300 mt-20 ${
@@ -98,6 +125,41 @@ const AllProducts = () => {
               })}
           </div> */}
 
+          <div className="flex justify-center items-center">
+            {showSlider === true && (
+              <div className="imageSlider absolute top-0 left-0 h-[105%] w-[100vw] z-50 rounded-md bg-black/50 py-10">
+                <button className="absolute top-10 right-8 cursor-pointer z-50" onClick={() => setShowSlider(false)}>
+                  <AiOutlineClose className="text-3xl transition-all duration-300 text-white cursor-pointer hover:rotate-180" />
+                </button>
+                <Swiper
+                  slidesPerView={1}
+                  spaceBetween={30}
+                  loop={true}
+                  pagination={{
+                    clickable: true,
+                  }}
+                  navigation={true}
+                  modules={[Pagination, Navigation]}
+                  className="mySwiper"
+                >
+                  {images.map((image, index) => {
+                    return (
+                      <SwiperSlide key={index}>
+                        <img
+                          src={image}
+                          className={"w-full h-full object-top object-contain"}
+                        />
+                      </SwiperSlide>
+                    );
+                  })}
+                </Swiper>
+              </div>
+            )}
+          </div>
+          {showSlider === true && (
+            <div className="overlay absolute top-0 left-0 w-full h-[105%] bg-black/50 z-40"></div>
+          )}
+
           <div className="search mx-10">
             <div className="formGroup">
               <p className="text-xs flex flex-wrap w-[250px] text-red-400 font-firasans">
@@ -148,11 +210,9 @@ const AllProducts = () => {
               <tbody className="">
                 {products
                   .filter((product) => {
-                    return (
-                      product.title
-                        .toLowerCase()
-                        .includes(query.toLowerCase())
-                    );
+                    return product.title
+                      .toLowerCase()
+                      .includes(query.toLowerCase());
                   })
                   .map((item, index) => {
                     // console.log(item);
@@ -168,9 +228,22 @@ const AllProducts = () => {
                         <td className="table_data">{item?.title}</td>
                         <td className="table_data">Rs.{item?.price}</td>
                         <td className="table_data">
-                          <img className="w-auto h-[100px] mx-auto" src={item?.img[0]} alt="This is the product image here" />
+                          <img
+                            onClick={() => showAllImages(index)}
+                            className="w-auto h-[100px] mx-auto"
+                            src={item?.img[0]}
+                            alt="This is the product image here"
+                          />
                         </td>
-                        <td className="table_data">{item.availableQty !== 0 ? item.availableQty : <span className="py-1 px-4 bg-red-600 text-white">Out of Stock</span> }</td>
+                        <td className="table_data">
+                          {item.availableQty !== 0 ? (
+                            item.availableQty
+                          ) : (
+                            <span className="py-1 px-4 bg-red-600 text-white">
+                              Out of Stock
+                            </span>
+                          )}
+                        </td>
                         <td className="table_data">{item?.category}</td>
                         <td className="table_data">
                           <div className="flex space-x-3">
