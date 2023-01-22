@@ -32,6 +32,26 @@ export const addProduct = createAsyncThunk(
     }
   }
 );
+export const updateImage = createAsyncThunk(
+  "products/addProduct",
+  async ({formdata, toast}) => {
+    try {
+      const response = await axios.post(
+        `${baseUrl}/api/updateproducts`,
+        formdata,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      toast.success("Your product is successfully updated.");
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 
 export const deleteProduct = createAsyncThunk(
   "products/deleteProduct",
