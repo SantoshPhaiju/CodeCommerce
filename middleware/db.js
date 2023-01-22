@@ -5,6 +5,7 @@ const connectToDb = (handler) => async (req, res) => {
     return handler(req, res);
   }
   mongoose.connect(process.env.MONGO_URI);
+  mongoose.set("strictQuery", true);
   return handler(req, res);
 };
 export default connectToDb;

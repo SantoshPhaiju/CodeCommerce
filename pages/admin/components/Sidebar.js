@@ -5,6 +5,7 @@ import { AiOutlineHome } from "react-icons/ai";
 import { RiEyeLine } from "react-icons/ri";
 import { RiUserLine } from "react-icons/ri";
 import { HiOutlineTemplate, HiOutlinePlusCircle } from "react-icons/hi";
+import {BiCategoryAlt} from 'react-icons/bi'
 
 const Sidebar = ({ showSideBar, setShowSidebar, sideBarRef }) => {
   const router = useRouter();
@@ -12,7 +13,9 @@ const Sidebar = ({ showSideBar, setShowSidebar, sideBarRef }) => {
     <div
       ref={sideBarRef}
       className={`sidebar transform  sm:translate-x-0 sm:block bg-[#0e0e23] h-[100vh] py-4 px-4 shadow-lg shadow-gray-900 fixed top-0 bottom-0 left-0 transition-all duration-300 -mb-[50px] z-40 ${
-        showSideBar === false ? "w-[80px] -translate-x-96" : "w-[250px] translate-x-0"
+        showSideBar === false
+          ? "w-[80px] -translate-x-96"
+          : "w-[250px] translate-x-0"
       }`}
     >
       <div className="logo flex items-center justify-center mt-2 mb-4 space-x-4">
@@ -48,6 +51,24 @@ const Sidebar = ({ showSideBar, setShowSidebar, sideBarRef }) => {
             ) : (
               <div className="mt-4 flex justify-center text-xl border border-red-800 rounded-full p-3 bg-pink-600">
                 <AiOutlineHome />
+              </div>
+            )}
+          </Link>
+          <Link href={"/admin/category"}>
+            {showSideBar ? (
+              <li
+                className={`transition-all duration-500 py-2 px-2 relative  hover:bg-gray-800 hover:text-white cursor-pointer rounded-md flex items-center gap-4 hover:gap-5 ${
+                  router.pathname === "/admin/allproducts"
+                    ? "bg-pink-700 text-white gap-5"
+                    : "text-slate-600"
+                }`}
+              >
+                <BiCategoryAlt />
+                <span>Category</span>
+              </li>
+            ) : (
+              <div className="mt-4 flex justify-center text-xl border border-red-800 rounded-full p-3 bg-pink-600">
+                <BiCategoryAlt />
               </div>
             )}
           </Link>
