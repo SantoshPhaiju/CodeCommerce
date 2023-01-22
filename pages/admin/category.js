@@ -3,18 +3,25 @@ import { useState } from "react";
 import MainConfig from "./components/MainConfig";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addCategory, deleteCategory, fetchCategories } from "../slices/categorySlice";
+import {
+  addCategory,
+  deleteCategory,
+  fetchCategories,
+  updateCategory,
+} from "../slices/categorySlice";
 import { AiOutlineClose, AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { toast } from "react-toastify";
 import Link from "next/link";
-import Spinner from '../../components/Spinner'
+import Spinner from "../../components/Spinner";
 
 const CategoryPage = () => {
   const [showSideBar, setShowSidebar] = useState(true);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const categories = useSelector((state) => state.category.categories);
   const status = useSelector((state) => state.category.status);
+  const [categoryId, setCategoryId] = useState("");
   // console.log(status);
   const [categoryData, setCategoryData] = useState({
     cName: "",
@@ -32,26 +39,41 @@ const CategoryPage = () => {
     setShowModal(false);
     if (categoryData.cName && categoryData.cDesc !== "") {
       dispatch(addCategory({ categoryData, toast }));
+      setCategoryData({
+        cName: "",
+        cDesc: "",
+      });
     } else {
       toast.error("Name and Description cannot be empty");
     }
   };
 
-  const handleDelete = (id) =>{
-    if(confirm("Do you really want to delete this category")){
-      dispatch(deleteCategory({id, toast}));
+  const handleDelete = (id) => {
+    if (confirm("Do you really want to delete this category")) {
+      dispatch(deleteCategory({ id, toast }));
     }
-  }
+  };
+
+  const handleUpdate = () => {
+    setShowEditModal(false);
+    dispatch(updateCategory({ id: categoryId, categoryData, toast }));
+    console.log("Handle Update function runned");
+    setCategoryData({
+      cName: "",
+      cDesc: "",
+    });
+  };
 
   return (
     <>
-      {showModal && (
-        <style jsx global>{`
-          html {
-            overflow: hidden;
-          }
-        `}</style>
-      )}
+      {showModal ||
+        (showEditModal && (
+          <style jsx global>{`
+            html {
+              overflow: hidden;
+            }
+          `}</style>
+        ))}
       <MainConfig showSideBar={showSideBar} setShowSidebar={setShowSidebar} />
       <div
         className={`main pl-0 transition-all duration-300 mt-24 min-h-[100vh] ${
@@ -70,7 +92,7 @@ const CategoryPage = () => {
 
           <div
             className={`modalContainer flex justify-center items-center relative mx-auto z-50 transition-all duration-300 ${
-              showModal === true
+              showModal || showEditModal === true
                 ? "opacity-100"
                 : "opacity-0 -translate-y-[500px]"
             }`}
@@ -78,12 +100,16 @@ const CategoryPage = () => {
             <div className="modal absolute -top-10 left-auto right-auto h-auto w-[500px] shadow-lg shadow-gray-700 z-50 bg-slate-50 rounded-md">
               <div className="modalHeader py-3 px-4">
                 <h2 className="font-robotoslab text-center text-2xl">
-                  Add New Category
+                  {showModal === true && "Add New Category"}
+                  {showEditModal === true && "Update Category"}
                 </h2>
                 <div className="close">
                   <AiOutlineClose
                     className="text-3xl absolute right-3 top-4 cursor-pointer transition-all duration-300 hover:transform hover:rotate-180"
-                    onClick={() => setShowModal(false)}
+                    onClick={() => {
+                      setShowModal(false);
+                      setShowEditModal(false);
+                    }}
                   />
                 </div>
               </div>
@@ -92,7 +118,7 @@ const CategoryPage = () => {
                 <form>
                   <div className="inputGroup mx-4 my-2">
                     <label htmlFor="cName" className="label">
-                      <span>Enter Category Name:</span>
+                      <span> Category Name:</span>
                     </label>
                     <input
                       className="input_field"
@@ -107,7 +133,7 @@ const CategoryPage = () => {
                   </div>
                   <div className="inputGroup mx-4 my-2">
                     <label htmlFor="cDesc" className="label">
-                      <span>Enter Category Description:</span>
+                      <span> Category Description:</span>
                     </label>
                     <textarea
                       className="input_field"
@@ -127,24 +153,47 @@ const CategoryPage = () => {
               <div className="modalFooter flex justify-end mr-4 space-x-5 my-4">
                 <button
                   className="py-2 px-6 text-lg bg-blue-300 rounded-sm text-black font-ubuntu hover:shadow-lg hover:shadow-gray-300"
-                  onClick={() => setShowModal(false)}
+                  onClick={() => {
+                    setShowModal(false);
+                    setShowEditModal(false);
+                    setCategoryData({
+                      cName: "",
+                      cDesc: "",
+                    });
+                    setCategoryId();
+                  }}
                 >
                   Cancel
                 </button>
-                <button
-                  className="py-2 px-6 text-lg bg-green-700 rounded-sm text-white font-ubuntu hover:shadow-lg hover:shadow-gray-300"
-                  onClick={() => handleSave()}
-                >
-                  Save
-                </button>
+                {showModal && (
+                  <button
+                    className="py-2 px-6 text-lg bg-green-700 rounded-sm text-white font-ubuntu hover:shadow-lg hover:shadow-gray-300"
+                    onClick={() => {
+                      handleSave();
+                    }}
+                  >
+                    Add
+                  </button>
+                )}
+                {showEditModal && (
+                  <button
+                    className="py-2 px-6 text-lg bg-green-700 rounded-sm text-white font-ubuntu hover:shadow-lg hover:shadow-gray-300"
+                    onClick={() => {
+                      handleUpdate();
+                    }}
+                  >
+                    Save
+                  </button>
+                )}
               </div>
             </div>
           </div>
-          {showModal && (
-            <>
-              <div className="overlay h-full w-full absolute top-0 left-0 z-30 opacity-40 bg-black"></div>
-            </>
-          )}
+          {showModal ||
+            (showEditModal && (
+              <>
+                <div className="overlay h-full w-full absolute top-0 left-0 z-30 opacity-40 bg-black"></div>
+              </>
+            ))}
 
           <button
             className="text-xl bg-pink-700 my-4 font-ubuntu text-white py-2 px-4 rounded-sm cursor-pointer"
@@ -199,13 +248,20 @@ const CategoryPage = () => {
 
                           <td className="table_data">
                             <div className="flex space-x-3">
-                              <Link
-                                href={"/admin/product?id=" + item?._id}
+                              <button
                                 className="view_btn"
+                                onClick={() => {
+                                  setShowEditModal(true);
+                                  setCategoryId(item._id);
+                                  setCategoryData({
+                                    cName: item.name,
+                                    cDesc: item.description,
+                                  });
+                                }}
                               >
                                 <AiOutlineEdit className="text-lg" />
                                 <span>Edit</span>
-                              </Link>
+                              </button>
                               <button
                                 onClick={() => handleDelete(item?._id)}
                                 className="delete_btn"

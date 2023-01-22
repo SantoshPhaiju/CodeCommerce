@@ -16,7 +16,8 @@ const apiRoute = nextConnect({
 apiRoute.post(async (req, res) => {
   const { cName, cDesc } = req.body.data;
   const oldCategory = await Category.find({ name: cName });
-  if (oldCategory) {
+  // console.log(oldCategory.length > 0);
+  if (oldCategory.length > 0) {
     res.status(400).json({ success: false, error: "Category already exists!" });
   } else {
     const category = new Category({

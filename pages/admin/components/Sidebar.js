@@ -58,7 +58,7 @@ const Sidebar = ({ showSideBar, setShowSidebar, sideBarRef }) => {
             {showSideBar ? (
               <li
                 className={`transition-all duration-500 py-2 px-2 relative  hover:bg-gray-800 hover:text-white cursor-pointer rounded-md flex items-center gap-4 hover:gap-5 ${
-                  router.pathname === "/admin/allproducts"
+                  router.pathname === "/admin/category"
                     ? "bg-pink-700 text-white gap-5"
                     : "text-slate-600"
                 }`}

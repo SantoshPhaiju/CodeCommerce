@@ -34,6 +34,25 @@ export const deleteCategory = createAsyncThunk(
   }
 );
 
+export const updateCategory = createAsyncThunk(
+  "category/updateCategory",
+  async ({ id, categoryData, toast }) => {
+    try {
+      const response = await axios.post(`${baseUrl}/api/updatecategory`, {
+        data: {id, cName: categoryData.cName, cDesc: categoryData.cDesc},
+      });
+      // console.log(response)
+      if (response.data.success === true) {
+        toast.success("Category updated successfully");
+      }
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return error.response.data;
+    }
+  }
+);
+
 export const addCategory = createAsyncThunk(
   "category/addCategory",
   async ({ categoryData, toast }) => {
@@ -114,7 +133,28 @@ const categorySlice = createSlice({
         state.status = "rejected";
         state.error = error.response.data.error;
         console.log("error", error);
-      });
+      })
+      .addCase(updateCategory.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(updateCategory.fulfilled, (state, action) => {
+        state.status = "successed";
+        // console.log("action.payload", action.payload);
+
+        if (action.payload.success === true) {
+          state.categories.map((category) =>{
+            if(category._id === action.payload.updatedCategory._id){
+              category.name = action.payload.updatedCategory.name
+              category.description = action.payload.updatedCategory.description
+            }
+          })
+        }
+      })
+      .addCase(updateCategory.rejected, (state, action) => {
+        state.status = "rejected";
+        state.error = error.response.data.error;
+        console.log("error", error);
+      })
   },
 });
 
