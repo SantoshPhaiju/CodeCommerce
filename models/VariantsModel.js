@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 
 const VariantsSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  slug: { type: String, default: nanoid(), unique: true },
+  slug: { type: String, unique: true },
   productsID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Product",

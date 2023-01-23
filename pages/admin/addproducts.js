@@ -1,14 +1,109 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, Component, useEffect } from "react";
 import AdminNav from "./components/AdminNav";
 import Sidebar from "./components/Sidebar";
+import dynamic from "next/dynamic";
 import { BsFillImageFill } from "react-icons/bs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../slices/productSlice";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import "react-quill/dist/quill.snow.css";
+import { fetchCategories } from "../slices/categorySlice";
+import { FiUpload } from "react-icons/fi";
 
+const QuillNoSSRWrapper = dynamic(import("react-quill"), {
+  ssr: false,
+  loading: () => <p>Loading ...</p>,
+});
 const AddProducts = () => {
+  const background = [
+    "#ffffff",
+    "#facccc",
+    "#ffebcc",
+    "#000000",
+    "#e60000",
+    "#ff9900",
+    "blue",
+    "red",
+    "orange",
+    "purple",
+    "indigo",
+    "pink",
+    "#fa90fe",
+    "#aa9900",
+    "yellow",
+    "green",
+    "slate",
+  ];
+  const colors = [
+    "#000000",
+    "#e60000",
+    "#ff9900",
+    "blue",
+    "red",
+    "orange",
+    "purple",
+    "indigo",
+    "pink",
+    "#fa90fe",
+    "#aa9900",
+    "yellow",
+    "green",
+    "slate",
+  ];
+  const modules = {
+    toolbar: [
+      [{ header: "1" }, { header: "2" }, { font: [] }],
+      [{ size: [] }],
+      [
+        "bold",
+        "italic",
+        "underline",
+        "strike",
+        "blockquote",
+        "code",
+        "code-block",
+      ],
+      [{ color: colors }, { background: background }],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      ["link"],
+      ["clean"],
+    ],
+    clipboard: {
+      // toggle to add extra line breaks when pasting HTML:
+      matchVisual: false,
+    },
+  };
+  /*
+   * Quill editor formats
+   * See https://quilljs.com/docs/formats/
+   */
+  const formats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "code",
+    "background",
+    "code-block",
+    "color",
+    "bullet",
+    "indent",
+    "link",
+  ];
+
   const [showSideBar, setShowSidebar] = useState(true);
+  const categories = useSelector((state) => state.category.categories);
   const sideBarRef = useRef();
   const dispatch = useDispatch();
   const router = useRouter();
@@ -18,12 +113,17 @@ const AddProducts = () => {
       router.push("/admin/login");
     }
   }
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, []);
 
+  const [desc, setDesc] = useState("");
+  // console.log(desc);
   const [data, setData] = useState({
     title: "",
-    desc: "",
-    category: "Select one category",
+    category: "",
     price: "",
+    status: "",
     availableQty: "",
     color: "",
     size: "Select size",
@@ -40,7 +140,7 @@ const AddProducts = () => {
 
   const handleUploadImage = (e) => {
     // console.log(e.target.files[0]);
-    if (e.target.files && selectedImage.length <= 5) {
+    if (e.target.files && selectedImage.length < 4) {
       let files = [];
       Object.keys(e.target.files).map((img) => {
         console.log(e.target.files[img]);
@@ -58,12 +158,19 @@ const AddProducts = () => {
       setFile(e.target.files);
       // console.log(selectedImage);
     } else {
-      alert("You cannot upload more than 5 images");
+      alert("You cannot upload more than 4 images");
     }
   };
   const handleUploadMainImage = (e) => {
-    // console.log(e.target.files[0]);
-    if (e.target.files) {
+    console.log("mainfile", e.target.files);
+    // if (e.target.files) {
+    //   // console.log(e.target.files[0])
+    //   const imgUrl = URL.createObjectURL(e.target.files[0]);
+    //   // console.log(imgUrl);
+    //   setSelectedMainImage(imgUrl);
+    //   setMainFile(e.target.files[0]);
+    // }
+    if (e.target.files && selectedMainImage.length < 2) {
       let files = [];
       Object.keys(e.target.files).map((img) => {
         console.log(e.target.files[img]);
@@ -75,47 +182,57 @@ const AddProducts = () => {
         // console.log("urls: ", URL.createObjectURL(file));
         return URL.createObjectURL(file);
       });
-      setSelectedImage(imgUrl);
+      setSelectedMainImage(imgUrl);
       // setSelectedImage(URL.createObjectURL(e.target.files[0]));
       // setFile(files);
-      setFile(e.target.files);
+      setMainFile(e.target.files);
       // console.log(selectedImage);
     } else {
-      alert("You cannot upload more than 5 images");
+      alert("You cannot upload more than 1 images");
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!file) return;
+    if (!mainFile) return;
+    // console.log("mainfile new", mainFile);
     const formdata = new FormData();
-    console.log(file);
+    // console.log(file);
     Object.values(file).forEach((file) => {
       formdata.append("img", file);
     });
+    Object.values(mainFile).forEach((file) => {
+      formdata.append("mainImage", file);
+      // console.log(file);
+    });
     formdata.append("title", data.title);
-    formdata.append("desc", data.desc);
+    formdata.append("desc", desc);
     formdata.append("price", data.price);
     formdata.append("category", data.category);
     formdata.append("color", data.color);
     formdata.append("size", data.size);
+    formdata.append("status", data.status);
     formdata.append("availableQty", data.availableQty);
-    for (var key of formdata.entries()) {
-      console.log(key[0] + ", " + key[1]);
-    }
-    console.log(file);
+    // for (var key of formdata.entries()) {
+    //   console.log(key[0] + ", " + key[1]);
+    // }
+    // console.log(file);
     dispatch(addProduct({ formdata, toast }));
     setData({
       title: "",
       desc: "",
       category: "Select one category",
       price: "",
+      status: "",
       availableQty: "",
       color: "",
       size: "Select size",
     });
     setFile("");
     setSelectedImage([]);
+    setMainFile("");
+    setSelectedMainImage("");
   };
   return (
     <>
@@ -141,200 +258,250 @@ const AddProducts = () => {
           showSideBar === false ? "sm:pl-[90px]" : "sm:pl-[260px]"
         }`}
       >
-        <div className="maindiv text-black pt-0.5 mx-10">
+        <div className="maindiv text-black pt-0.5 mx-2 lg:mx-10">
           <h1 className="font-roboto text-2xl my-4 mx-4 text-blue-800">
             Add Products
           </h1>
 
           <form
-            className="border w-[80vw] mx-auto px-4 py-5 shadow-lg shadow-gray-500/50 mb-12 grid grid-cols-2 gap-2"
+            className=""
             onSubmit={handleSubmit}
             encType="multipart/form-data"
           >
-            <div className="left col-span-1">
-              <div className="formGroup mx-auto font-firasans w-full flex flex-col my-2 space-y-1">
-                <label htmlFor="title" className="text-xl">
-                  Enter Title
-                </label>
-                <input
-                  className="w-full rounded-md border-2 text-lg py-1 px-4 outline-pink-500 border-blue-700"
-                  type="text"
-                  name="title"
-                  id="title"
-                  placeholder="Enter the title of the product"
-                  value={data.title}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <div className="formGroup mx-auto font-firasans w-full flex flex-col my-2 space-y-1">
-                <label htmlFor="desc" className="text-xl">
-                  Enter Description
-                </label>
-                <textarea
-                  className="w-full rounded-md border-2 text-lg py-1 px-4 outline-pink-500 border-blue-700"
-                  name="desc"
-                  id="desc"
-                  cols="20"
-                  rows="3"
-                  placeholder="Description of the product"
-                  value={data.desc}
-                  onChange={handleChange}
-                ></textarea>
-              </div>
-
-              <div className="formGroup mx-auto font-firasans w-full flex flex-col my-2 space-y-1">
-                <label htmlFor="mainImage">
-                  <div className="label flex py-2 rounded-md justify-start items-center border-2 mt-3 border-blue-700 space-x-6 px-6 cursor-pointer">
-                    <BsFillImageFill className="text-xl" />
-                    <p>Select Main Image</p>
-                  </div>
+            <div className="productDescriptionContainer grid grid-cols-12 gap-10">
+              <div className="productDescriptionLeft col-span-12 lg:col-span-8 shadow-lg shadow-gray-600/30 border bg-white h-[500px] py-4 px-4 w-[95vw] md:w-full">
+                <div className="formGroup my-2">
+                  <label htmlFor="title" className="label text-lg">
+                    Title:-
+                  </label>
                   <input
-                    className="hidden"
-                    type="file"
-                    name="mainImage"
-                    id="mainImage"
-                    onChange={handleUploadMainImage}
+                    className="input_field rounded-sm"
+                    name="title"
+                    id="title"
+                    placeholder="Ex:Coding Nepal Tshirt 🤞"
+                    type="text"
+                    required={true}
+                    value={data.title}
+                    onChange={handleChange}
                   />
-                </label>
+                </div>
+                <div className="formGroup my-2">
+                  <label htmlFor="desc" className="label text-lg">
+                    Description:-
+                  </label>
+                  <div className="description h-[200px] mb-12">
+                    <QuillNoSSRWrapper
+                      className="h-[70%] flex-1 w-full font-firasans text-lg"
+                      value={desc}
+                      onChange={setDesc}
+                      modules={modules}
+                      formats={formats}
+                      placeholder={"Enter the description of the product here."}
+                      theme="snow"
+                    />
+                  </div>
+                </div>
+                <div className="formGroup my-2">
+                  <label htmlFor="catgory" className="label text-lg">
+                    Select Category:-
+                  </label>
+                  <select
+                    className="input_field text-gray-900 rounded-sm"
+                    name="category"
+                    id="category"
+                    value={data.category}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="">----- Select Category -----</option>
+                    {categories &&
+                      categories.map((category, index) => {
+                        return (
+                          <option value={category.name} key={index}>
+                            {category.name}
+                          </option>
+                        );
+                      })}
+                  </select>
+                </div>
               </div>
-              <div
-                className={`${
-                  selectedImage.length !== 0 && "border-2"
-                } flex justify-start gap-2 flex-wrap px-4`}
-              >
-                {selectedMainImage && (
-                  <img className="h-28 my-4" src={selectedMainImage} alt="" />
+
+              <div className="productDescriptionRight col-span-12 lg:col-span-4 h-[500px] shadow-lg shadow-gray-600/30 border bg-white py-4 px-4 w-[95vw] md:w-full">
+                <div className="formGroup">
+                  <label htmlFor="price" className="label text-lg">
+                    Price:-
+                  </label>
+                  <input
+                    className="input_field rounded-sm"
+                    type="number"
+                    name="price"
+                    id="price"
+                    placeholder="Ex:300.00"
+                    value={data.price}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="formGroup">
+                  <label htmlFor="availableQty" className="label text-lg">
+                    Stock:-
+                  </label>
+                  <input
+                    className="input_field rounded-sm"
+                    type="number"
+                    name="availableQty"
+                    id="availableQty"
+                    placeholder="Ex:10 units"
+                    value={data.availableQty}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="formGroup">
+                  <label htmlFor="availableQty" className="label text-lg">
+                    Status:-
+                  </label>
+                  <select
+                    className="input_field text-gray-900 rounded-sm"
+                    name="status"
+                    id="status"
+                    value={data.status}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="">----- Select Status -----</option>
+
+                    <option value={"active"}>Active</option>
+                    <option value={"inactive"}>InActive</option>
+                  </select>
+                </div>
+                {data.category === "Tshirts" && (
+                  <div className="formGroup">
+                    <label htmlFor="color" className="label text-lg">
+                      Color:-
+                    </label>
+                    <input
+                      className="input_field rounded-sm"
+                      type="text"
+                      name="color"
+                      id="color"
+                      placeholder="Ex:Blue"
+                      value={data.color}
+                      onChange={handleChange}
+                    />
+                  </div>
+                )}
+                {data.category === "Tshirts" && (
+                  <div className="formGroup">
+                    <label htmlFor="size" className="label text-lg">
+                      Size:-
+                    </label>
+                    <select
+                      className="input_field text-gray-900 rounded-sm"
+                      name="size"
+                      id="size"
+                      value={data.size}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value="">----- Select Size -----</option>
+
+                      <option value={"Sm"}>Small</option>
+                      <option value={"Md"}>Medium</option>
+                      <option value={"Lg"}>Large</option>
+                      <option value={"Xl"}>Extra large</option>
+                      <option value={"XXl"}>Extra extra large</option>
+                    </select>
+                  </div>
                 )}
               </div>
-              <div className="formGroup mx-auto font-firasans w-full flex flex-col my-2 space-y-1">
-                <label htmlFor="img">
-                  <div className="label flex py-2 rounded-md justify-start items-center border-2 mt-3 border-blue-700 space-x-6 px-6 cursor-pointer">
-                    <BsFillImageFill className="text-xl" />
-                    <p>Select Image</p>
+            </div>
+
+            <div className="images mt-10 mb-10 h-auto shadow-lg shadow-gray-600/30 bg-white p-5 border">
+              <h2 className="text-2xl font-rubik mb-2">Add Images:-</h2>
+
+              <div className="imageContainer grid grid-cols-12 gap-4">
+                <div className="mainImageContainer col-span-12 lg:col-span-5 py-2 px-0 lg:px-4">
+                  <h2 className="text-lg font-firasans my-3">Main Image:</h2>
+                  <div className="mainImagecontainer flex  space-x-2">
+                    {/*  {selectedImage.length > 0 &&
+                      selectedImage.map((img, index) => {
+                        return (
+                          <div className="w-[150px] h-[150px]" key={index}>
+                            <img
+                              className="cursor-pointer border-2 border-black rounded-md h-full w-full"
+                              src={img}
+                              alt="Image need to be here."
+                            />
+                          </div>
+                        );
+                      })} */}
+                    {selectedMainImage &&
+                      selectedMainImage.map((img, index) => {
+                        return (
+                          <div className="w-[260px] h-[260px]" key={index}>
+                            <img
+                              className="cursor-pointer border-2 border-black rounded-md h-full w-full"
+                              src={img}
+                              alt="Image need to be here."
+                            />
+                          </div>
+                        );
+                      })}
+                    <label htmlFor="mainImage">
+                      <div className="selectMainImage flex justify-center items-center flex-col text-center font-firasans cursor-pointer border-2 border-black border-dashed rounded-md h-[260px] w-[260px] ">
+                        <FiUpload />
+                        <span>Upload Main Image</span>
+                      </div>
+                    </label>
+                    <input
+                      className="hidden"
+                      name="mainImage"
+                      id="mainImage"
+                      type="file"
+                      onChange={handleUploadMainImage}
+                    />
                   </div>
-                  <input
-                    className="hidden"
-                    type="file"
-                    name="img"
-                    id="img"
-                    onChange={handleUploadImage}
-                    multiple
-                  />
-                </label>
-              </div>
-              <div
-                className={`${
-                  selectedImage.length !== 0 && "border-2"
-                } flex justify-start gap-2 flex-wrap px-4`}
-              >
-                {selectedImage &&
-                  selectedImage.map((image, index) => {
-                    // console.log("image: ", selectedImage);
-                    return (
-                      <img
-                        key={index}
-                        className="h-28 my-4"
-                        src={image}
-                        alt=""
-                      />
-                    );
-                  })}
-              </div>
-            </div>
-            <div className="right col-span-1">
-              <div className="formGroup mx-auto font-firasans w-full flex flex-col my-2 space-y-1">
-                <label htmlFor="price" className="text-xl">
-                  Enter Price
-                </label>
-                <input
-                  className="w-full rounded-md border-2 text-lg py-1 px-4 outline-pink-500 border-blue-700"
-                  type="number"
-                  name="price"
-                  id="price"
-                  placeholder="Enter the price of the product"
-                  value={data.price}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="formGroup mx-auto font-firasans w-full flex flex-col my-2 space-y-1">
-                <label htmlFor="availableQty" className="text-xl">
-                  Enter AvailabeQty
-                </label>
-                <input
-                  className="w-full rounded-md border-2 text-lg py-1 px-4 outline-pink-500 border-blue-700"
-                  type="number"
-                  name="availableQty"
-                  id="availableQty"
-                  placeholder="Enter the availableQty of the product"
-                  value={data.availableQty}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="formGroup mx-auto font-firasans w-full flex flex-col my-2 space-y-1">
-                <label htmlFor="availableQty" className="text-xl">
-                  Enter Color
-                </label>
-                <input
-                  className="w-full rounded-md border-2 text-lg py-1 px-4 outline-pink-500 border-blue-700"
-                  type="text"
-                  name="color"
-                  id="color"
-                  placeholder="Enter the color of the product"
-                  value={data.color}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="formGroup mx-auto font-firasans w-full flex flex-col my-2 space-y-1">
-                <label htmlFor="size" className="text-xl">
-                  Select Size
-                </label>
-                <select
-                  name="size"
-                  id="size"
-                  className="w-full border-2 cursor-pointer rounded-md text-lg py-2 px-4 outline-pink-500 border-blue-700"
-                  // defaultValue={"Select size"}
-                  value={data.size}
-                  onChange={handleChange}
-                >
-                  <option value="Select size" disabled>
-                    Select Size
-                  </option>
-                  <option value="S">S</option>
-                  <option value="M">M</option>
-                  <option value="L">L</option>
-                  <option value="XL">XL</option>
-                  <option value="XXL">XXL</option>
-                </select>
-              </div>
+                </div>
+                <div className="subImageContainer col-span-12 lg:col-span-7 py-2 px-4">
+                  <h2 className="text-lg font-firasans my-3">Sub Images:</h2>
+                  <div className="subImages  flex flex-wrap gap-4">
+                    {selectedImage.length > 0 &&
+                      selectedImage.map((img, index) => {
+                        return (
+                          <div className="w-[150px] h-[150px]" key={index}>
+                            <img
+                              className="cursor-pointer border-2 border-black rounded-md h-full w-full"
+                              src={img}
+                              alt="Image need to be here."
+                            />
+                          </div>
+                        );
+                      })}
 
-              <div className="formGroup mx-auto font-firasans w-full flex flex-col my-2 space-y-1">
-                <label htmlFor="category" className="text-xl">
-                  Select Category
-                </label>
-                <select
-                  name="category"
-                  id="category"
-                  className="w-full border-2 text-lg py-2 cursor-pointer rounded-md px-4 outline-pink-500 border-blue-700"
-                  // defaultValue={"Select one category"}
-                  value={data.category}
-                  onChange={handleChange}
-                >
-                  <option value="Select one category" disabled>
-                    Select one category
-                  </option>
-                  <option value="tshirt">Tshrit</option>
-                  <option value="books">Book</option>
-                  <option value="hoodies">Hoodie</option>
-                  <option value="mugs">Mugs</option>
-                </select>
+                    <label htmlFor="img">
+                      <div className="selectSubImages flex justify-center items-center flex-col text-center font-firasans cursor-pointer border-2 border-black border-dashed rounded-md h-[150px] w-[150px]">
+                        <FiUpload />
+                        <span>Upload Sub Images:-</span>
+                      </div>
+                    </label>
+                    <input
+                      className="hidden"
+                      name="img"
+                      id="img"
+                      type="file"
+                      onChange={handleUploadImage}
+                      multiple
+                    />
+                  </div>
+                  <p className="text-sm font-firasans text-gray-500 my-4">
+                    You can upload upto only 4 sub images
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="buttonDiv flex justify-start h-16">
+            <div className="buttonDiv flex justify-start h-16 mb-10">
               <button className="py-2 px-10 bg-pink-500 text-white font-firasans rounded-sm hover:bg-pink-700 shadow-lg shadow-gray-600/60 my-2">
                 Publish Product
               </button>

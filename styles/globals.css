@@ -38,7 +38,7 @@
         @apply py-4 px-6 border-2 border-gray-700 text-center;
     }
     .input_field{
-        @apply w-full border-2 rounded-md my-1 border-pink-500 outline-blue-600 py-2 px-4 font-firasans text-lg;
+        @apply w-full border-2 rounded-md my-1 border-pink-500 outline-gray-600 py-2 px-4 font-firasans text-lg;
     }
     .label{
         @apply font-firasans text-base;

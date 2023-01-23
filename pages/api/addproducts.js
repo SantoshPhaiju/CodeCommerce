@@ -55,15 +55,19 @@ const upload = multer({
   storage: multer.diskStorage({
     destination: "./public/uploads",
     filename: (req, file, cb) => {
-      console.log(req.files);
-      // console.log("files " + file);
+      console.log("req.files", file);
+      // console.log("req bojec", req);
+      console.log("files names", file.fieldname);
       cb(
         null,
-        req.files[0].fieldname + "_" + Date.now() + path.extname(file.originalname)
+        file.fieldname +
+          "_" +
+          Date.now() +
+          path.extname(file.originalname)
       );
     },
   }),
-});
+})
 
 const apiRoute = nextConnect({
   onError(error, req, res) {
@@ -76,21 +80,36 @@ const apiRoute = nextConnect({
   },
 });
 
-apiRoute.use(upload.array("img", 5));
+// apiRoute.use(upload.array("img", 5));
+// apiRoute.use(upload.single("mainImage"));
+apiRoute.use(upload.fields([
+  {name: "img", maxCount: 5},
+  {name: "mainImage", maxCount: 1}
+]))
 // apiRoute.use(connectToDb);
 
 apiRoute.post(async (req, res) => {
   const products = await Product.find();
-  console.log(req.files);
-  let filenames = req.files.map((file) =>{
+  // console.log("reqfiles",req.files);
+  // console.log(req);
+  let filenames = req.files.img.map((file) => {
     return `${baseUrl}/uploads/${file.filename}`;
-  })
-  console.log("filenames: ", filenames);
+  });
+  
+  let filename = req.files.mainImage.map((file) => {
+    return `${baseUrl}/uploads/${file.filename}`;
+  });
+  
+
+  // console.log("filenames: ", filenames);
+  // console.log("filename: ", filename);
   let p = new Product({
     title: req.body.title,
     slug: req.body.slug,
     desc: req.body.desc,
     img: filenames,
+    mainImage: filename[0],
+    status: req.body.status,
     category: req.body.category,
     size: req.body.size,
     color: req.body.color,
