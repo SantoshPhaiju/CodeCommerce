@@ -60,14 +60,11 @@ const upload = multer({
       console.log("files names", file.fieldname);
       cb(
         null,
-        file.fieldname +
-          "_" +
-          Date.now() +
-          path.extname(file.originalname)
+        file.fieldname + "_" + Date.now() + path.extname(file.originalname)
       );
     },
   }),
-})
+});
 
 const apiRoute = nextConnect({
   onError(error, req, res) {
@@ -82,10 +79,12 @@ const apiRoute = nextConnect({
 
 // apiRoute.use(upload.array("img", 5));
 // apiRoute.use(upload.single("mainImage"));
-apiRoute.use(upload.fields([
-  {name: "img", maxCount: 5},
-  {name: "mainImage", maxCount: 1}
-]))
+apiRoute.use(
+  upload.fields([
+    { name: "img", maxCount: 5 },
+    { name: "mainImage", maxCount: 1 },
+  ])
+);
 // apiRoute.use(connectToDb);
 
 apiRoute.post(async (req, res) => {
@@ -95,11 +94,10 @@ apiRoute.post(async (req, res) => {
   let filenames = req.files.img.map((file) => {
     return `${baseUrl}/uploads/${file.filename}`;
   });
-  
+
   let filename = req.files.mainImage.map((file) => {
     return `${baseUrl}/uploads/${file.filename}`;
   });
-  
 
   // console.log("filenames: ", filenames);
   // console.log("filename: ", filename);

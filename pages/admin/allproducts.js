@@ -20,6 +20,8 @@ import "swiper/css/pagination";
 import { Pagination, Navigation } from "swiper";
 
 const AllProducts = () => {
+  const ref = useRef(null);
+
   const [showSideBar, setShowSidebar] = useState(true);
   const [showSlider, setShowSlider] = useState(false);
   // const [products, setProducts] = useState({});
@@ -68,6 +70,7 @@ const AllProducts = () => {
 
       <MainConfig showSideBar={showSideBar} setShowSidebar={setShowSidebar} />
       <div
+        ref={ref}
         className={`main pl-0 transition-all duration-300 mt-20 ${
           showSideBar === false ? "sm:pl-[90px]" : "sm:pl-[260px]"
         }`}
@@ -127,8 +130,11 @@ const AllProducts = () => {
 
           <div className="flex justify-center items-center">
             {showSlider === true && (
-              <div className="imageSlider absolute top-0 left-0 h-[105%] w-[100vw] z-50 rounded-md bg-black/50 py-10">
-                <button className="absolute top-10 right-8 cursor-pointer z-50" onClick={() => setShowSlider(false)}>
+              <div className="imageSlider overflow-y-scroll absolute top-0 left-0 h-full w-[100vw] z-50 rounded-md bg-black/50 py-10">
+                <button
+                  className="absolute top-10 right-8 cursor-pointer z-50"
+                  onClick={() => setShowSlider(false)}
+                >
                   <AiOutlineClose className="text-3xl transition-all duration-300 text-white cursor-pointer hover:rotate-180" />
                 </button>
                 <Swiper
@@ -157,7 +163,7 @@ const AllProducts = () => {
             )}
           </div>
           {showSlider === true && (
-            <div className="overlay absolute top-0 left-0 w-full h-[105%] bg-black/50 z-40"></div>
+            <div className="overlay overflow-y-auto absolute top-0 left-0 w-full h-full bg-black/50 z-40"></div>
           )}
 
           <div className="search mx-10">
@@ -229,7 +235,13 @@ const AllProducts = () => {
                         <td className="table_data">Rs.{item?.price}</td>
                         <td className="table_data">
                           <img
-                            onClick={() => showAllImages(index)}
+                            onClick={() => {
+                              showAllImages(index);
+                              // ref.current?.scrollIntoView({
+                              //   behavior: "smooth",
+                              // });
+                              window.scroll(0, 0)
+                            }}
                             className="w-auto h-[100px] mx-auto"
                             src={item?.img[0]}
                             alt="This is the product image here"
