@@ -1,5 +1,4 @@
 // import connectToDb from "../../middleware/db";
-import Product from "../../models/Product";
 
 // // import multer from "multer";
 
@@ -26,8 +25,8 @@ import Product from "../../models/Product";
 //     // console.log(req.file);
 //     // for (let i = 0; i < req.body.length; i++) {
 //     //   let p = new Product({
-//     //     title: req.body[i].title,
-//     //     slug: req.body[i].slug,
+  //     //     title: req.body[i].title,
+  //     //     slug: req.body[i].slug,
 //     //     desc: req.body[i].desc,
 //     //     img: req.body[i].img,
 //     //     category: req.body[i].category,
@@ -51,6 +50,8 @@ import multer from "multer";
 import path from "path";
 import baseUrl from "../../helpers/baseUrl";
 import { nanoid } from "nanoid";
+import Variant from "../../models/VariantsModel";
+import Product from "../../models/Product";
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -61,7 +62,11 @@ const upload = multer({
       console.log("files names", file.fieldname);
       cb(
         null,
-        file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+        file.fieldname +
+          "_variant" +
+          "_" +
+          Date.now() +
+          path.extname(file.originalname)
       );
     },
   }),
@@ -89,7 +94,10 @@ apiRoute.use(
 // apiRoute.use(connectToDb);
 
 apiRoute.post(async (req, res) => {
-  const products = await Product.find();
+  const id = req.query.productId;
+  console.log(req.body, "id", id);
+  let product = await Product.findById(id);
+  console.log("product", product);
   // console.log("reqfiles",req.files);
   // console.log(req);
   let filenames = req.files.img.map((file) => {
@@ -102,21 +110,43 @@ apiRoute.post(async (req, res) => {
 
   // console.log("filenames: ", filenames);
   // console.log("filename: ", filename);
-  let p = new Product({
-    title: req.body.title,
-    slug: req.body.title + "_" + nanoid(),
-    desc: req.body.desc,
-    img: filenames,
-    mainImage: filename[0],
-    status: req.body.status,
-    category: req.body.category,
-    size: req.body.size,
-    color: req.body.color,
-    price: req.body.price,
-    availableQty: req.body.availableQty,
+  if (product) {
+    let variant = new Variant({
+      title: req.body.title,
+      slug: req.body.title + "_variant" + "_" + nanoid(),
+      desc: req.body.desc,
+      productsID: product._id,
+      img: filenames,
+      mainImage: filename[0],
+      status: req.body.status,
+      category: product.category,
+      size: req.body.size,
+      color: req.body.color,
+      price: req.body.price,
+      availableQty: req.body.availableQty,
+    });
+    await variant.save((err, variant) => {
+    if (err) {
+      res.status(500).json({ message: err.message });
+    } else {
+      Product.findByIdAndUpdate(id, { $push: { variants: variant._id } }, (error) => {
+        if (error) {
+          res.status(500).json({ message: error.message });
+        } else {
+          // res.json({ message: 'Variant successfully added', variant });
+          res.status(200).json({ success: true, variant });
+        }
+      });
+    }
   });
-  await p.save();
-  res.status(200).json({ data: "success", products });
+    // let updatedproduct = await Product.findByIdAndUpdate(id, { $push: { variants: variant._id } })
+    
+  } else {
+    res.status(400).json({
+      success: false,
+      error: "You cannot add variants to this product",
+    });
+  }
 });
 
 export default apiRoute;

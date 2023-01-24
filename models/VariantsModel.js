@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { nanoid } from "nanoid";
 
 const VariantsSchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -7,7 +6,6 @@ const VariantsSchema = new mongoose.Schema({
   productsID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Product",
-    required: true,
   },
   desc: { type: String, required: true },
   img: [{ type: String, required: true }],
@@ -21,8 +19,8 @@ const VariantsSchema = new mongoose.Schema({
     timestamps: true
 });
 
-export default mongoose.models.Variants ||
-  mongoose.model("Variants", VariantsSchema);
+export default mongoose.models.Variant ||
+  mongoose.model("Variant", VariantsSchema);
 
 // mongoose.models = {};
 // export default mongoose.model("Product", ProductSchema);
