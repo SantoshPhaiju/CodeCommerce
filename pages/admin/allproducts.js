@@ -200,6 +200,9 @@ const AllProducts = () => {
                     Price
                   </th>
                   <th scope="col" className="table_heading">
+                    Variants
+                  </th>
+                  <th scope="col" className="table_heading">
                     Image
                   </th>
                   <th scope="col" className="table_heading">
@@ -233,6 +236,7 @@ const AllProducts = () => {
                         </td>
                         <td className="table_data">{item?.title}</td>
                         <td className="table_data">Rs.{item?.price}</td>
+                        <td className="table_data">{item?.variants.length}</td>
                         <td className="table_data">
                           <img
                             onClick={() => {
@@ -243,7 +247,7 @@ const AllProducts = () => {
                               window.scroll(0, 0)
                             }}
                             className="w-auto h-[100px] mx-auto"
-                            src={item?.img[0]}
+                            src={item?.mainImage}
                             alt="This is the product image here"
                           />
                         </td>

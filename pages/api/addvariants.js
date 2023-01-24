@@ -129,7 +129,7 @@ apiRoute.post(async (req, res) => {
     if (err) {
       res.status(500).json({ message: err.message });
     } else {
-      Product.findByIdAndUpdate(id, { $push: { variants: variant._id } }, (error) => {
+      Product.findByIdAndUpdate(id, { availableQty: product.availableQty + variant.availableQty, $push: { variants: variant._id } }, (error) => {
         if (error) {
           res.status(500).json({ message: error.message });
         } else {
