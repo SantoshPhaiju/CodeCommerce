@@ -16,7 +16,7 @@ const ProductSchema = mongoose.Schema(
     variants: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Variants",
+        ref: "Variant",
       },
     ],
   },
