@@ -102,7 +102,7 @@ export async function getServerSideProps(context) {
     mongoose.connect(process.env.MONGO_URI);
   }
 
-  let products = await Product.find({ category: "books" });
+  let products = await Product.find({ category: "Books" });
 
   let books = {};
   for (let item of products) {

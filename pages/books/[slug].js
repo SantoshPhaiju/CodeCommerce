@@ -53,8 +53,9 @@ const Slug = ({ buyNow, addToCart, product, error }) => {
               return (
                 <div
                   className={` transition-all duration-300 h-[100px] w-[150px] lg:w-full rounded border-gray-300 overflow-hidden cursor-pointer hover:shadow-lg hover:shadow-green-600/80 hover:border hover:border-black hover:scale-110 ${
-                    selectImage === image ?
-                    "border shadow-lg shadow-green-600/80 border-black scale-110": "border-2"
+                    selectImage === image
+                      ? "border shadow-lg shadow-green-600/80 border-black scale-110"
+                      : "border-2"
                   }`}
                 >
                   <img
@@ -195,7 +196,10 @@ const Slug = ({ buyNow, addToCart, product, error }) => {
                   </a>
                 </span> */}
               </div>
-              <p className="leading-relaxed font-firasans">{product.desc}</p>
+              <div
+                className="leading-relaxed font-firasans"
+                dangerouslySetInnerHTML={{ __html: product.desc }}
+              ></div>
 
               <div className="flex">
                 <span className="title-font font-robotoslab font-medium text-xl lg:text-2xl text-gray-900">

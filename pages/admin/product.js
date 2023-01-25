@@ -12,6 +12,7 @@ import { addProduct } from "../slices/productSlice";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
+import Variants from "../../models/Variants";
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
   loading: () => <p>Loading ...</p>,
@@ -357,7 +358,7 @@ const ProductPage = ({ product }) => {
             </div>
           </div>
 
-          <div className="variants bg-white shadow-lg shadow-gray-500/40 w-[60vw] my-4 mb-12 py-2 px-4">
+          {product.variants.length !== 0 && <div className="variants bg-white shadow-lg shadow-gray-500/40 w-[60vw] my-4 mb-12 py-2 px-4">
             <h1 className="text-2xl text-gray-800 font-firasans my-2">
               Variants:-
             </h1>
@@ -507,7 +508,7 @@ const ProductPage = ({ product }) => {
                 );
               })}
             </div>
-          </div>
+          </div>}
         </div>
       </div>
     </>
@@ -522,6 +523,7 @@ export async function getServerSideProps(context) {
   let product = await Product.findById(context.query.id)
   .populate({
     path: "variants",
+    model: Variants,
     options: { lead: true },
   })
   //   console.log(context.query.id);

@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import Product from "../../models/Product";
 import connectToDb from "../../middleware/db";
+import Variants from '../../models/Variants';
 
 const handler = async (req, res) => {
   if (req.method === "GET") {
@@ -9,6 +10,7 @@ const handler = async (req, res) => {
     let products = await Product.find()
     .populate({
       path: "variants",
+      model: Variants, // give model name to populate the variants field from 
       options: { lean: true },
     });
    
