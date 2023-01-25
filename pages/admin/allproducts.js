@@ -40,7 +40,7 @@ const AllProducts = () => {
     dispatch(fetchProducts());
   }, []);
   const handleDelete = (id) => {
-    if (confirm("Do you want to delete this product?")) {
+    if (confirm("Do you want to delete this product? Deleting this product will delete all the variants of this product!")) {
       dispatch(deleteProduct({ id, toast }));
     }
   };
@@ -183,6 +183,7 @@ const AllProducts = () => {
           </div>
 
           {/* Creating table to show the products details */}
+          {products.length !== 0 ? 
           <div className="overflow-x-auto shadow-md shadow-gray-500/30 mb-3 mx-10">
             <table className="table">
               <thead className="table_head">
@@ -285,6 +286,7 @@ const AllProducts = () => {
               </tbody>
             </table>
           </div>
+          : <div className="text-center text-gray-600 text-2xl font-ubuntu">No products to show!</div>}
         </div>
       </div>
     </>

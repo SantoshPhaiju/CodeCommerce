@@ -25,8 +25,8 @@
 //     // console.log(req.file);
 //     // for (let i = 0; i < req.body.length; i++) {
 //     //   let p = new Product({
-  //     //     title: req.body[i].title,
-  //     //     slug: req.body[i].slug,
+//     //     title: req.body[i].title,
+//     //     slug: req.body[i].slug,
 //     //     desc: req.body[i].desc,
 //     //     img: req.body[i].img,
 //     //     category: req.body[i].category,
@@ -50,7 +50,7 @@ import multer from "multer";
 import path from "path";
 import baseUrl from "../../helpers/baseUrl";
 import { nanoid } from "nanoid";
-import Variant from "../../models/VariantsModel";
+import Variants from "../../models/Variants";
 import Product from "../../models/Product";
 
 const upload = multer({
@@ -111,7 +111,7 @@ apiRoute.post(async (req, res) => {
   // console.log("filenames: ", filenames);
   // console.log("filename: ", filename);
   if (product) {
-    let variant = new Variant({
+    let variant = new Variants({
       title: req.body.title,
       slug: req.body.title + "_variant" + "_" + nanoid(),
       desc: req.body.desc,
@@ -126,21 +126,27 @@ apiRoute.post(async (req, res) => {
       availableQty: req.body.availableQty,
     });
     await variant.save((err, variant) => {
-    if (err) {
-      res.status(500).json({ message: err.message });
-    } else {
-      Product.findByIdAndUpdate(id, { availableQty: product.availableQty + variant.availableQty, $push: { variants: variant._id } }, (error) => {
-        if (error) {
-          res.status(500).json({ message: error.message });
-        } else {
-          // res.json({ message: 'Variant successfully added', variant });
-          res.status(200).json({ success: true, variant });
-        }
-      });
-    }
-  });
+      if (err) {
+        res.status(500).json({ message: err.message });
+      } else {
+        Product.findByIdAndUpdate(
+          id,
+          {
+            availableQty: product.availableQty + variant.availableQty,
+            $push: { variants: variant._id },
+          },
+          (error) => {
+            if (error) {
+              res.status(500).json({ message: error.message });
+            } else {
+              // res.json({ message: 'Variant successfully added', variant });
+              res.status(200).json({ success: true, variant });
+            }
+          }
+        );
+      }
+    });
     // let updatedproduct = await Product.findByIdAndUpdate(id, { $push: { variants: variant._id } })
-    
   } else {
     res.status(400).json({
       success: false,
