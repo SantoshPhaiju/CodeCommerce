@@ -34,7 +34,7 @@ export const addProduct = createAsyncThunk(
   }
 );
 export const updateImage = createAsyncThunk(
-  "products/addProduct",
+  "products/updateProduct",
   async ({formdata, toast}) => {
     try {
       const response = await axios.post(

@@ -119,6 +119,8 @@ const ProductPage = ({ product }) => {
   }, []);
 
   const [selectedImage, setSelectedImage] = useState([]);
+  const [selectedMainImage, setSelectedMainImage] = useState("");
+  const [mainFile, setMainFile] = useState("");
   const [file, setFile] = useState("");
   const [open, setOpen] = useState(false);
 
@@ -131,6 +133,75 @@ const ProductPage = ({ product }) => {
     console.log(open, index);
     setOpen(index);
   };
+
+  const handleUploadMainImage = (e) => {
+    console.log("mainfile", e.target.files);
+    if (e.target.files && selectedMainImage.length < 2) {
+      let files = [];
+      Object.keys(e.target.files).map((img) => {
+        console.log(e.target.files[img]);
+        files.push(e.target.files[img]);
+      });
+      const imgUrl = files.map((file, index) => {
+        return URL.createObjectURL(file);
+      });
+      setSelectedMainImage(imgUrl);
+      setMainFile(e.target.files);
+
+      if (!mainFile) return;
+      const formdata = new FormData();
+      Object.values(mainFile).forEach((file) => {
+        formdata.append("mainImage", file);
+        // console.log(file);
+      });
+      dispatch(addProduct({ formdata, toast }));
+        setMainFile("");
+        setSelectedMainImage("");
+    } else {
+      alert("You cannot upload more than 1 images");
+    }
+  };
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (!file) return;
+  //   if (!mainFile) return;
+  //   const formdata = new FormData();
+  //   Object.values(file).forEach((file) => {
+  //     formdata.append("img", file);
+  //   });
+  //   Object.values(mainFile).forEach((file) => {
+  //     formdata.append("mainImage", file);
+  //     // console.log(file);
+  //   });
+  //   formdata.append("title", data.title);
+  //   formdata.append("desc", desc);
+  //   formdata.append("price", data.price);
+  //   formdata.append("category", data.category);
+  //   formdata.append("color", data.color);
+  //   formdata.append("size", data.size);
+  //   formdata.append("status", data.status);
+  //   formdata.append("availableQty", data.availableQty);
+  //   // for (var key of formdata.entries()) {
+  //   //   console.log(key[0] + ", " + key[1]);
+  //   // }
+  //   // console.log(file);
+  //   dispatch(addProduct({ formdata, toast }));
+  //   setData({
+  //     title: "",
+  //     desc: "",
+  //     category: "Select one category",
+  //     price: "",
+  //     status: "",
+  //     availableQty: "",
+  //     color: "",
+  //     size: "Select size",
+  //   });
+  //   setFile("");
+  //   setSelectedImage([]);
+  //   setMainFile("");
+  //   setSelectedMainImage("");
+  // };
 
   const handleUploadImage = (e) => {
     // console.log(e.target.files[0]);
@@ -203,9 +274,19 @@ const ProductPage = ({ product }) => {
                   alt="product img"
                 />
                 <div className="imgOverlay transition-all duration-300 absolute h-full w-full bg-slate-900/70 flex items-center justify-center -bottom-20 group-hover:bottom-0 hover:bottom-0 opacity-0 hover:opacity-100">
-                  <span className="text-white font-ubuntu text-xl z-40">
-                    Main Image
-                  </span>
+                  <label
+                    htmlFor="mainImage"
+                    className="text-white font-ubuntu text-xl z-40 py-2
+                   px-4 normal_btn cursor-pointer"
+                  >
+                    Change Main Image
+                  </label>
+                  <input
+                    id="mainImage"
+                    name="mainImage"
+                    type="file"
+                    className="hidden"
+                  />
                 </div>
               </div>
               <div className="otherImagesContainer flex flex-wrap gap-4 w-[70vw] h-[300px]">
@@ -358,157 +439,159 @@ const ProductPage = ({ product }) => {
             </div>
           </div>
 
-          {product.variants.length !== 0 && <div className="variants bg-white shadow-lg shadow-gray-500/40 w-[60vw] my-4 mb-12 py-2 px-4">
-            <h1 className="text-2xl text-gray-800 font-firasans my-2">
-              Variants:-
-            </h1>
+          {product.variants.length !== 0 && (
+            <div className="variants bg-white shadow-lg shadow-gray-500/40 w-[60vw] my-4 mb-12 py-2 px-4">
+              <h1 className="text-2xl text-gray-800 font-firasans my-2">
+                Variants:-
+              </h1>
 
-            <div className="variantsContainer flex gap-4 flex-col">
-              {product.variants.map((variant, index) => {
-                return (
-                  <div
-                    className={`variant w-full border border-gray-600 transition-all duration-500 ease-in-out `}
-                    key={index}
-                  >
+              <div className="variantsContainer flex gap-4 flex-col">
+                {product.variants.map((variant, index) => {
+                  return (
                     <div
-                      className="header cursor-pointer flex items-center justify-between border p-3"
-                      onClick={() => toggle(index)}
+                      className={`variant w-full border border-gray-600 transition-all duration-500 ease-in-out `}
+                      key={index}
                     >
-                      <span className=" font-firasans">{variant.title}</span>
-                      <div className="float-right flex items-center gap-2 transition-all duration-300">
-                        {open !== index ? (
-                          <MdArrowDropDown className="text-xl float-right text-center" />
-                        ) : (
-                          <MdArrowDropUp className="text-xl float-right text-center" />
-                        )}
-                      </div>
-                    </div>
-                    <div
-                      className={`body transition-all duration-500 ease-in-out ${
-                        open === index
-                          ? "h-[100vh] overflow-auto py-2 px-4"
-                          : "h-[0px] overflow-hidden py-0 px-0"
-                      }`}
-                    >
-                      <div className="variantDetails">
-                        <div className="variantImages flex flex-wrap gap-28">
-                          <div className="mainImage">
-                            <p className="text-xl font-ubuntu my-2">
-                              Main Image:-
-                            </p>
-                            <img
-                              src={variant.mainImage}
-                              className="w-[150px] h-[150px]"
-                              alt="this is the image here"
-                            />
-                          </div>
-                          <div className="sub-images">
-                            <p className="text-xl font-ubuntu my-2">
-                              Sub Images:-
-                            </p>
-                            <div className="imagecontainer flex gap-2">
-                              {variant.img.map((img, index) => {
-                                return (
-                                  <div>
-                                    <img
-                                      src={img}
-                                      key={index}
-                                      className="w-[150px] h-[150px]"
-                                      alt="this is the image here"
-                                    />
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        </div>
-
-                        <hr className="bg-black my-4  border-gray-400" />
-                        <div className="generalDetails">
-                          <div className="formGroup my-2">
-                            <label htmlFor="title">Title:-</label>
-                            <input
-                              type="text"
-                              className="input_field"
-                              value={variant.title}
-                            />
-                          </div>
-                          <div className="formGroup my-2">
-                            <label htmlFor="desc" className="label text-lg">
-                              Description:-
-                            </label>
-                            <div className="description h-[200px]">
-                              <QuillNoSSRWrapper
-                                className="h-[70%] flex-1 w-full font-firasans text-lg"
-                                value={variant.desc}
-                                // onChange={setDesc}
-                                modules={modules}
-                                formats={formats}
-                                // placeholder={"Enter the description of the product here."}
-                                theme="snow"
-                              />
-                            </div>
-                          </div>
-
-                          <div className="formGroup my-2">
-                            <label htmlFor="title">Price:-</label>
-                            <input
-                              type="text"
-                              className="input_field"
-                              value={variant.price}
-                            />
-                          </div>
-
-                          <div className="formGroup my-2">
-                            <label htmlFor="status">Status:-</label>
-                            <input
-                              type="text"
-                              className="input_field"
-                              value={variant.status}
-                            />
-                          </div>
-
-                          <div className="formGroup my-2">
-                            <label htmlFor="title">Stock:-</label>
-                            <input
-                              type="text"
-                              className="input_field"
-                              value={variant.availableQty}
-                            />
-                          </div>
-
-                          {product.category === "Tshirts" && (
-                            <div className="formGroup my-2">
-                              <label htmlFor="color" className="label">
-                                Color:-
-                              </label>
-                              <input
-                                className="input_field "
-                                type="text"
-                                value={variant.color}
-                              />
-                            </div>
-                          )}
-                          {product.category === "Tshirts" && (
-                            <div className="formGroup my-2">
-                              <label htmlFor="title" className="label">
-                                Size:-
-                              </label>
-                              <input
-                                className="input_field "
-                                type="text"
-                                value={variant.size}
-                              />
-                            </div>
+                      <div
+                        className="header cursor-pointer flex items-center justify-between border p-3"
+                        onClick={() => toggle(index)}
+                      >
+                        <span className=" font-firasans">{variant.title}</span>
+                        <div className="float-right flex items-center gap-2 transition-all duration-300">
+                          {open !== index ? (
+                            <MdArrowDropDown className="text-xl float-right text-center" />
+                          ) : (
+                            <MdArrowDropUp className="text-xl float-right text-center" />
                           )}
                         </div>
                       </div>
+                      <div
+                        className={`body transition-all duration-500 ease-in-out ${
+                          open === index
+                            ? "h-[100vh] overflow-auto py-2 px-4"
+                            : "h-[0px] overflow-hidden py-0 px-0"
+                        }`}
+                      >
+                        <div className="variantDetails">
+                          <div className="variantImages flex flex-wrap gap-28">
+                            <div className="mainImage">
+                              <p className="text-xl font-ubuntu my-2">
+                                Main Image:-
+                              </p>
+                              <img
+                                src={variant.mainImage}
+                                className="w-[150px] h-[150px]"
+                                alt="this is the image here"
+                              />
+                            </div>
+                            <div className="sub-images">
+                              <p className="text-xl font-ubuntu my-2">
+                                Sub Images:-
+                              </p>
+                              <div className="imagecontainer flex gap-2">
+                                {variant.img.map((img, index) => {
+                                  return (
+                                    <div>
+                                      <img
+                                        src={img}
+                                        key={index}
+                                        className="w-[150px] h-[150px]"
+                                        alt="this is the image here"
+                                      />
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          </div>
+
+                          <hr className="bg-black my-4  border-gray-400" />
+                          <div className="generalDetails">
+                            <div className="formGroup my-2">
+                              <label htmlFor="title">Title:-</label>
+                              <input
+                                type="text"
+                                className="input_field"
+                                value={variant.title}
+                              />
+                            </div>
+                            <div className="formGroup my-2">
+                              <label htmlFor="desc" className="label text-lg">
+                                Description:-
+                              </label>
+                              <div className="description h-[200px]">
+                                <QuillNoSSRWrapper
+                                  className="h-[70%] flex-1 w-full font-firasans text-lg"
+                                  value={variant.desc}
+                                  // onChange={setDesc}
+                                  modules={modules}
+                                  formats={formats}
+                                  // placeholder={"Enter the description of the product here."}
+                                  theme="snow"
+                                />
+                              </div>
+                            </div>
+
+                            <div className="formGroup my-2">
+                              <label htmlFor="title">Price:-</label>
+                              <input
+                                type="text"
+                                className="input_field"
+                                value={variant.price}
+                              />
+                            </div>
+
+                            <div className="formGroup my-2">
+                              <label htmlFor="status">Status:-</label>
+                              <input
+                                type="text"
+                                className="input_field"
+                                value={variant.status}
+                              />
+                            </div>
+
+                            <div className="formGroup my-2">
+                              <label htmlFor="title">Stock:-</label>
+                              <input
+                                type="text"
+                                className="input_field"
+                                value={variant.availableQty}
+                              />
+                            </div>
+
+                            {product.category === "Tshirts" && (
+                              <div className="formGroup my-2">
+                                <label htmlFor="color" className="label">
+                                  Color:-
+                                </label>
+                                <input
+                                  className="input_field "
+                                  type="text"
+                                  value={variant.color}
+                                />
+                              </div>
+                            )}
+                            {product.category === "Tshirts" && (
+                              <div className="formGroup my-2">
+                                <label htmlFor="title" className="label">
+                                  Size:-
+                                </label>
+                                <input
+                                  className="input_field "
+                                  type="text"
+                                  value={variant.size}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
-          </div>}
+          )}
         </div>
       </div>
     </>
@@ -520,12 +603,11 @@ export async function getServerSideProps(context) {
     mongoose.connect(process.env.MONGO_URI);
   }
 
-  let product = await Product.findById(context.query.id)
-  .populate({
+  let product = await Product.findById(context.query.id).populate({
     path: "variants",
     model: Variants,
     options: { lead: true },
-  })
+  });
   //   console.log(context.query.id);
   // console.log(context);
   if (product === null) {
