@@ -9,7 +9,6 @@ const upload = multer({
   storage: multer.diskStorage({
     destination: "./public/uploads",
     filename: (req, file, cb) => {
-      // console.log("req.files", req.files);
       console.log("files names", file.fieldname);
       cb(
         null,
@@ -32,36 +31,34 @@ const apiRoute = nextConnect({
 apiRoute.use(
   upload.fields([{ name: "img" }, { name: "mainImage", maxCount: 1 }])
 );
-// apiRoute.use(upload.array("img", 5));
-// apiRoute.use(upload.single("mainImage"));
-// apiRoute.use(connectToDb);
 
 apiRoute.post(async (req, res) => {
-  // console.log(req.files, "req.files in post");
+  console.log(req.files, "req.files in post");
   const id = req.query.id;
   const product = await Product.findById(id);
   let filenames;
-  if (req.files && req.files.img && req.files.img.length > 4) {
-    const imagepaths = req.files.img.map((img) => {
-      return img.path;
-    });
-
-    console.log(req.files.img);
-    
-    console.log("imagepaths", imagepaths);
-    imagepaths.forEach((img) => {
-      // console.log(img);
-      const basename = path.basename(img);
-      //   console.log(basename);
-      let imagepath = path.join(process.cwd(), "public", "uploads", basename);
-      fs.unlink(imagepath, (err) => {
-        if (err) throw err;
-        console.log(`${basename} was deleted`);
+  if (req.files !== null && req.files.img) {
+    if (req.files.img.length > 4) {
+      const imagepaths = req.files.img.map((img) => {
+        return img.path;
       });
-    });
-    return res
-      .status(400)
-      .json({ error: "Too many files, maximum of 4 allowed" });
+      console.log(req.files.img);
+
+      console.log("imagepaths", imagepaths);
+      imagepaths.forEach((img) => {
+        // console.log(img);
+        const basename = path.basename(img);
+        //   console.log(basename);
+        let imagepath = path.join(process.cwd(), "public", "uploads", basename);
+        fs.unlink(imagepath, (err) => {
+          if (err) throw err;
+          console.log(`${basename} was deleted`);
+        });
+      });
+      return res
+        .status(400)
+        .json({ error: "Too many files, maximum of 4 allowed" });
+    }
   }
 
   if (req.files.img) {
