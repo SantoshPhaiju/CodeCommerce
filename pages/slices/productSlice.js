@@ -8,7 +8,8 @@ export const fetchProducts = createAsyncThunk(
     const response = await axios.get(
       `${baseUrl}/api/fetchallproducts`
     );
-    console.log(response.data);
+    
+    // return data;
     return response.data;
   }
 );
