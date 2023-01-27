@@ -34,12 +34,12 @@ export const addProduct = createAsyncThunk(
     }
   }
 );
-export const updateImage = createAsyncThunk(
-  "products/updateProduct",
-  async ({formdata, toast}) => {
+export const updateImages = createAsyncThunk(
+  "products/updateImages",
+  async ({formdata, toast, id}) => {
     try {
       const response = await axios.post(
-        `${baseUrl}/api/updateproducts`,
+        `${baseUrl}/api/updateproductimages?id=${id}`,
         formdata,
         {
           headers: {
@@ -47,7 +47,10 @@ export const updateImage = createAsyncThunk(
           },
         }
       );
-      toast.success("Your product is successfully updated.");
+      // console.log(response.data);
+      if(response.data.success === true){
+        toast.success("Your product images are successfully updated.");
+      }
       return response.data;
     } catch (error) {
       console.log(error);
@@ -135,7 +138,30 @@ export const productSlice = createSlice({
         state.error = action.error.message;
         state.status = "rejected";
         console.log(action.error.message);
-      });
+      })
+      .addCase(updateImages.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(updateImages.fulfilled, (state, action) => {
+        state.status = "succeded";
+        console.log("products" , action.payload);
+        const id = action.payload.updatedProduct._id;
+        console.log("Id", id)
+        state.products.map((product) => {
+          if(product._id === id){
+            // console.log("img",action.payload.updatedProduct.img, "productimg", product.img);
+            product.mainImage = action.payload.updatedProduct.mainImage;
+            product.img = [...action.payload.updatedProduct.img];
+          }
+        });
+        // const index = state.products.findIndex((product) => product._id === id);
+        // state.products.splice(index, 1, action.payload.updatedProduct);
+      })
+      .addCase(updateImages.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.status = "rejected";
+        console.log(action.error.message);
+      })
   },
 });
 

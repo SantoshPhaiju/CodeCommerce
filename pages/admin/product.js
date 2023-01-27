@@ -8,11 +8,17 @@ import mongoose from "mongoose";
 import Link from "next/link";
 import { BsArrowLeft } from "react-icons/bs";
 import { FiUpload } from "react-icons/fi";
-import { addProduct } from "../slices/productSlice";
+import {
+  addProduct,
+  fetchProducts,
+  updateImages,
+} from "../slices/productSlice";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
 import Variants from "../../models/Variants";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
   loading: () => <p>Loading ...</p>,
@@ -106,9 +112,11 @@ const ProductPage = ({ product }) => {
     "link",
   ];
 
-  console.log(product);
+  // console.log(product);
   const [showSideBar, setShowSidebar] = useState(true);
   const router = useRouter();
+  const [updateImage, setUpdateImage] = useState(false);
+  const dispatch = useDispatch();
 
   // console.log(router.query.id);
   const { id } = router.query;
@@ -116,7 +124,12 @@ const ProductPage = ({ product }) => {
     if (router.query.id === undefined) {
       router.push("/admin/allproducts");
     }
+    dispatch(fetchProducts());
   }, []);
+
+  const refreshData = () => {
+    router.replace(router.asPath);
+  };
 
   const [selectedImage, setSelectedImage] = useState([]);
   const [selectedMainImage, setSelectedMainImage] = useState("");
@@ -126,7 +139,7 @@ const ProductPage = ({ product }) => {
 
   const toggle = (index) => {
     if (index === open) {
-      console.log(open, index);
+      // console.log(open, index);
       setOpen(null);
       return;
     }
@@ -155,8 +168,8 @@ const ProductPage = ({ product }) => {
         // console.log(file);
       });
       dispatch(addProduct({ formdata, toast }));
-        setMainFile("");
-        setSelectedMainImage("");
+      setMainFile("");
+      setSelectedMainImage("");
     } else {
       alert("You cannot upload more than 1 images");
     }
@@ -204,46 +217,52 @@ const ProductPage = ({ product }) => {
   // };
 
   const handleUploadImage = (e) => {
-    // console.log(e.target.files[0]);
     if (e.target.files && selectedImage.length < 4) {
       let files = [];
       Object.keys(e.target.files).map((img) => {
         console.log(e.target.files[img]);
         files.push(e.target.files[img]);
       });
-      // console.log(files);
       const imgUrl = files.map((file, index) => {
-        // console.log("file", file);
-        // console.log("urls: ", URL.createObjectURL(file));
         return URL.createObjectURL(file);
       });
       setSelectedImage(imgUrl);
-      // setSelectedImage(URL.createObjectURL(e.target.files[0]));
-      // setFile(files);
       setFile(e.target.files);
-      // console.log(selectedImage);
-      handleSubmit();
     } else {
       alert("You cannot upload more than 4 images");
     }
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!file) return;
+    // e.preventDefault();
+    setUpdateImage(false);
+    dispatch(fetchProducts());
+    if (!file && !mainFile) return;
+    
     const formdata = new FormData();
     console.log(file);
     Object.values(file).forEach((file) => {
       formdata.append("img", file);
+      console.log("imgfile", file);
     });
-
+    Object.values(mainFile).forEach((file) => {
+      formdata.append("mainImage", file);
+      console.log("mainfile",file);
+    });
     for (var key of formdata.entries()) {
       console.log(key[0] + ", " + key[1]);
     }
     console.log(file);
-    dispatch(updateImage({ formdata, toast }));
+
+    // console.log(file);
+    dispatch(updateImages({ formdata, toast, id }));
     setFile("");
     setSelectedImage([]);
+    setMainFile("");
+    setSelectedMainImage([]);
+    setTimeout(() => {
+      refreshData();
+    }, 1000);
   };
   return (
     <>
@@ -265,81 +284,135 @@ const ProductPage = ({ product }) => {
         </Link>
 
         <div className="product mx-10 px-4 py-2">
-          <div className="border flex bg-white p-3 shadow-lg shadow-gray-500/40 w-[60vw]">
-            <div className="images flex gap-4 w-full">
-              <div className="mainImageContainer border rounded-md overflow-hidden relative h-[300px] w-[30vw] cursor-pointer">
-                <img
-                  className="w-full h-full"
-                  src={product.mainImage}
-                  alt="product img"
-                />
-                <div className="imgOverlay transition-all duration-300 absolute h-full w-full bg-slate-900/70 flex items-center justify-center -bottom-20 group-hover:bottom-0 hover:bottom-0 opacity-0 hover:opacity-100">
-                  <label
-                    htmlFor="mainImage"
-                    className="text-white font-ubuntu text-xl z-40 py-2
-                   px-4 normal_btn cursor-pointer"
-                  >
-                    Change Main Image
-                  </label>
-                  <input
-                    id="mainImage"
-                    name="mainImage"
-                    type="file"
-                    className="hidden"
-                  />
-                </div>
-              </div>
-              <div className="otherImagesContainer flex flex-wrap gap-4 w-[70vw] h-[300px]">
-                {product.img.map((image, index) => {
-                  return (
-                    <div className="relative w-[130px] h-[130px] group cursor-pointer overflow-hidden">
-                      <img
-                        className="w-full h-full rounded-md border"
-                        src={image}
-                        key={index}
-                        alt="Product img"
-                      />
-                      <div className="imgOverlay rounded-md cursor-pointer transition-all duration-300 absolute h-full w-full bg-slate-900/70 flex items-center justify-center -bottom-20 group-hover:bottom-0 hover:bottom-0 opacity-0 group-hover:opacity-100 hover:opacity-100">
-                        <span className="text-white font-ubuntu text-lg z-40">
-                          Sub Image
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
-
-                {product.img.length < 4 && (
+          <div className="border bg-white p-3 shadow-lg shadow-gray-500/40 w-[60vw]">
+            <div className="images grid grid-cols-12 w-full gap-4">
+              <div
+                className={`mainImageContainer border rounded-md overflow-hidden relative py-2 ${
+                  updateImage === true
+                    ? "h-auto col-span-7"
+                    : "h-[300px] col-span-5"
+                }  cursor-pointer flex justify-center gap-2`}
+              >
+                {updateImage === true ? (
                   <>
-                    <label htmlFor="img">
-                      <div className="upload border-2 border-dashed border-black flex justify-center items-center h-[130px] w-[130px] flex-col cursor-pointer">
+                    {selectedMainImage &&
+                      selectedMainImage.map((img, index) => {
+                        return (
+                          <div className="w-[300px] h-[300px]" key={index}>
+                            <img
+                              className="cursor-pointer border-2 border-black rounded-md h-[300px] w-[300px]"
+                              src={img}
+                              alt="Image need to be here."
+                            />
+                          </div>
+                        );
+                      })}
+                    <label htmlFor="mainImage">
+                      <div className="selectMainImage flex justify-center items-center flex-col text-center font-firasans cursor-pointer border-2 border-black border-dashed rounded-md h-[300px] w-[300px]">
                         <FiUpload />
-                        <span className="text-lg font-firasans">Upload</span>
+                        <span>Upload Main Image</span>
                       </div>
                     </label>
                     <input
                       className="hidden"
+                      name="mainImage"
+                      id="mainImage"
                       type="file"
+                      onChange={handleUploadMainImage}
+                    />
+                  </>
+                ) : (
+                  <img
+                    className="w-full h-full"
+                    src={product.mainImage}
+                    alt="product img"
+                  />
+                )}
+              </div>
+              <div
+                className={`otherImagesContainer py-2 border rounded-sm px-2 flex flex-wrap gap-4 ${
+                  updateImage === true
+                    ? "h-auto col-span-5"
+                    : "col-span-7 h-auto"
+                }`}
+              >
+                {updateImage === false &&
+                  product.img.map((image, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="relative w-[130px] h-[130px] group cursor-pointer overflow-hidden"
+                      >
+                        <img
+                          className="w-full h-full rounded-md border"
+                          src={image}
+                          key={index}
+                          alt="Product img"
+                        />
+                      </div>
+                    );
+                  })}
+
+                {updateImage === true && (
+                  <>
+                    {selectedImage.length > 0 &&
+                      selectedImage.map((img, index) => {
+                        return (
+                          <div className="w-[130px] h-[130px]" key={index}>
+                            <img
+                              className="cursor-pointer border-2 border-black rounded-md h-full w-full"
+                              src={img}
+                              alt="Image need to be here."
+                            />
+                          </div>
+                        );
+                      })}
+
+                    <label htmlFor="img">
+                      <div className="selectSubImages flex justify-center items-center flex-col text-center font-firasans cursor-pointer border-2 border-black border-dashed rounded-md h-[150px] w-[150px]">
+                        <FiUpload />
+                        <span>Upload Sub Images</span>
+                      </div>
+                    </label>
+                    <input
+                      className="hidden"
                       name="img"
                       id="img"
+                      type="file"
                       onChange={handleUploadImage}
                       multiple
                     />
                   </>
                 )}
-                {selectedImage &&
-                  selectedImage.map((image, index) => {
-                    // console.log("image: ", selectedImage);
-                    return (
-                      <img
-                        key={index}
-                        className="h-[130px] w-[130px] rounded-md cursor-pointer"
-                        src={image}
-                        alt=""
-                      />
-                    );
-                  })}
               </div>
             </div>
+            {updateImage === false && (
+              <div>
+                <button
+                  className="normal_btn my-2"
+                  onClick={() => setUpdateImage(true)}
+                >
+                  Update Images
+                </button>
+              </div>
+            )}
+
+            {updateImage === true && (
+              <div className="flex gap-4 my-3">
+                <button
+                  className="normal_btn"
+                  onClick={() => setUpdateImage(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="normal_btn bg-green-600 hover:bg-green-800"
+                  onClick={handleSubmit}
+                >
+                  Update
+                </button>
+              </div>
+            )}
           </div>
           <div className="generalDetails bg-white p-3 shadow-lg shadow-gray-500/40 w-[60vw] my-4">
             <h1 className="text-2xl text-gray-800 font-firasans my-2">

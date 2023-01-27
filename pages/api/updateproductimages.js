@@ -9,7 +9,7 @@ const upload = multer({
   storage: multer.diskStorage({
     destination: "./public/uploads",
     filename: (req, file, cb) => {
-      console.log("files names", file.fieldname);
+      // console.log("files names", file.fieldname);
       cb(
         null,
         file.fieldname + "_" + Date.now() + path.extname(file.originalname)
@@ -52,7 +52,7 @@ apiRoute.post(async (req, res) => {
         let imagepath = path.join(process.cwd(), "public", "uploads", basename);
         fs.unlink(imagepath, (err) => {
           if (err) throw err;
-          console.log(`${basename} was deleted`);
+          // console.log(`${basename} was deleted`);
         });
       });
       return res
@@ -66,37 +66,42 @@ apiRoute.post(async (req, res) => {
       return `${baseUrl}/uploads/${file.filename}`;
     });
 
-    const imagepaths = product.img.map((img) => {
-      return img;
-    });
-    // console.log("imagepaths", imagepaths);
-    imagepaths.forEach((img) => {
-      console.log(img);
-      const basename = path.basename(img);
-      //   console.log(basename);
-      let imagepath = path.join(process.cwd(), "public", "uploads", basename);
-      fs.unlink(imagepath, (err) => {
-        if (err) throw err;
-        console.log(`${basename} was deleted`);
+    if (product.img.length > 0) {
+      const imagepaths = product.img.map((img) => {
+        return img;
       });
-    });
+      // console.log("imagepaths", imagepaths);
+      imagepaths.forEach((img) => {
+        // console.log(img);
+        const basename = path.basename(img);
+        //   console.log(basename);
+        let imagepath = path.join(process.cwd(), "public", "uploads", basename);
+        fs.unlink(imagepath, (err) => {
+          if (err) throw err;
+          // console.log(`${basename} was deleted`);
+        });
+      });
+    }
   }
   let filename;
   if (req.files && req.files.mainImage) {
-    filename = req.files.mainImage.map((file) => {
+    let newFilenames = req.files.mainImage.map((file) => {
       return `${baseUrl}/uploads/${file.filename}`;
     });
+    filename = newFilenames[0];
     let basename = path.basename(product.mainImage);
     let imagepath = path.join(process.cwd(), "public", "uploads", basename);
     fs.unlink(imagepath, (err) => {
       if (err) throw err;
       console.log("image.jpg was deleted");
     });
+  }else{
+    filename = product.mainImage;
   }
   let updatedProduct = await Product.findByIdAndUpdate(
     id,
     {
-      mainImage: filename[0] || product.mainImage,
+      mainImage: filename || product.mainImage,
       img: filenames || product.img,
     },
     { new: true }
