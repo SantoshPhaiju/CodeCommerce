@@ -114,6 +114,7 @@ const ProductPage = ({ product }) => {
 
   // console.log(product);
   const [showSideBar, setShowSidebar] = useState(true);
+  const [updateDetails, setUpdateDetails] = useState(false);
   const router = useRouter();
   const [updateImage, setUpdateImage] = useState(false);
   const dispatch = useDispatch();
@@ -136,6 +137,21 @@ const ProductPage = ({ product }) => {
   const [mainFile, setMainFile] = useState("");
   const [file, setFile] = useState("");
   const [open, setOpen] = useState(false);
+  const [productDetails, setProductDetails] = useState({
+    title: product.title,
+    price: product.price,
+    color: product.color,
+    availableQty: product.availableQty,
+    size: product.size,
+    status: product.status,
+  });
+
+  const [productDesc, setProductDesc] = useState(product.desc);
+
+
+  const handleProductDetailsChange = (e) =>{
+    setProductDetails({...productDetails, [e.target.name]: e.traget.value})
+  }
 
   const toggle = (index) => {
     if (index === open) {
@@ -174,6 +190,7 @@ const ProductPage = ({ product }) => {
       alert("You cannot upload more than 1 images");
     }
   };
+  console.log(updateDetails);
 
   // const handleSubmit = (e) => {
   //   e.preventDefault();
@@ -238,7 +255,7 @@ const ProductPage = ({ product }) => {
     setUpdateImage(false);
     dispatch(fetchProducts());
     if (!file && !mainFile) return;
-    
+
     const formdata = new FormData();
     console.log(file);
     Object.values(file).forEach((file) => {
@@ -247,7 +264,7 @@ const ProductPage = ({ product }) => {
     });
     Object.values(mainFile).forEach((file) => {
       formdata.append("mainImage", file);
-      console.log("mainfile",file);
+      console.log("mainfile", file);
     });
     for (var key of formdata.entries()) {
       console.log(key[0] + ", " + key[1]);
@@ -419,94 +436,247 @@ const ProductPage = ({ product }) => {
               General Details:-
             </h1>
             <div className="px-4 py-2 w-full h-auto">
-              <div className="formGroup my-2">
-                <label htmlFor="title" className="label">
-                  Title:-
-                </label>
-                <input
-                  className="input_field bg-gray-400 rounded-sm border-none outline-none text-white cursor-not-allowed"
-                  type="text"
-                  value={product.title}
-                  readOnly
-                />
-              </div>
-              <div className="formGroup my-2">
-                <label htmlFor="desc" className="label text-lg">
-                  Description:-
-                </label>
-                <div className="description h-[200px]">
-                  <QuillNoSSRWrapper
-                    className="h-[70%] flex-1 w-full font-firasans text-lg cursor-not-allowed"
-                    value={desc}
-                    onChange={setDesc}
-                    modules={modules}
-                    formats={formats}
-                    // placeholder={"Enter the description of the product here."}
-                    theme="snow"
-                    readOnly
-                  />
-                </div>
-              </div>
+              {updateDetails === false && (
+                <>
+                  <div className="formGroup my-2">
+                    <label htmlFor="title" className="label">
+                      Title:-
+                    </label>
+                    <input
+                      className="input_field bg-gray-400 rounded-sm border-none outline-none text-white cursor-not-allowed"
+                      type="text"
+                      value={product.title}
+                      readOnly
+                    />
+                  </div>
+                  <div className="formGroup my-2">
+                    <label htmlFor="desc" className="label text-lg">
+                      Description:-
+                    </label>
+                    <div className="description h-[200px]">
+                      <QuillNoSSRWrapper
+                        className="h-[70%] flex-1 w-full font-firasans text-lg cursor-not-allowed"
+                        value={desc}
+                        onChange={setDesc}
+                        modules={modules}
+                        formats={formats}
+                        // placeholder={"Enter the description of the product here."}
+                        theme="snow"
+                        readOnly
+                      />
+                    </div>
+                  </div>
 
-              <div className="formGroup my-2">
-                <label htmlFor="title" className="label">
-                  Price:-
-                </label>
-                <input
-                  className="input_field bg-gray-400 rounded-sm border-none outline-none text-white cursor-not-allowed"
-                  type="number"
-                  value={product.price}
-                  readOnly
-                />
-              </div>
+                  <div className="belowContainer grid grid-cols-12 gap-3">
+                    <div className="left col-span-6">
+                      <div className="formGroup my-2">
+                        <label htmlFor="title" className="label">
+                          Price:-
+                        </label>
+                        <input
+                          className="input_field bg-gray-400 rounded-sm border-none outline-none text-white cursor-not-allowed"
+                          type="number"
+                          value={product.price}
+                          readOnly
+                        />
+                      </div>
 
-              <div className="formGroup my-2">
-                <label htmlFor="title" className="label">
-                  Stock:-
-                </label>
-                <input
-                  className="input_field bg-gray-400 rounded-sm border-none outline-none text-white cursor-not-allowed"
-                  type="number"
-                  value={product.availableQty}
-                  readOnly
-                />
-              </div>
-              <div className="formGroup my-2">
-                <label htmlFor="title" className="label">
-                  Status:-
-                </label>
-                <input
-                  className="input_field bg-gray-400 rounded-sm border-none outline-none text-white cursor-not-allowed"
-                  type="text"
-                  value={product.status}
-                  readOnly
-                />
-              </div>
+                      <div className="formGroup my-2">
+                        <label htmlFor="title" className="label">
+                          Stock:-
+                        </label>
+                        <input
+                          className="input_field bg-gray-400 rounded-sm border-none outline-none text-white cursor-not-allowed"
+                          type="number"
+                          value={product.availableQty}
+                          readOnly
+                        />
+                      </div>
+                      <div className="formGroup my-2">
+                        <label htmlFor="title" className="label">
+                          Status:-
+                        </label>
+                        <input
+                          className="input_field bg-gray-400 rounded-sm border-none outline-none text-white cursor-not-allowed"
+                          type="text"
+                          value={product.status}
+                          readOnly
+                        />
+                      </div>
+                    </div>
 
-              {product.category === "Tshirts" && (
-                <div className="formGroup my-2">
-                  <label htmlFor="color" className="label">
-                    Color:-
-                  </label>
-                  <input
-                    className="input_field bg-gray-400 rounded-sm border-none outline-none text-white cursor-not-allowed"
-                    type="text"
-                    value={product.color}
-                    readOnly
-                  />
+                    <div className="right col-span-6">
+                      {product.category === "Tshirts" && (
+                        <div className="formGroup my-2">
+                          <label htmlFor="color" className="label">
+                            Color:-
+                          </label>
+                          <input
+                            className="input_field bg-gray-400 rounded-sm border-none outline-none text-white cursor-not-allowed"
+                            type="text"
+                            value={product.color}
+                            readOnly
+                          />
+                        </div>
+                      )}
+                      {product.category === "Tshirts" && (
+                        <div className="formGroup my-2">
+                          <label htmlFor="title" className="label">
+                            Size:-
+                          </label>
+                          <input
+                            className="input_field bg-gray-400 rounded-sm border-none outline-none text-white cursor-not-allowed"
+                            type="text"
+                            value={product.size}
+                            readOnly
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
+              {updateDetails === true && (
+                <>
+                  <div className="formGroup my-2">
+                    <label htmlFor="title" className="label">
+                      Title:-
+                    </label>
+                    <input
+                      className="input_field"
+                      type="text"
+                      value={productDetails.title}
+                      onChange={handleProductDetailsChange}
+                    />
+                  </div>
+                  <div className="formGroup my-2">
+                    <label htmlFor="desc" className="label text-lg">
+                      Description:-
+                    </label>
+                    <div className="description h-[200px]">
+                      <QuillNoSSRWrapper
+                        id="desc"
+                        className="h-[70%] flex-1 w-full font-firasans"
+                        value={productDesc}
+                        onChange={setProductDesc}
+                        modules={modules}
+                        formats={formats}
+                        // placeholder={"Enter the description of the product here."}
+                        theme="snow"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="belowContainer grid grid-cols-12 gap-3">
+                    <div className="left col-span-6">
+                      <div className="formGroup my-2">
+                        <label htmlFor="price" className="label">
+                          Price:-
+                        </label>
+                        <input
+                          name="price"
+                          id="price"
+                          className="input_field"
+                          type="number"
+                          value={productDetails.price}
+                        />
+                      </div>
+
+                      <div className="formGroup my-2">
+                        <label htmlFor="availableQty" className="label">
+                          Stock:-
+                        </label>
+                        <input
+                          className="input_field"
+                          name="availableQty"
+                          id="availableQty"
+                          type="number"
+                          value={productDetails.availableQty}
+                        />
+                      </div>
+                      <div className="formGroup my-2">
+                        <label htmlFor="status" className="label">
+                          Status:-
+                        </label>
+                        <select
+                          className="input_field"
+                          name="status"
+                          id="status"
+                          value={productDetails.status}
+                          onChange={handleProductDetailsChange}
+                        >
+                          <option value="active">Active</option>
+                          <option value="inactive">InActive</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="right col-span-6">
+                      {product.category === "Tshirts" && (
+                        <div className="formGroup my-2">
+                          <label htmlFor="color" className="label">
+                            Color:-
+                          </label>
+                          <input
+                            className="input_field"
+                            type="text"
+                            name="color"
+                            id="color"
+                            value={productDetails.color}
+                            onChange={handleProductDetailsChange}
+                          />
+                        </div>
+                      )}
+                      {product.category === "Tshirts" && (
+                        <div className="formGroup my-2">
+                          <label htmlFor="size" className="label">
+                            Size:-
+                          </label>
+                          <select
+                            className="input_field"
+                            name="size"
+                            id="size"
+                            value={productDetails.size}
+                            onChange={handleProductDetailsChange}
+                          >
+                            <option value="Sm">Small</option>
+                            <option value="Md">Medium</option>
+                            <option value="Lg">Large</option>
+                            <option value="Xl">Extra large</option>
+                            <option value="XXl">Extra Extra large</option>
+                          </select>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
+              {updateDetails === false && (
+                <div className="buttons">
+                  <button
+                    className="normal_btn"
+                    onClick={() => setUpdateDetails(true)}
+                  >
+                    Update Details
+                  </button>
                 </div>
               )}
-              {product.category === "Tshirts" && (
-                <div className="formGroup my-2">
-                  <label htmlFor="title" className="label">
-                    Size:-
-                  </label>
-                  <input
-                    className="input_field bg-gray-400 rounded-sm border-none outline-none text-white cursor-not-allowed"
-                    type="text"
-                    value={product.size}
-                    readOnly
-                  />
+              {updateDetails === true && (
+                <div className="buttons">
+                  <div className="flex gap-4 my-3">
+                    <button
+                      className="normal_btn"
+                      onClick={() => setUpdateDetails(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="normal_btn bg-green-600 hover:bg-green-800"
+                      onClick={() => setUpdateDetails(false)}
+                    >
+                      Update
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
