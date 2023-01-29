@@ -19,18 +19,22 @@ apiRoute.post(async (req, res) => {
   const product = await Product.findById(id);
 
   console.log(product, id);
-  console.log(req.body);
+  console.log("req.body",req.body);
+
+  const {title, price, color, availableQty, size, status } = req.body.productDetails;
+  const desc = req.body.productDesc;
 
   let updatedProduct = await Product.findByIdAndUpdate(id, {
-    title: req.body.title || product.title,
-    desc: req.body.desc || product.desc,
-    size: req.body.size || product.size,
-    color: req.body.color || product.color,
-    availableQty: req.body.availableQty || product.availableQty,
-    status: req.body.status || product.status,
+    title: title || product.title,
+    price: price || product.price,
+    desc: desc || product.desc,
+    size: size || product.size,
+    color: color || product.color,
+    availableQty: availableQty || product.availableQty,
+    status: status || product.status,
   }, {new: true});
   
-  res.status(200).json({ data: "success", updatedProduct });
+  res.status(200).json({ success: true, updatedProduct });
 });
 
 export default apiRoute;

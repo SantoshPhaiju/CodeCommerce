@@ -12,6 +12,7 @@ import {
   addProduct,
   fetchProducts,
   updateImages,
+  updateProductDetails,
 } from "../slices/productSlice";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
@@ -146,12 +147,13 @@ const ProductPage = ({ product }) => {
     status: product.status,
   });
 
+  // console.log(productDetails);
+
   const [productDesc, setProductDesc] = useState(product.desc);
 
-
-  const handleProductDetailsChange = (e) =>{
-    setProductDetails({...productDetails, [e.target.name]: e.traget.value})
-  }
+  const handleProductDetailsChange = (e) => {
+    setProductDetails({ ...productDetails, [e.target.name]: e.target.value });
+  };
 
   const toggle = (index) => {
     if (index === open) {
@@ -159,7 +161,7 @@ const ProductPage = ({ product }) => {
       setOpen(null);
       return;
     }
-    console.log(open, index);
+    // console.log(open, index);
     setOpen(index);
   };
 
@@ -190,48 +192,7 @@ const ProductPage = ({ product }) => {
       alert("You cannot upload more than 1 images");
     }
   };
-  console.log(updateDetails);
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (!file) return;
-  //   if (!mainFile) return;
-  //   const formdata = new FormData();
-  //   Object.values(file).forEach((file) => {
-  //     formdata.append("img", file);
-  //   });
-  //   Object.values(mainFile).forEach((file) => {
-  //     formdata.append("mainImage", file);
-  //     // console.log(file);
-  //   });
-  //   formdata.append("title", data.title);
-  //   formdata.append("desc", desc);
-  //   formdata.append("price", data.price);
-  //   formdata.append("category", data.category);
-  //   formdata.append("color", data.color);
-  //   formdata.append("size", data.size);
-  //   formdata.append("status", data.status);
-  //   formdata.append("availableQty", data.availableQty);
-  //   // for (var key of formdata.entries()) {
-  //   //   console.log(key[0] + ", " + key[1]);
-  //   // }
-  //   // console.log(file);
-  //   dispatch(addProduct({ formdata, toast }));
-  //   setData({
-  //     title: "",
-  //     desc: "",
-  //     category: "Select one category",
-  //     price: "",
-  //     status: "",
-  //     availableQty: "",
-  //     color: "",
-  //     size: "Select size",
-  //   });
-  //   setFile("");
-  //   setSelectedImage([]);
-  //   setMainFile("");
-  //   setSelectedMainImage("");
-  // };
+  // console.log(updateDetails);
 
   const handleUploadImage = (e) => {
     if (e.target.files && selectedImage.length < 4) {
@@ -281,6 +242,17 @@ const ProductPage = ({ product }) => {
       refreshData();
     }, 1000);
   };
+
+  const handleUpdateDetails = () => {
+    setUpdateDetails(false);
+    console.log(productDetails, productDesc);
+
+    setTimeout(() => {
+      refreshData();
+    }, 1000);
+    dispatch(updateProductDetails({ productDetails, productDesc, toast, id }));
+  };
+
   return (
     <>
       <MainConfig showSideBar={showSideBar} setShowSidebar={setShowSidebar} />
@@ -545,6 +517,8 @@ const ProductPage = ({ product }) => {
                     <input
                       className="input_field"
                       type="text"
+                      name="title"
+                      id="title"
                       value={productDetails.title}
                       onChange={handleProductDetailsChange}
                     />
@@ -579,6 +553,7 @@ const ProductPage = ({ product }) => {
                           className="input_field"
                           type="number"
                           value={productDetails.price}
+                          onChange={handleProductDetailsChange}
                         />
                       </div>
 
@@ -592,6 +567,7 @@ const ProductPage = ({ product }) => {
                           id="availableQty"
                           type="number"
                           value={productDetails.availableQty}
+                          onChange={handleProductDetailsChange}
                         />
                       </div>
                       <div className="formGroup my-2">
@@ -672,7 +648,7 @@ const ProductPage = ({ product }) => {
                     </button>
                     <button
                       className="normal_btn bg-green-600 hover:bg-green-800"
-                      onClick={() => setUpdateDetails(false)}
+                      onClick={handleUpdateDetails}
                     >
                       Update
                     </button>
@@ -734,7 +710,7 @@ const ProductPage = ({ product }) => {
                               <div className="imagecontainer flex gap-2">
                                 {variant.img.map((img, index) => {
                                   return (
-                                    <div>
+                                    <div key={index}>
                                       <img
                                         src={img}
                                         key={index}
@@ -756,6 +732,7 @@ const ProductPage = ({ product }) => {
                                 type="text"
                                 className="input_field"
                                 value={variant.title}
+                                readOnly
                               />
                             </div>
                             <div className="formGroup my-2">
@@ -771,6 +748,7 @@ const ProductPage = ({ product }) => {
                                   formats={formats}
                                   // placeholder={"Enter the description of the product here."}
                                   theme="snow"
+                                  readOnly
                                 />
                               </div>
                             </div>
@@ -781,6 +759,7 @@ const ProductPage = ({ product }) => {
                                 type="text"
                                 className="input_field"
                                 value={variant.price}
+                                readOnly
                               />
                             </div>
 
@@ -790,6 +769,7 @@ const ProductPage = ({ product }) => {
                                 type="text"
                                 className="input_field"
                                 value={variant.status}
+                                readOnly
                               />
                             </div>
 
@@ -799,6 +779,7 @@ const ProductPage = ({ product }) => {
                                 type="text"
                                 className="input_field"
                                 value={variant.availableQty}
+                                readOnly
                               />
                             </div>
 
@@ -811,6 +792,7 @@ const ProductPage = ({ product }) => {
                                   className="input_field "
                                   type="text"
                                   value={variant.color}
+                                  readOnly
                                 />
                               </div>
                             )}
@@ -823,6 +805,7 @@ const ProductPage = ({ product }) => {
                                   className="input_field "
                                   type="text"
                                   value={variant.size}
+                                  readOnly
                                 />
                               </div>
                             )}
