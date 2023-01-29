@@ -69,6 +69,7 @@ const Tshirts = ({ tshirts }) => {
                           return (
                             <span
                               key={index}
+                              
                               className="border border-gray-300 px-1 mx-1"
                             >
                               {variant.size}
@@ -76,37 +77,62 @@ const Tshirts = ({ tshirts }) => {
                           );
                         })}
 
-                        {tshirts[product].size.includes("M") && (
+                        {tshirts[product].size.includes("Sm") && (
+                          <span className="border border-gray-300 px-1 mx-1">
+                            S
+                          </span>
+                        )}
+                        {tshirts[product].size.includes("Md") && (
                           <span className="border border-gray-300 px-1 mx-1">
                             M
                           </span>
                         )}
-                        {tshirts[product].size.includes("L") && (
+                        {tshirts[product].size.includes("Lg") && (
                           <span className="border border-gray-300 px-1 mx-1">
                             L
                           </span>
                         )}
-                        {tshirts[product].size.includes("XL") && (
+                        {tshirts[product].size.includes("Xl") && (
                           <span className="border border-gray-300 px-1 mx-1">
                             XL
                           </span>
                         )}
-                        {tshirts[product].size.includes("XXL") && (
+                        {tshirts[product].size.includes("XXl") && (
                           <span className="border border-gray-300 px-1 mx-1">
                             XXL
                           </span>
                         )}
                       </div>
                     </div>
-                    <div className="mt-1">
+                    <div className="mt-1 flex">
+                      {tshirts[product].color.includes("blue") && (
+                        <button className="border-2 border-gray-300 ml-1 bg-blue-700 rounded-full w-6 h-6 focus:outline-none"></button>
+                      )}
                       {tshirts[product].variants.map((variant, index) => {
                         return (
-                          variant.color.includes("blue") && (
-                            <button
-                              key={index}
-                              className="border-2 border-gray-300 ml-1 bg-blue-700 rounded-full w-6 h-6 focus:outline-none"
-                            ></button>
-                          )
+                          <div key={index} className="">
+                            {variant.color.includes("blue") && (
+                              <button className="border-2 border-gray-300 ml-1 bg-blue-700 rounded-full w-6 h-6 focus:outline-none"></button>
+                            )}
+                            {variant.color.includes("black") && (
+                              <button className="border-2 border-gray-300 ml-1 bg-black rounded-full w-6 h-6 focus:outline-none"></button>
+                            )}
+                            {variant.color.includes("red") && (
+                              <button className="border-2 border-gray-300 ml-1 bg-red-700 rounded-full w-6 h-6 focus:outline-none"></button>
+                            )}
+                            {variant.color.includes("green") && (
+                              <button className="border-2 border-gray-300 ml-1 bg-green-700 rounded-full w-6 h-6 focus:outline-none"></button>
+                            )}
+                            {variant.color.includes("yellow") && (
+                              <button className="border-2 border-gray-300 ml-1 bg-yellow-500 rounded-full w-6 h-6 focus:outline-none"></button>
+                            )}
+                            {variant.color.includes("gray") && (
+                              <button className="border-2 border-gray-300 ml-1 bg-gray-700 rounded-full w-6 h-6 focus:outline-none"></button>
+                            )}
+                            {variant.color.includes("white") && (
+                              <button className="border-2 border-gray-300 ml-1 bg-white rounded-full w-6 h-6 focus:outline-none"></button>
+                            )}
+                          </div>
                           // <span
                           //   key={index}
                           //   className="border border-gray-300 px-1 mx-1"
@@ -154,12 +180,14 @@ export async function getServerSideProps(context) {
   if (!mongoose.connections[0].readyState) {
     mongoose.connect(process.env.MONGO_URI);
   }
+  let tshirts;
 
   let products = await Product.find({ category: "Tshirts" }).populate({
     path: "variants",
     model: Variants,
     options: { lean: true },
   });
+
 
   return {
     props: { tshirts: JSON.parse(JSON.stringify(products)) }, // will be passed to the page component as props

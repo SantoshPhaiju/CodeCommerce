@@ -31,6 +31,7 @@
     "react-icons": "^4.6.0",
     "react-quill": "^2.0.0",
     "react-redux": "^8.0.5",
+    "react-render-html": "^0.6.0",
     "react-toastify": "^9.1.1",
     "react-top-loading-bar": "^2.3.1",
     "styled-components": "^5.3.6",

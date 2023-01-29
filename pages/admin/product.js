@@ -134,6 +134,7 @@ const ProductPage = ({ product }) => {
   };
 
   const [selectedImage, setSelectedImage] = useState([]);
+  const [showVariants, setShowVariants] = useState(false);
   const [selectedMainImage, setSelectedMainImage] = useState("");
   const [mainFile, setMainFile] = useState("");
   const [file, setFile] = useState("");
@@ -658,7 +659,16 @@ const ProductPage = ({ product }) => {
             </div>
           </div>
 
-          {product.variants.length !== 0 && (
+          <div className="button my-4">
+            <button
+              className="normal_btn"
+              onClick={() => setShowVariants(true)}
+            >
+              Show Variants
+            </button>
+          </div>
+
+          {product.variants.length !== 0 && showVariants && (
             <div className="variants bg-white shadow-lg shadow-gray-500/40 w-[60vw] my-4 mb-12 py-2 px-4">
               <h1 className="text-2xl text-gray-800 font-firasans my-2">
                 Variants:-
@@ -810,6 +820,9 @@ const ProductPage = ({ product }) => {
                               </div>
                             )}
                           </div>
+                        </div>
+                        <div className="buttons my-3">
+                          <button className="normal_btn" onClick={() => console.log(variant._id)}>Update Variant</button>
                         </div>
                       </div>
                     </div>
