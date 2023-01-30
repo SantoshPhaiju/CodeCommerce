@@ -52,6 +52,7 @@ const Slug = ({ buyNow, addToCart, product, error }) => {
             {product.img.map((image, index) => {
               return (
                 <div
+                key={index}
                   className={` transition-all duration-300 h-[100px] w-[150px] lg:w-full rounded border-gray-300 overflow-hidden cursor-pointer hover:shadow-lg hover:shadow-green-600/80 hover:border hover:border-black hover:scale-110 ${
                     selectImage === image
                       ? "border shadow-lg shadow-green-600/80 border-black scale-110"
@@ -60,7 +61,6 @@ const Slug = ({ buyNow, addToCart, product, error }) => {
                 >
                   <img
                     alt="ecommerce"
-                    key={index}
                     className={`w-full h-full object-contain`}
                     src={image}
                     onClick={(e) => {

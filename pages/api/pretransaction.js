@@ -4,7 +4,7 @@ import Order from "../../models/Order";
 import Product from "../../models/Product";
 import pincodes from "../../data/pincodes.json";
 import { v4 as uuidv4 } from "uuid";
-
+import Variants from "../../models/Variants";
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
@@ -22,6 +22,8 @@ const handler = async (req, res) => {
       city,
       state,
     } = req.body.data;
+
+    console.log(req.body.data);
 
     // Check if the pincode is servicable
     if (!Object.keys(pincodes).includes(pincode)) {
@@ -67,33 +69,64 @@ const handler = async (req, res) => {
     }
     for (let item in cart) {
       // console.log(cart[item]);
-      product = await Product.findOne({ slug: item });
-      // console.log(product);
-      sumTotal += cart[item].price * cart[item].qty;
-      // console.log(product.price, cart[item].price);
-      // console.log(product.availableQty);
-      // TODO: check if the cart items are out of stock --done
-      if (product.availableQty < cart[item].qty) {
-        res.status(200).json({
-          success: "check",
-          error:
-            "Some items in your cart is out of stock! Try reducing the quantity!",
-        });
-        return;
-      }
-      if (product.price !== cart[item].price) {
-        let order = await Order.findById(id);
-        let deleteorder;
-        if (order) {
-          deleteorder = await Order.findByIdAndDelete(id);
+      if (item.includes("variant")) {
+        product = await Variants.findOne({ slug: item });
+        // console.log(product);
+        sumTotal += cart[item].price * cart[item].qty;
+        // console.log(product.price, cart[item].price);
+        // console.log(product.availableQty);
+        // TODO: check if the cart items are out of stock --done
+        if (product.availableQty < cart[item].qty) {
+          res.status(200).json({
+            success: "check",
+            error:
+              "Some items in your cart is out of stock! Try reducing the quantity!",
+          });
+          return;
         }
-        res.status(200).json({
-          success: false,
-          error:
-            "1:The price of the some items has been changed in your cart. Please try again!",
-          deleteorder,
-        });
-        return;
+        if (product.price !== cart[item].price) {
+          let order = await Order.findById(id);
+          let deleteorder;
+          if (order) {
+            deleteorder = await Order.findByIdAndDelete(id);
+          }
+          res.status(200).json({
+            success: false,
+            error:
+              "1:The price of the some items has been changed in your cart. Please try again!",
+            deleteorder,
+          });
+          return;
+        }
+      } else {
+        product = await Product.findOne({ slug: item });
+        // console.log(product);
+        sumTotal += cart[item].price * cart[item].qty;
+        // console.log(product.price, cart[item].price);
+        // console.log(product.availableQty);
+        // TODO: check if the cart items are out of stock --done
+        if (product.availableQty < cart[item].qty) {
+          res.status(200).json({
+            success: "check",
+            error:
+              "Some items in your cart is out of stock! Try reducing the quantity!",
+          });
+          return;
+        }
+        if (product.price !== cart[item].price) {
+          let order = await Order.findById(id);
+          let deleteorder;
+          if (order) {
+            deleteorder = await Order.findByIdAndDelete(id);
+          }
+          res.status(200).json({
+            success: false,
+            error:
+              "1:The price of the some items has been changed in your cart. Please try again!",
+            deleteorder,
+          });
+          return;
+        }
       }
     }
     if (sumTotal !== subTotal) {

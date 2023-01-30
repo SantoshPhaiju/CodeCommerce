@@ -9,24 +9,26 @@ import Error from "next/error";
 import baseUrl from "../../helpers/baseUrl";
 import Variants from "../../models/Variants";
 import renderHTML from "react-render-html";
+import Link from "next/link";
+import {AiOutlineArrowLeft} from 'react-icons/ai'
 
-const Slug = ({ buyNow, addToCart, product, sizes, error }) => {
+const Slug = ({ buyNow, addToCart, product, variant, colors, sizes, error }) => {
   // console.log(product, variants);
   // console.log(variants[1].color);
+  console.log(product);
   // console.log(colors, sizes);
   const router = useRouter();
   const { slug } = router.query;
 
-  const [selectImage, setSelectImage] = useState(product.mainImage);
+  const [selectImage, setSelectImage] = useState(variant.mainImage);
+  const [color, setColor] = useState(variant.color)
+  const [size, setSize] = useState(variant.size)
 
   if (error === 404) {
     return <Error statusCode={404} />;
   }
   const [pin, setPin] = useState("");
   const [service, setService] = useState(null);
-
-  const [color, setColor] = useState(product.color);
-  const [size, setSize] = useState(product.size);
 
   const checkServiceability = async () => {
     let pins = await fetch(`${baseUrl}/api/pincode`);
@@ -50,10 +52,10 @@ const Slug = ({ buyNow, addToCart, product, sizes, error }) => {
   const onChangePin = (e) => {
     setPin(e.target.value);
   };
-  const [productSlug, setProductSlug] = useState(product.slug);
+//   const [productSlug, setProductSlug] = useState(product.slug);
 
   const refreshVariant = (product) => {
-    // setSelectImage(product.mainImage);
+    // setSelectImage(variant.mainImage);
     // setColor(newColor);
     // setSize(newSize);
     // setProductSlug(product.slug);
@@ -66,11 +68,20 @@ const Slug = ({ buyNow, addToCart, product, sizes, error }) => {
     <>
       <section className="text-gray-600 body-font overflow-hidden">
         <div className="container px-5 py-10 mx-auto">
+          <Link
+            href={`/products/${product.slug}`}
+            className={
+              "transition-all duration-200 flex gap-2 font-firasans items-center hover:text-black text-lg hover:font-medium hover:scale-105"
+            }
+          >
+            <AiOutlineArrowLeft />
+            <span>Back to Parent Product</span>
+          </Link>
           <div className="container px-5 py-24 mx-auto flex flex-wrap">
             <div className="images flex flex-wrap flex-row lg:flex-col gap-4 lg:space-y-2 justify-center lg:justify-start lg:w-[150px] w-[100%] h-auto mb-5 lg:mb-0">
               <div
                 className={` transition-all duration-300 h-[100px] w-[150px] lg:w-full rounded border-gray-300 overflow-hidden cursor-pointer hover:shadow-lg hover:shadow-green-600/80 hover:border hover:border-black hover:scale-110 ${
-                  selectImage === product.mainImage
+                  selectImage === variant.mainImage
                     ? "border shadow-lg shadow-green-600/80 border-black scale-110"
                     : "border-2"
                 }`}
@@ -78,7 +89,7 @@ const Slug = ({ buyNow, addToCart, product, sizes, error }) => {
                 <img
                   alt="ecommerce"
                   className={`w-full h-full object-contain`}
-                  src={product.mainImage}
+                  src={variant.mainImage}
                   onClick={(e) => {
                     setSelectImage(e.target.src);
                   }}
@@ -87,7 +98,7 @@ const Slug = ({ buyNow, addToCart, product, sizes, error }) => {
                   }}
                 />
               </div>
-              {product.img.map((image, index) => {
+              {variant.img.map((image, index) => {
                 return (
                   <div
                     className={` transition-all duration-300 h-[100px] w-[150px] lg:w-full rounded border-gray-300 overflow-hidden cursor-pointer hover:shadow-lg hover:shadow-green-600/80 hover:border hover:border-black hover:scale-110 ${
@@ -120,7 +131,7 @@ const Slug = ({ buyNow, addToCart, product, sizes, error }) => {
                 width={800}
                 height={100}
               />
-              {!product.availableQty < 1 ? (
+              {!variant.availableQty < 1 ? (
                 <div className="text-center text-white font-firasans mt-4 text-xl absolute top-0 -left-2 bg-yellow-600 px-2 py-1 rounded-md">
                   In Stock
                 </div>
@@ -130,11 +141,13 @@ const Slug = ({ buyNow, addToCart, product, sizes, error }) => {
                 </div>
               )}
               <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0 relative">
+
                 <h2 className="text-sm title-font text-gray-500 tracking-widest font-robotoslab">
                   CODECOMMERCE
                 </h2>
+                <p className="font-firasans mt-4">Parent Product:- {product.title}</p>
                 <h1 className="text-gray-900 text-3xl title-font font-medium mb-1 font-robotoslab">
-                  {product.title} ({color}/{size})
+                  {variant.title} ({color}/{size})
                 </h1>
                 <div className="flex mb-4">
                   {/* <span className="flex items-center">
@@ -235,14 +248,14 @@ const Slug = ({ buyNow, addToCart, product, sizes, error }) => {
                     </span> */}
                 </div>
                 <div className="leading-relaxed font-firasans">
-                  {renderHTML(product.desc)}
+                  {renderHTML(variant.desc)}
                 </div>
                 <div className="variantsListing my-3">
                   <p className="font-ubuntu text-xl my-2 text-black">
                     Variants:-{" "}
                   </p>
                   <div className="variantContainer flex gap-4 items-center">
-                    {product.variants.length !== 0 ? product.variants.map((variant, index) => {
+                    {product.variants.map((variant, index) => {
                       return (
                         <div className="variant h-[100px] w-[80px]" key={index}>
                           <img
@@ -255,14 +268,26 @@ const Slug = ({ buyNow, addToCart, product, sizes, error }) => {
                           />
                         </div>
                       );
-                    }): <p className="font-firasans text-sm text-gray-400">No variants to show 😲</p>}
+                    })}
                   </div>
                 </div>
                 <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
                   <div className="flex">
                     <span className="mr-3">Color</span>
-
                     <button
+                      //   onClick={(e) => {
+                      //     let p = product.variants.map((variant) => {
+                      //       if (variant.color === color && size === size) {
+                      //         console.log(variant);
+                      //         return variant;
+                      //       } else {
+                      //         console.log(product);
+                      //         return product;
+                      //       }
+                      //     });
+                      //     console.log("p", p[0]);
+                      //     refreshVariant(color, size, p[0]);
+                      //   }}
                       className={`border-2  ml-1 rounded-full w-6 h-6 focus:outline-none ${
                         color === "black"
                           ? "border-black bg-black"
@@ -323,20 +348,20 @@ const Slug = ({ buyNow, addToCart, product, sizes, error }) => {
                 </div>
                 <div className="flex">
                   <span className="title-font font-robotoslab font-medium text-xl lg:text-2xl text-gray-900">
-                    NRs.{product.price}
+                    NRs.{variant.price}
                   </span>
                   <button
                     className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-3 sm:px-6 focus:outline-none hover:bg-pink-600 rounded font-firasans font-medium"
                     onClick={() => {
-                      if (product.availableQty > 0) {
+                      if (variant.availableQty > 0) {
                         addToCart(
                           slug,
                           1,
-                          product.price,
-                          product.title,
-                          product.size,
-                          product.color,
-                          product.img[0]
+                          variant.price,
+                          variant.title,
+                          variant.size,
+                          variant.color,
+                          variant.mainImage
                         );
                         toast.success("Item added to cart!");
                       } else {
@@ -362,15 +387,15 @@ const Slug = ({ buyNow, addToCart, product, sizes, error }) => {
                 <div className="buyNow flex justify-center items-center my-3 md:justify-start">
                   <button
                     onClick={() => {
-                      if (product.availableQty > 0) {
+                      if (variant.availableQty > 0) {
                         buyNow(
                           slug,
                           1,
-                          product.price,
-                          product.title,
-                          product.size,
-                          product.color,
-                          product.img[0]
+                          variant.price,
+                          variant.title,
+                          variant.size,
+                          variant.color,
+                          variant.mainImage
                         );
                       } else {
                         toast.warning("Sorry! Item is currently out of stock.");
@@ -424,12 +449,13 @@ export async function getServerSideProps(context) {
     mongoose.connect(process.env.MONGO_URI);
   }
   let error;
-
-  if (context.query.slug.includes("variant")) {
     console.log(true);
 
     let variant = await Variants.findOne({ slug: context.query.slug });
-    let product = await Product.findOne({ _id: variant.productsID });
+    let product = await Product.findOne({ _id: variant.productsID }).populate({
+        path: 'variants',
+        options: {lean: true},
+    })
 
     let colors = [variant.color];
     let sizes = [variant.size];
@@ -444,33 +470,6 @@ export async function getServerSideProps(context) {
         sizes: JSON.parse(JSON.stringify(sizes)),
       }, // will be passed to the page component as props
     };
-  } else {
-    console.log(false);
-    let product = await Product.findOne({ slug: context.query.slug }).populate({
-      path: "variants",
-      options: { lean: true },
-    });
-
-    if (product === null) {
-      return {
-        props: {
-          error: 404,
-        }, // will be passed to the page component as props
-      };
-    }
-    let sizes = [
-      product.size,
-      ...product.variants.map((variant) => variant.size),
-    ];
-    sizes = [...new Set(sizes)];
-
-    return {
-      props: {
-        product: JSON.parse(JSON.stringify(product)),
-        sizes: JSON.parse(JSON.stringify(sizes)),
-      }, // will be passed to the page component as props
-    };
-  }
 }
 
 export default Slug;
