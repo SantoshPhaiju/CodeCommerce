@@ -252,11 +252,11 @@ const AllProducts = () => {
                             alt="This is the product image here"
                           />
                         </td>
-                        <td className="table_data">
+                        <td className="table_data w-[170px]">
                           {item.availableQty !== 0 ? (
                             item.availableQty
                           ) : (
-                            <span className="py-1 px-4 bg-red-600 text-white">
+                            <span className="py-1 px-4 text-center bg-red-600 text-white">
                               Out of Stock
                             </span>
                           )}
