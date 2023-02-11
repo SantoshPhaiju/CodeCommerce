@@ -51,6 +51,7 @@ import multer from "multer";
 import path from "path";
 import baseUrl from "../../helpers/baseUrl";
 import { nanoid } from "nanoid";
+import CategoryModel from "../../models/CategoryModel";
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -102,6 +103,9 @@ apiRoute.post(async (req, res) => {
 
   // console.log("filenames: ", filenames);
   // console.log("filename: ", filename);
+  // console.log(req.body.category);
+  const category = await CategoryModel.findOne({ name: req.body.category });
+  // console.log(category);
   let p = new Product({
     title: req.body.title,
     slug: req.body.title + "_" + nanoid(),
@@ -115,8 +119,11 @@ apiRoute.post(async (req, res) => {
     price: req.body.price,
     availableQty: req.body.availableQty,
   });
+  category.products.push(p);
+
+  await category.save();
   await p.save();
-  res.status(200).json({ data: "success", products });
+  res.status(200).json({ data: "success", p });
 });
 
 export default apiRoute;
