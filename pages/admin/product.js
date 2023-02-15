@@ -660,12 +660,14 @@ const ProductPage = ({ product }) => {
           </div>
 
           <div className="button my-4">
-            <button
-              className="normal_btn"
-              onClick={() => setShowVariants(true)}
-            >
-              Show Variants
-            </button>
+            {showVariants === false && (
+              <button
+                className="normal_btn"
+                onClick={() => setShowVariants(true)}
+              >
+                Show Variants
+              </button>
+            )}
           </div>
 
           {product.variants.length !== 0 && showVariants && (
@@ -822,7 +824,12 @@ const ProductPage = ({ product }) => {
                           </div>
                         </div>
                         <div className="buttons my-3">
-                          <button className="normal_btn" onClick={() => console.log(variant._id)}>Update Variant</button>
+                          <button
+                            className="normal_btn"
+                            onClick={() => console.log(variant._id)}
+                          >
+                            Update Variant
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -830,6 +837,15 @@ const ProductPage = ({ product }) => {
                 })}
               </div>
             </div>
+          )}
+
+          {showVariants === true && (
+            <button
+              className="normal_btn mb-10"
+              onClick={() => setShowVariants(false)}
+            >
+              Hide Variants
+            </button>
           )}
         </div>
       </div>

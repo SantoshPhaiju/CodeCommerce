@@ -25,21 +25,26 @@ export const editUser = createAsyncThunk(
   }
 );
 
-export const fetchUsers = createAsyncThunk("user/fetchUsers", async () => {
-  try {
-    const response = await axios.get(
-      `${baseUrl}/api/fetchallusers`,
-      {
-        headers: {
-          admintoken: localStorage.getItem("admin-token"),
-        },
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.log(error);
+export const fetchUsers = createAsyncThunk(
+  "user/fetchUsers",
+  async (query) => {
+    try {
+      const searchquery = query || ""
+      console.log(searchquery)
+      const response = await axios.get(
+        `${baseUrl}/api/fetchallusers?searchquery=${searchquery}`,
+        {
+          headers: {
+            admintoken: localStorage.getItem("admin-token"),
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
   }
-});
+);
 
 const initialState = {
   users: [],

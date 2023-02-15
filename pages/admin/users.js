@@ -17,12 +17,12 @@ const Users = () => {
   const [userId, setUserId] = useState();
   const router = useRouter();
   const [userStatus, setUserStatus] = useState("");
+  const [query, setQuery] = useState("");
   if (typeof window !== "undefined") {
     if (!localStorage.getItem("admin-token")) {
       router.push("/admin/login");
     }
   }
-
   useEffect(() => {
     dispatch(fetchUsers());
   }, []);
@@ -36,13 +36,13 @@ const Users = () => {
     setShowModal(true);
     setUserId(id);
     setAdmin(adminVal);
-    setUserStatus(status)
+    setUserStatus(status);
   };
-  
-  const handleUpdate = () =>{
-    dispatch(editUser({id: userId, admin, status: userStatus}))
-    setShowModal(false)
-  }
+
+  const handleUpdate = () => {
+    dispatch(editUser({ id: userId, admin, status: userStatus }));
+    setShowModal(false);
+  };
 
   return (
     <>
@@ -74,6 +74,29 @@ const Users = () => {
               <h1 className="font-roboto text-2xl text-center my-6 text-pink-700">
                 All Users
               </h1>
+
+              <div className="search flex gap-4 mb-6 items-center">
+                <div className="formGroup w-[20vw]">
+                  <input
+                    type="text"
+                    id="searchquery"
+                    name="searchquery"
+                    value={query}
+                    onChange={(e) => {
+                      dispatch(fetchUsers(e.target.value))
+                      setQuery(e.target.value)
+                    }}
+                    className="input_field"
+                    placeholder="Search user..."
+                  />
+                </div>
+                <button
+                  className="normal_btn py-2"
+                  onClick={() => dispatch(fetchUsers(query))}
+                >
+                  Search
+                </button>
+              </div>
 
               <div
                 className={`modalContainer flex justify-center items-center relative mx-auto z-50 transition-all duration-300 ${
@@ -115,12 +138,8 @@ const Users = () => {
                             console.log("admin" + admin);
                           }}
                         >
-                          <option value="true">
-                            Admin
-                          </option>
-                          <option value="false">
-                            Normal User
-                          </option>
+                          <option value="true">Admin</option>
+                          <option value="false">Normal User</option>
                         </select>
                       </div>
                       <div className="inputGroup mx-4 my-2">
@@ -137,15 +156,11 @@ const Users = () => {
                           id="name"
                           value={userStatus}
                           onChange={(e) => {
-                            setUserStatus(e.target.value)
+                            setUserStatus(e.target.value);
                           }}
                         >
-                          <option value="active">
-                            Active
-                          </option>
-                          <option value="inactive">
-                            InActive
-                          </option>
+                          <option value="active">Active</option>
+                          <option value="inactive">InActive</option>
                         </select>
                       </div>
                     </form>
@@ -158,7 +173,10 @@ const Users = () => {
                     >
                       Cancel
                     </button>
-                    <button className="py-2 px-6 text-lg bg-green-700 rounded-md text-white font-ubuntu hover:shadow-lg hover:shadow-gray-300" onClick={() => handleUpdate()}>
+                    <button
+                      className="py-2 px-6 text-lg bg-green-700 rounded-md text-white font-ubuntu hover:shadow-lg hover:shadow-gray-300"
+                      onClick={() => handleUpdate()}
+                    >
                       Update
                     </button>
                   </div>
@@ -247,9 +265,15 @@ const Users = () => {
                                 : "not provided"}
                             </td>
                             <td className="py-4 px-6 text-center">
-                              {item?.status !== "inactive"
-                                ? <span className="px-4 rounded-sm py-1 bg-yellow-500 text-white font-firasans">Active</span>
-                                : <span className="px-4 rounded-sm py-1 bg-red-800 text-white font-firasans">InActive</span>}
+                              {item?.status !== "inactive" ? (
+                                <span className="px-4 rounded-sm py-1 bg-yellow-500 text-white font-firasans">
+                                  Active
+                                </span>
+                              ) : (
+                                <span className="px-4 rounded-sm py-1 bg-red-800 text-white font-firasans">
+                                  InActive
+                                </span>
+                              )}
                             </td>
                             <td className="py-4 px-6">
                               {item?.phone !== null ? (
@@ -261,7 +285,9 @@ const Users = () => {
                             <td className="py-4 px-6">
                               <button
                                 className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
-                                onClick={() => handleEdit(item._id, item.admin, item.status)}
+                                onClick={() =>
+                                  handleEdit(item._id, item.admin, item.status)
+                                }
                               >
                                 <FaUserEdit className="text-2xl text-orange-500 hover:scale-110" />
                               </button>

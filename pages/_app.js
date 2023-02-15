@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import "react-toastify/dist/ReactToastify.css";
@@ -21,15 +21,18 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const fetchuser = async () => {
     const token = localStorage.getItem("token");
-    const response = await axios.post(
-      `${baseUrl}/api/fetchuserdata`,
-      { data: token }
-    );
-    // console.log("app",response.data);
-    if (response.data) {
-      // setUser(response.data.user);
-      setUserData(response.data.user);
-    }
+    try {
+      const response = await axios.post(
+        `${baseUrl}/api/fetchuserdata`,
+        { data: token }
+        );
+        if (response.data) {
+          setUserData(response.data.user);
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error(error.message);
+      }
   };
 
   useEffect(() => {
@@ -56,6 +59,7 @@ function MyApp({ Component, pageProps }) {
         saveCart(JSON.parse(localStorage.getItem("cart")));
       }
     } catch (error) {
+      toast.error(error.message);
       console.error(error);
       localStorage.clear();
     }
