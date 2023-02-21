@@ -37,7 +37,7 @@ const Tshirts = ({ tshirts }) => {
                       <img
                         alt="ecommerce"
                         className="object-top w-full h-full block mx-auto"
-                        src={tshirts[product].img[0]}
+                        src={tshirts[product].mainImage}
                         width={300}
                         height={400}
                       />
@@ -69,7 +69,6 @@ const Tshirts = ({ tshirts }) => {
                           return (
                             <span
                               key={index}
-                              
                               className="border border-gray-300 px-1 mx-1"
                             >
                               {variant.size}
@@ -105,9 +104,9 @@ const Tshirts = ({ tshirts }) => {
                       </div>
                     </div>
                     <div className="mt-1 flex">
-                      {tshirts[product].color.includes("blue") && (
+                      {/* {tshirts[product].color.includes("blue") && (
                         <button className="border-2 border-gray-300 ml-1 bg-blue-700 rounded-full w-6 h-6 focus:outline-none"></button>
-                      )}
+                      )} */}
                       {tshirts[product].variants.map((variant, index) => {
                         return (
                           <div key={index} className="">
@@ -133,12 +132,6 @@ const Tshirts = ({ tshirts }) => {
                               <button className="border-2 border-gray-300 ml-1 bg-white rounded-full w-6 h-6 focus:outline-none"></button>
                             )}
                           </div>
-                          // <span
-                          //   key={index}
-                          //   className="border border-gray-300 px-1 mx-1"
-                          // >
-                          //   {variant.color}
-                          // </span>
                         );
                       })}
                       {tshirts[product].color.includes("blue") && (
@@ -182,7 +175,7 @@ export async function getServerSideProps(context) {
   }
   let tshirts;
 
-  let products = await Product.find({ category: "Tshirts" }).populate({
+  let products = await Product.find({ category: "Tshirts", status: "active" }).populate({
     path: "variants",
     model: Variants,
     options: { lean: true },

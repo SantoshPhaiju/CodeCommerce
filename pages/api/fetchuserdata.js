@@ -17,7 +17,7 @@ const handler = async (req, res) => {
     }
   } catch (error) {
     // console.log(error);
-    res.status(400).send({success: false, error: error.message})
+    res.status(400).send({success: false, error: error.message, message: "some error occurred try relogin!"})
   }
   }
 };

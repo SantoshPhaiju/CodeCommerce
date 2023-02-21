@@ -10,23 +10,31 @@ import baseUrl from "../../helpers/baseUrl";
 import Variants from "../../models/Variants";
 import renderHTML from "react-render-html";
 import Link from "next/link";
-import {AiOutlineArrowLeft} from 'react-icons/ai'
+import { AiOutlineArrowLeft } from "react-icons/ai";
 
-const Slug = ({ buyNow, addToCart, product, variant, colors, sizes, error }) => {
+const Slug = ({
+  buyNow,
+  addToCart,
+  product,
+  variant,
+  colors,
+  sizes,
+  error,
+}) => {
   // console.log(product, variants);
   // console.log(variants[1].color);
+  if (error === 404) {
+    return <Error statusCode={404} />;
+  }
   console.log(product);
   // console.log(colors, sizes);
   const router = useRouter();
   const { slug } = router.query;
 
   const [selectImage, setSelectImage] = useState(variant.mainImage);
-  const [color, setColor] = useState(variant.color)
-  const [size, setSize] = useState(variant.size)
-
-  if (error === 404) {
-    return <Error statusCode={404} />;
-  }
+  const [color, setColor] = useState(variant.color);
+  const [size, setSize] = useState(variant.size);
+  
   const [pin, setPin] = useState("");
   const [service, setService] = useState(null);
 
@@ -52,16 +60,10 @@ const Slug = ({ buyNow, addToCart, product, variant, colors, sizes, error }) => 
   const onChangePin = (e) => {
     setPin(e.target.value);
   };
-//   const [productSlug, setProductSlug] = useState(product.slug);
+  //   const [productSlug, setProductSlug] = useState(product.slug);
 
   const refreshVariant = (product) => {
-    // setSelectImage(variant.mainImage);
-    // setColor(newColor);
-    // setSize(newSize);
-    // setProductSlug(product.slug);
-    // console.log(product.slug, "prodcut");
     router.push(`/variants/${product.slug}`);
-    // console.log(newColor, newSize);
   };
 
   return (
@@ -141,11 +143,12 @@ const Slug = ({ buyNow, addToCart, product, variant, colors, sizes, error }) => 
                 </div>
               )}
               <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0 relative">
-
                 <h2 className="text-sm title-font text-gray-500 tracking-widest font-robotoslab">
                   CODECOMMERCE
                 </h2>
-                <p className="font-firasans mt-4">Parent Product:- {product.title}</p>
+                <p className="font-firasans mt-4">
+                  Parent Product:- {product.title}
+                </p>
                 <h1 className="text-gray-900 text-3xl title-font font-medium mb-1 font-robotoslab">
                   {variant.title} ({color}/{size})
                 </h1>
@@ -449,13 +452,14 @@ export async function getServerSideProps(context) {
     mongoose.connect(process.env.MONGO_URI);
   }
   let error;
-    console.log(true);
+  console.log(true);
 
-    let variant = await Variants.findOne({ slug: context.query.slug });
+  let variant = await Variants.findOne({ slug: context.query.slug });
+  if (variant) {
     let product = await Product.findOne({ _id: variant.productsID }).populate({
-        path: 'variants',
-        options: {lean: true},
-    })
+      path: "variants",
+      options: { lean: true },
+    });
 
     let colors = [variant.color];
     let sizes = [variant.size];
@@ -468,8 +472,16 @@ export async function getServerSideProps(context) {
         variant: JSON.parse(JSON.stringify(variant)),
         colors: JSON.parse(JSON.stringify(colors)),
         sizes: JSON.parse(JSON.stringify(sizes)),
+        error: "",
       }, // will be passed to the page component as props
     };
+  }else{
+    return {
+      props: {
+        error: 404
+      }, // will be passed to the page component as props
+    };
+  }
 }
 
 export default Slug;

@@ -129,6 +129,19 @@ const AddProducts = () => {
     size: "Select size",
   });
 
+  const [sizes, setSizes] = useState([]);
+
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+    if (checked) {
+      //  setUserInfo({
+      //    languages: [...languages, value],
+      //    response: [...languages, value],
+      //  });
+      setSizes([...sizes, value]);
+      console.log(value);
+    }
+  };
   const [selectedImage, setSelectedImage] = useState([]);
   const [selectedMainImage, setSelectedMainImage] = useState("");
   const [file, setFile] = useState("");
@@ -326,7 +339,7 @@ const AddProducts = () => {
                 </div>
               </div>
 
-              <div className="productDescriptionRight col-span-12 lg:col-span-4 h-[500px] shadow-lg shadow-gray-600/30 border bg-white py-4 px-4 w-[95vw] md:w-full">
+              <div className="productDescriptionRight h-auto col-span-12 lg:col-span-4 shadow-lg shadow-gray-600/30 border bg-white py-4 px-4 w-[95vw] md:w-full">
                 <div className="formGroup">
                   <label htmlFor="price" className="label text-lg">
                     Price:-
@@ -412,6 +425,59 @@ const AddProducts = () => {
                       <option value={"Xl"}>Extra large</option>
                       <option value={"XXl"}>Extra extra large</option>
                     </select>
+
+                    <div className="sizes flex gap-4 flex-wrap my-5">
+                      <div className="formgroup flex flex-row items-center gap-2">
+                        <label htmlFor="Sm">Small</label>
+                        <input
+                          type="checkbox"
+                          name="Sm"
+                          id="Sm"
+                          value={"Sm"}
+                          onChange={handleCheckboxChange}
+                        />
+                      </div>
+                      <div className="formgroup flex flex-row items-center gap-2">
+                        <label htmlFor="Md">Medium</label>
+                        <input
+                          type="checkbox"
+                          name="Md"
+                          id="Md"
+                          value={"Md"}
+                          onChange={handleCheckboxChange}
+                        />
+                      </div>
+                      <div className="formgroup flex flex-row items-center gap-2">
+                        <label htmlFor="Lg">Large</label>
+                        <input
+                          type="checkbox"
+                          name="Lg"
+                          id="Lg"
+                          value={"Lg"}
+                          onChange={handleCheckboxChange}
+                        />
+                      </div>
+                      <div className="formgroup flex flex-row items-center gap-2">
+                        <label htmlFor="Xl">Extra Large</label>
+                        <input
+                          type="checkbox"
+                          name="Xl"
+                          id="Xl"
+                          value={"Xl"}
+                          onChange={handleCheckboxChange}
+                        />
+                      </div>
+                      <div className="formgroup flex flex-row items-center gap-2">
+                        <label htmlFor="XXl">Extra Extra Large</label>
+                        <input
+                          type="checkbox"
+                          name="XXl"
+                          id="XXl"
+                          value={"XXl"}
+                          onChange={handleCheckboxChange}
+                        />
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>

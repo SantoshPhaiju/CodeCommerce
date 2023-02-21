@@ -14,14 +14,14 @@ const Slug = ({ buyNow, addToCart, product, sizes, error }) => {
   // console.log(product, variants);
   // console.log(variants[1].color);
   // console.log(colors, sizes);
+  if (error === 404) {
+    return <Error statusCode={404} />;
+  }
   const router = useRouter();
   const { slug } = router.query;
 
   const [selectImage, setSelectImage] = useState(product.mainImage);
 
-  if (error === 404) {
-    return <Error statusCode={404} />;
-  }
   const [pin, setPin] = useState("");
   const [service, setService] = useState(null);
 
@@ -57,7 +57,7 @@ const Slug = ({ buyNow, addToCart, product, sizes, error }) => {
     // setColor(newColor);
     // setSize(newSize);
     // setProductSlug(product.slug);
-    // console.log(product.slug, "prodcut");
+    console.log(product.slug, "prodcut");
     router.push(`/variants/${product.slug}`);
     // console.log(newColor, newSize);
   };
@@ -242,26 +242,34 @@ const Slug = ({ buyNow, addToCart, product, sizes, error }) => {
                     Variants:-{" "}
                   </p>
                   <div className="variantContainer flex gap-4 items-center">
-                    {product.variants.length !== 0 ? product.variants.map((variant, index) => {
-                      return (
-                        <div className="variant h-[100px] w-[80px]" key={index}>
-                          <img
-                            onClick={() => {
-                              refreshVariant(variant);
-                            }}
-                            src={variant.mainImage}
-                            alt="variant image helpers"
-                            className={`w-full h-full transition-all duration-200 cursor-pointer hover:scale-110`}
-                          />
-                        </div>
-                      );
-                    }): <p className="font-firasans text-sm text-gray-400">No variants to show 😲</p>}
+                    {product.variants.length !== 0 ? (
+                      product.variants.map((variant, index) => {
+                        return (
+                          <div
+                            className="variant h-[100px] w-[80px]"
+                            key={index}
+                          >
+                            <img
+                              onClick={() => {
+                                refreshVariant(variant);
+                              }}
+                              src={variant.mainImage}
+                              alt="variant image helpers"
+                              className={`w-full h-full transition-all duration-200 cursor-pointer hover:scale-110`}
+                            />
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <p className="font-firasans text-sm text-gray-400">
+                        No variants to show 😲
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
                   <div className="flex">
                     <span className="mr-3">Color</span>
-
                     <button
                       className={`border-2  ml-1 rounded-full w-6 h-6 focus:outline-none ${
                         color === "black"
@@ -292,8 +300,7 @@ const Slug = ({ buyNow, addToCart, product, sizes, error }) => {
                       <select
                         value={size}
                         onChange={(e) => {
-                          console.log(e.target.value);
-                          refreshVariant(color, e.target.value);
+                          setSize(e.target.value)
                         }}
                         className="rounded border appearance-none border-gray-300 py-2 focus:outline-none ${color === 'white' ? 'border-black' : 'border-gray-300' focus:ring-2 focus:ring-pink-200 focus:border-pink-500 text-base pl-3 pr-10"
                       >
@@ -435,6 +442,9 @@ export async function getServerSideProps(context) {
     let sizes = [variant.size];
     sizes = [...new Set(sizes)];
     colors = [...new Set(colors)];
+    
+
+    error = null;
 
     return {
       props: {
@@ -442,6 +452,7 @@ export async function getServerSideProps(context) {
         variant: JSON.parse(JSON.stringify(variant)),
         colors: JSON.parse(JSON.stringify(colors)),
         sizes: JSON.parse(JSON.stringify(sizes)),
+        error
       }, // will be passed to the page component as props
     };
   } else {
@@ -459,8 +470,7 @@ export async function getServerSideProps(context) {
       };
     }
     let sizes = [
-      product.size,
-      ...product.variants.map((variant) => variant.size),
+      product.size
     ];
     sizes = [...new Set(sizes)];
 
