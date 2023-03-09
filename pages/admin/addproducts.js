@@ -212,6 +212,10 @@ const AddProducts = () => {
     formdata.append("category", data.category);
     formdata.append("color", data.color);
     formdata.append("size", data.size);
+    for (var i = 0; i < sizes.length; i++) {
+      formdata.append("sizes", sizes[i]);
+    }
+    // formdata.append("sizes", [sizes]);
     formdata.append("status", data.status);
     formdata.append("availableQty", data.availableQty);
     // for (var key of formdata.entries()) {
