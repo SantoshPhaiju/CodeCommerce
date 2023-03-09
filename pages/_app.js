@@ -83,13 +83,12 @@ function MyApp({ Component, pageProps }) {
 
   const addToCart = (itemCode, qty, price, name, size, variant, img) => {
     let newCart = cart;
-    // console.log(cart[itemCode].size, size);
-    if (itemCode in cart && size === cart[itemCode].size) {
+    if (itemCode in cart) {
       newCart[itemCode].qty = newCart[itemCode].qty + qty;
     } else {
-      newCart[itemCode] = { itemCode, qty, price, name, size, variant, img };
+      newCart[itemCode] = { qty, price, name, size, variant, img };
     }
-    console.log("newcart",newCart)
+    // console.log(newCart)
     setCart(newCart);
     saveCart(newCart);
   };

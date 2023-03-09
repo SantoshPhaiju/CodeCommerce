@@ -304,7 +304,7 @@ const Slug = ({ buyNow, addToCart, product, sizes, error }) => {
                         }}
                         className="rounded border appearance-none border-gray-300 py-2 focus:outline-none ${color === 'white' ? 'border-black' : 'border-gray-300' focus:ring-2 focus:ring-pink-200 focus:border-pink-500 text-base pl-3 pr-10"
                       >
-                        {product.sizes.map((size, index) => {
+                        {sizes.map((size, index) => {
                           return (
                             <option key={index} value={size}>
                               {size}
@@ -341,9 +341,9 @@ const Slug = ({ buyNow, addToCart, product, sizes, error }) => {
                           1,
                           product.price,
                           product.title,
-                          size,
+                          product.size,
                           product.color,
-                          product.mainImage
+                          product.img[0]
                         );
                         toast.success("Item added to cart!");
                       } else {
@@ -375,7 +375,7 @@ const Slug = ({ buyNow, addToCart, product, sizes, error }) => {
                           1,
                           product.price,
                           product.title,
-                          size,
+                          product.size,
                           product.color,
                           product.img[0]
                         );
