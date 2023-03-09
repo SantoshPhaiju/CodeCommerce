@@ -149,10 +149,10 @@ export const productSlice = createSlice({
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.status = "succeded";
-        console.log("products", action.payload.deletedVariants);
+        console.log("products", state.products);
         const id = action.payload.deletedProduct._id;
         const products = state.products.filter((product) => product._id !== id);
-        // console.log("loaded products", products);
+        console.log("loaded products", products);
         state.products = products;
       })
       .addCase(deleteProduct.rejected, (state, action) => {
