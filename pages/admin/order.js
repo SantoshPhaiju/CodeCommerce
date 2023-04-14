@@ -7,7 +7,7 @@ import Order from "../../models/Order";
 // import Link from "next/link";
 // import { AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
 import { useDispatch } from "react-redux";
-import { updateOrder } from "../slices/orderSlice";
+import { updateOrder } from "../../slices/orderSlice";
 import { toast } from "react-toastify";
 
 const OrderPage = ({ order }) => {

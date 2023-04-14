@@ -13,7 +13,7 @@ import {
   fetchProducts,
   updateImages,
   updateProductDetails,
-} from "../slices/productSlice";
+} from "../../slices/productSlice";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md";

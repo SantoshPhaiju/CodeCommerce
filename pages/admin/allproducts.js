@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteProduct, fetchProducts } from "../slices/productSlice";
+import { deleteProduct, fetchProducts } from "../../slices/productSlice";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { AiOutlineEye } from "react-icons/ai";

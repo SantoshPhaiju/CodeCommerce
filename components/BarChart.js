@@ -1,8 +1,8 @@
-import React from 'react'
-import { Bar } from 'react-chartjs-2'
-import {Chart as ChartJS} from 'chart.js/auto'
+import React from "react";
+import { Bar } from "react-chartjs-2";
+import { Chart } from "chart.js/auto";
 
-const BarChart = ({chartData}) => {
+const BarChart = ({ chartData }) => {
   return (
     <div className="w-full">
       <h2 className="text-2xl font-firasans font-bold text-center text-pink-800">
@@ -12,6 +12,6 @@ const BarChart = ({chartData}) => {
       <Bar data={chartData} />
     </div>
   );
-}
+};
 
-export default BarChart
+export default BarChart;

@@ -4,13 +4,13 @@ import Sidebar from "./components/Sidebar";
 import dynamic from "next/dynamic";
 // import { BsFillImageFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { addProduct, fetchProducts } from "../slices/productSlice";
+import { addProduct, fetchProducts } from "../../slices/productSlice";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import "react-quill/dist/quill.snow.css";
 // import { fetchCategories } from "../slices/categorySlice";
 import { FiUpload } from "react-icons/fi";
-import { addVariant } from "../slices/variantsSlice";
+import { addVariant } from "../../slices/variantsSlice";
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,

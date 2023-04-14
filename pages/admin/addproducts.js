@@ -4,17 +4,23 @@ import Sidebar from "./components/Sidebar";
 import dynamic from "next/dynamic";
 import { BsFillImageFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { addProduct } from "../slices/productSlice";
+import { addProduct } from "../../slices/productSlice";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import "react-quill/dist/quill.snow.css";
-import { fetchCategories } from "../slices/categorySlice";
+import { fetchCategories } from "../../slices/categorySlice";
 import { FiUpload } from "react-icons/fi";
 
-const QuillNoSSRWrapper = dynamic(import("react-quill"), {
+// const QuillEditor = dynamic(import("react-quill"), {
+//   ssr: false,
+//   loading: () => <p>Loading ...</p>,
+// });
+
+const QuillEditor = dynamic(() => import("react-quill"), {
   ssr: false,
-  loading: () => <p>Loading ...</p>,
+  loading: () => <p>Loading ...</p>
 });
+
 const AddProducts = () => {
   const background = [
     "#ffffff",
@@ -294,7 +300,7 @@ const AddProducts = () => {
                     Description:-
                   </label>
                   <div className="description h-[200px] mb-12">
-                    <QuillNoSSRWrapper
+                    <QuillEditor
                       className="h-[70%] flex-1 w-full font-firasans text-lg"
                       value={desc}
                       onChange={setDesc}

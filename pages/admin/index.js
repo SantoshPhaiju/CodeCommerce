@@ -8,15 +8,123 @@ import { FaArrowsAltH } from "react-icons/fa";
 import { BiGroup } from "react-icons/bi";
 import { MdLocalShipping } from "react-icons/md";
 import BarChart from "../../components/BarChart";
-import { UserData } from "./Data";
 import PieChart from "./PieChart";
-import { OrderData } from "./OrdersData";
 
 const Index = () => {
   const [showSideBar, setShowSidebar] = useState(true);
   const sideBarRef = useRef();
   const router = useRouter();
   let admintoken;
+
+  const OrderData = [
+    {
+      id: 1,
+      month: "Baisakh",
+      totalOrdersReceived: 99,
+    },
+    {
+      id: 2,
+      month: "Jestha",
+      totalOrdersReceived: 123,
+    },
+    {
+      id: 3,
+      month: "Asar",
+      totalOrdersReceived: 39,
+    },
+    {
+      id: 4,
+      month: "Shrawan",
+      totalOrdersReceived: 49,
+    },
+    {
+      id: 5,
+      month: "Bhadra",
+      totalOrdersReceived: 65,
+    },
+    {
+      id: 6,
+      month: "Asoj",
+      totalOrdersReceived: 72,
+    },
+    {
+      id: 7,
+      month: "Kartik",
+      totalOrdersReceived: 129,
+    },
+    {
+      id: 8,
+      month: "Mangsir",
+      totalOrdersReceived: 9,
+    },
+    {
+      id: 9,
+      month: "Poush",
+      totalOrdersReceived: 12,
+    },
+    {
+      id: 10,
+      month: "Magh",
+      totalOrdersReceived: 25,
+    },
+  ];
+
+  const UserData = [
+    {
+      id: 1,
+      year: 2016,
+      userGain: 80000,
+      userLost: 1023,
+    },
+    {
+      id: 2,
+      year: 2017,
+      userGain: 45677,
+      userLost: 3245,
+    },
+    {
+      id: 3,
+      year: 2018,
+      userGain: 78888,
+      userLost: 5555,
+    },
+    {
+      id: 4,
+      year: 2019,
+      userGain: 90000,
+      userLost: 1555,
+    },
+    {
+      id: 5,
+      year: 2020,
+      userGain: 22300,
+      userLost: 15234,
+    },
+    {
+      id: 6,
+      year: 2021,
+      userGain: 83000,
+      userLost: 2324,
+    },
+    {
+      id: 7,
+      year: 2022,
+      userGain: 43700,
+      userLost: 2434,
+    },
+    {
+      id: 8,
+      year: 2023,
+      userGain: 42300,
+      userLost: 2234,
+    },
+    {
+      id: 9,
+      year: 2024,
+      userGain: 34300,
+      userLost: 1234,
+    },
+  ];
 
   if (typeof window !== "undefined") {
     if (!localStorage.getItem("admin-token")) {

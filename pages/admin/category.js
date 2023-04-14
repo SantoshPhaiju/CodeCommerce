@@ -8,7 +8,7 @@ import {
   deleteCategory,
   fetchCategories,
   updateCategory,
-} from "../slices/categorySlice";
+} from "../../slices/categorySlice";
 import { AiOutlineClose, AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { toast } from "react-toastify";
 import Link from "next/link";

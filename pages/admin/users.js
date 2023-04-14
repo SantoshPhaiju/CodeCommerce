@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { editUser, fetchUsers } from "../slices/userSlice";
+import { editUser, fetchUsers } from "../../slices/userSlice";
 import AdminNav from "./components/AdminNav";
 import { FaUserEdit } from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";

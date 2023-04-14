@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import baseUrl from "../../helpers/baseUrl";
+import baseUrl from "../helpers/baseUrl";
 
 // export const fetchProducts = createAsyncThunk(
 //   "products/fetchProducts",

@@ -6,9 +6,9 @@ import AdminNav from "./components/AdminNav";
 import Sidebar from "./components/Sidebar";
 import { AiOutlineEye, AiOutlineDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchOrders } from "../slices/orderSlice";
+import { fetchOrders } from "../../slices/orderSlice";
 import { BsFilterSquare } from "react-icons/bs";
-import { deleteOrder } from "../slices/orderSlice";
+import { deleteOrder } from "../../slices/orderSlice";
 import { toast } from "react-toastify";
 
 const Orders = () => {
