@@ -105,7 +105,7 @@ apiRoute.post(async (req, res) => {
   // console.log("filename: ", filename);
   // console.log(req.body.category);
   const category = await CategoryModel.findOne({ name: req.body.category });
-  // console.log(req.body.sizes);
+  console.log(req.body.sizes);
   let p = new Product({
     title: req.body.title,
     slug: req.body.title + "_" + nanoid(),

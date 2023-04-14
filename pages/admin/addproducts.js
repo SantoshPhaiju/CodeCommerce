@@ -18,7 +18,7 @@ import { FiUpload } from "react-icons/fi";
 
 const QuillEditor = dynamic(() => import("react-quill"), {
   ssr: false,
-  loading: () => <p>Loading ...</p>
+  loading: () => <p>Loading ...</p>,
 });
 
 const AddProducts = () => {
@@ -139,6 +139,7 @@ const AddProducts = () => {
   const [selectedMainImage, setSelectedMainImage] = useState("");
   const [file, setFile] = useState("");
   const [mainFile, setMainFile] = useState("");
+  const [sizes, setSizes] = useState([]);
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -218,9 +219,9 @@ const AddProducts = () => {
     formdata.append("category", data.category);
     formdata.append("color", data.color);
     formdata.append("size", data.size);
-    // for (var i = 0; i < sizes.length; i++) {
-    //   formdata.append("sizes", sizes[i]);
-    // }
+    for (var i = 0; i < sizes.length; i++) {
+      formdata.append("sizes", sizes[i]);
+    }
     // formdata.append("sizes", [sizes]);
     formdata.append("status", data.status);
     formdata.append("availableQty", data.availableQty);
@@ -244,6 +245,8 @@ const AddProducts = () => {
     setMainFile("");
     setSelectedMainImage("");
   };
+
+  console.log(sizes);
   return (
     <>
       <style jsx global>{`
@@ -415,13 +418,61 @@ const AddProducts = () => {
                       required
                     >
                       <option value="">----- Select Size -----</option>
-
                       <option value={"Sm"}>Small</option>
                       <option value={"Md"}>Medium</option>
                       <option value={"Lg"}>Large</option>
                       <option value={"Xl"}>Extra large</option>
                       <option value={"XXl"}>Extra extra large</option>
                     </select>
+                    <input
+                      type="checkbox"
+                      name="size"
+                      id="size"
+                      value={"Sm"}
+                      onChange={(e) => {
+                        console.log("Checked", e.target.value)
+                      if (e.target.checked === true) {
+                        setSizes([...sizes, e.target.value]);
+                      } else {
+                        setSizes(
+                          sizes.filter((size) => size !== e.target.value)
+                        );
+                      }
+                      }}
+                    />{" "}
+                    Small
+                    <input
+                      type="checkbox"
+                      name="size"
+                      id="size"
+                      value={"Md"}
+                      onChange={(e) => {
+                        console.log("Checked")
+                        if (e.target.checked === true) {
+                          setSizes([...sizes, e.target.value]);
+                        } else {
+                          setSizes(
+                            sizes.filter((size) => size !== e.target.value)
+                          );
+                        }
+                      }}
+                    />{" "}
+                    Medium
+                    <input
+                      type="checkbox"
+                      name="size"
+                      id="size"
+                      value={"Lg"}
+                      onChange={(e) => {
+                        console.log(e.target.checked)
+                        if(e.target.checked === true){
+                          setSizes([...sizes, e.target.value]);
+                        }else{
+                          setSizes(sizes.filter((size) => size !== e.target.value))
+                        }
+                      }}
+                    />{" "}
+                    Large
                   </div>
                 )}
               </div>

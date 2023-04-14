@@ -69,7 +69,6 @@ const Tshirts = ({ tshirts }) => {
                           return (
                             <span
                               key={index}
-                              
                               className="border border-gray-300 px-1 mx-1"
                             >
                               {variant.size}
@@ -77,27 +76,27 @@ const Tshirts = ({ tshirts }) => {
                           );
                         })}
 
-                        {tshirts[product].size.includes("Sm") && (
+                        {tshirts[product].sizes.includes("Sm") && (
                           <span className="border border-gray-300 px-1 mx-1">
                             S
                           </span>
                         )}
-                        {tshirts[product].size.includes("Md") && (
+                        {tshirts[product].sizes.includes("Md") && (
                           <span className="border border-gray-300 px-1 mx-1">
                             M
                           </span>
                         )}
-                        {tshirts[product].size.includes("Lg") && (
+                        {tshirts[product].sizes.includes("Lg") && (
                           <span className="border border-gray-300 px-1 mx-1">
                             L
                           </span>
                         )}
-                        {tshirts[product].size.includes("Xl") && (
+                        {tshirts[product].sizes.includes("Xl") && (
                           <span className="border border-gray-300 px-1 mx-1">
                             XL
                           </span>
                         )}
-                        {tshirts[product].size.includes("XXl") && (
+                        {tshirts[product].sizes.includes("XXl") && (
                           <span className="border border-gray-300 px-1 mx-1">
                             XXL
                           </span>
