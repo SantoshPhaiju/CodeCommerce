@@ -38,6 +38,7 @@ const CategoryPage = () => {
   const handleSave = () => {
     setShowModal(false);
     if (categoryData.cName && categoryData.cDesc !== "") {
+      categoryData.cName = categoryData.cName.toLowerCase();
       dispatch(addCategory({ categoryData, toast }));
       setCategoryData({
         cName: "",
@@ -109,6 +110,10 @@ const CategoryPage = () => {
                     onClick={() => {
                       setShowModal(false);
                       setShowEditModal(false);
+                      setCategoryData({
+                        cName: "",
+                        cDesc: "",
+                      });
                     }}
                   />
                 </div>
@@ -191,7 +196,7 @@ const CategoryPage = () => {
           {showModal ||
             (showEditModal && (
               <>
-                <div className="overlay h-full w-full absolute top-0 left-0 z-30 opacity-40 bg-black"></div>
+                <div className="overlay h-[100vh] w-full absolute top-0 left-0 z-30 opacity-40 bg-black"></div>
               </>
             ))}
 
@@ -236,7 +241,7 @@ const CategoryPage = () => {
                           <td className="table_data">{index + 1}</td>
                           <td
                             scope="row"
-                            className="table_data font-medium text-gray-900 whitespace-nowrap dark:text-white hover:text-blue-500 hover:underline border-gray-700"
+                            className="table_data font-medium text-gray-900 whitespace-nowrap hover:text-blue-500 hover:underline border-gray-700"
                           >
                             # {item?._id}
                           </td>

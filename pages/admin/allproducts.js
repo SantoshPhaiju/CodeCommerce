@@ -84,49 +84,7 @@ const AllProducts = () => {
               Total Products: {products?.length}
             </span>
           </div>
-          {/* <div className="productContainer flex flex-wrap gap-6 my-10 justify-center mx-12">
-            {products.length !== 0 &&
-              products.map((product, index) => {
-                return (
-                  <div className="product w-[300px] mt-4 border" key={index}>
-                    <img
-                      src={product?.img[0]}
-                      key={index}
-                      width={400}
-                      className="w-full h-[35vh] block mx-auto"
-                      height={500}
-                      alt="This is the image here"
-                    />
-                    <hr />
-                    <div className="ml-4 font-firasans mt-2">
-                      {product.category}
-                    </div>
-                    <div className="content flex justify-start capitalize items-center h-[50px]">
-                      <h2 className="text-xl font-firasans px-4 py-1">
-                        Variant:
-                        {product.title} ({product.color}/{product.size})
-                      </h2>
-                    </div>
-                    <h2 className="text-xl font-firasans px-4 py-1 text-left">
-                      AvailableQty: {product.availableQty}
-                    </h2>
-                    <div className="buttons flex space-x-5 my-3 justify-center">
-                      <button className="bg-pink-700 text-white py-2 px-8 rounded-sm shadow-lg cursor-pointer font-firasans hover:bg-pink-900 flex justify-center items-center space-x-2">
-                        <BiEditAlt />
-                        <span>Edit</span>
-                      </button>
-                      <button
-                        className="bg-orange-500 text-white py-2 px-8 rounded-sm shadow-lg cursor-pointer font-firasans hover:bg-orange-700 flex justify-center items-center space-x-2"
-                        onClick={() => handleDelete(product._id)}
-                      >
-                        <AiOutlineDelete />
-                        <span>Delete</span>
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-          </div> */}
+          
 
           <div className="flex justify-center items-center">
             {showSlider === true && (
@@ -231,7 +189,7 @@ const AllProducts = () => {
                         <td className="table_data">{index + 1}</td>
                         <td
                           scope="row"
-                          className="table_data font-medium text-gray-900 whitespace-nowrap dark:text-white hover:text-blue-500 hover:underline border-gray-700"
+                          className="table_data font-medium text-gray-900 whitespace-nowrap  hover:text-blue-500 hover:underline border-gray-700"
                         >
                           # {item?._id}
                         </td>

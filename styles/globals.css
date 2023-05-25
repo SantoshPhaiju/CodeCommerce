@@ -22,17 +22,17 @@
         @apply font-medium rounded-sm flex items-center justify-center space-x-1 py-2 px-3 bg-red-600 text-white hover:bg-red-800 hover:scale-110;
     }
     .table{
-        @apply border-collapse border border-gray-500 w-full text-sm text-left text-gray-500 dark:text-gray-400;
+        @apply border-collapse border border-gray-500 w-full text-sm text-left text-gray-500;
     }
     .table_head{
-        @apply text-base font-firasans text-white bg-indigo-800/80 uppercase dark:bg-gray-700 dark:text-gray-400;
+        @apply text-base font-firasans text-white bg-indigo-800/80 uppercase;
     }
 
     .table_heading{
         @apply py-4 px-6 border-2 border-gray-700 text-center;
     }
     .table_body_tr{
-        @apply bg-white dark:bg-gray-800 dark:border-gray-700 text-center font-firasans hover:bg-blue-200/80 cursor-pointer odd:bg-gray-200 even:bg-white;
+        @apply bg-white text-center font-firasans hover:bg-blue-200/80 cursor-pointer odd:bg-gray-200 even:bg-white;
     }
     .table_data{
         @apply py-4 px-6 border-2 border-gray-700 text-center;

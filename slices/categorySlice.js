@@ -37,9 +37,10 @@ export const deleteCategory = createAsyncThunk(
 export const updateCategory = createAsyncThunk(
   "category/updateCategory",
   async ({ id, categoryData, toast }) => {
+    let catname = categoryData.cName.toLowerCase();
     try {
       const response = await axios.post(`${baseUrl}/api/updatecategory`, {
-        data: {id, cName: categoryData.cName, cDesc: categoryData.cDesc},
+        data: {id, cName: catname, cDesc: categoryData.cDesc},
       });
       // console.log(response)
       if (response.data.success === true) {

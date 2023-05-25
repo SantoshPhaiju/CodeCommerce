@@ -242,85 +242,101 @@ const Slug = ({ buyNow, addToCart, product, sizes, error }) => {
                     Variants:-{" "}
                   </p>
                   <div className="variantContainer flex gap-4 items-center">
-                    {product.variants.length !== 0 ? product.variants.map((variant, index) => {
-                      return (
-                        <div className="variant h-[100px] w-[80px]" key={index}>
-                          <img
-                            onClick={() => {
-                              refreshVariant(variant);
-                            }}
-                            src={variant.mainImage}
-                            alt="variant image helpers"
-                            className={`w-full h-full transition-all duration-200 cursor-pointer hover:scale-110`}
-                          />
-                        </div>
-                      );
-                    }): <p className="font-firasans text-sm text-gray-400">No variants to show 😲</p>}
+                    {product.variants.length !== 0 ? (
+                      product.variants.map((variant, index) => {
+                        return (
+                          <div
+                            className="variant h-[100px] w-[80px]"
+                            key={index}
+                          >
+                            <img
+                              onClick={() => {
+                                refreshVariant(variant);
+                              }}
+                              src={variant.mainImage}
+                              alt="variant image helpers"
+                              className={`w-full h-full transition-all duration-200 cursor-pointer hover:scale-110`}
+                            />
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <p className="font-firasans text-sm text-gray-400">
+                        No variants to show 😲
+                      </p>
+                    )}
                   </div>
                 </div>
-                <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
-                  <div className="flex">
-                    <span className="mr-3">Color</span>
 
-                    <button
-                      className={`border-2  ml-1 rounded-full w-6 h-6 focus:outline-none ${
-                        color === "black"
-                          ? "border-black bg-black"
-                          : "border-gray-300"
-                      } ${
-                        color === "blue"
-                          ? "border-black bg-blue-700"
-                          : "border-gray-300"
-                      } ${
-                        color === "red"
-                          ? "border-black bg-red-700"
-                          : "border-gray-300 "
-                      }  ${
-                        color === "green"
-                          ? "border-black bg-green-700"
-                          : "border-gray-300 "
-                      }  ${
-                        color === "white"
-                          ? "border-black bg-white"
-                          : "border-gray-300 "
-                      }`}
-                    ></button>
-                  </div>
-                  <div className="flex ml-6 items-center">
-                    <span className="mr-3">Size</span>
-                    <div className="relative">
-                      <select
-                        value={size}
-                        onChange={(e) => {
-                          console.log(e.target.value);
-                          // refreshVariant(color, e.target.value);
-                          setSize(e.target.value)
-                        }}
-                        className="rounded border appearance-none border-gray-300 py-2 focus:outline-none ${color === 'white' ? 'border-black' : 'border-gray-300' focus:ring-2 focus:ring-pink-200 focus:border-pink-500 text-base pl-3 pr-10"
-                      >
-                        {product.sizes.map((size, index) => {
-                          return (
-                            <option key={index} value={size}>
-                              {size}
-                            </option>
-                          );
-                        })}
-                      </select>
-                      <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
-                        <svg
-                          fill="none"
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          className="w-4 h-4"
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M6 9l6 6 6-6"></path>
-                        </svg>
-                      </span>
+                <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
+                  {product.color !== "" && (
+                    <div className="flex">
+                      <span className="mr-3">Color</span>
+
+                      <button
+                        className={`border-2  ml-1 rounded-full w-6 h-6 focus:outline-none ${
+                          color === "black"
+                            ? "border-black bg-black"
+                            : "border-gray-300"
+                        } ${
+                          color === "blue"
+                            ? "border-black bg-blue-700"
+                            : "border-gray-300"
+                        } ${
+                          color === "red"
+                            ? "border-black bg-red-700"
+                            : "border-gray-300 "
+                        }  ${
+                          color === "green"
+                            ? "border-black bg-green-700"
+                            : "border-gray-300 "
+                        }  ${
+                          color === "white"
+                            ? "border-black bg-white"
+                            : "border-gray-300 "
+                        }`}
+                      ></button>
                     </div>
-                  </div>
+                  )}
+
+                  {product.sizes.length > 0 &&
+                    product.size !== "Select size" && (
+                      <div className="flex ml-6 items-center">
+                        <span className="mr-3">Size</span>
+                        <div className="relative">
+                          <select
+                            value={size}
+                            onChange={(e) => {
+                              console.log(e.target.value);
+                              // refreshVariant(color, e.target.value);
+                              setSize(e.target.value);
+                            }}
+                            className="rounded border appearance-none border-gray-300 py-2 focus:outline-none ${color === 'white' ? 'border-black' : 'border-gray-300' focus:ring-2 focus:ring-pink-200 focus:border-pink-500 text-base pl-3 pr-10"
+                          >
+                            {product.sizes.map((size, index) => {
+                              return (
+                                <option key={index} value={size}>
+                                  {size}
+                                </option>
+                              );
+                            })}
+                          </select>
+                          <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
+                            <svg
+                              fill="none"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              className="w-4 h-4"
+                              viewBox="0 0 24 24"
+                            >
+                              <path d="M6 9l6 6 6-6"></path>
+                            </svg>
+                          </span>
+                        </div>
+                      </div>
+                    )}
                 </div>
                 <div className="flex">
                   <span className="title-font font-robotoslab font-medium text-xl lg:text-2xl text-gray-900">

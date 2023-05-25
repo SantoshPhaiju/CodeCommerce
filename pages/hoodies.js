@@ -1,10 +1,9 @@
-import React from 'react'
-import mongoose from 'mongoose';
-import Product from '../models/Product';
-import Link from 'next/link';
+import React from "react";
+import mongoose from "mongoose";
+import Product from "../models/Product";
+import Link from "next/link";
 
-
-const Hoodies = ({hoodies}) => {
+const Hoodies = ({ hoodies }) => {
   // console.log(hoodies);
   return (
     <div>
@@ -16,8 +15,8 @@ const Hoodies = ({hoodies}) => {
           <div className="flex flex-wrap justify-center gap-4">
             {Object.keys(hoodies).length === 0 && (
               <span>
-                Sorry! All the hoodies are currently out of stock. New Stock coming
-                soon!
+                Sorry! All the hoodies are currently out of stock. New Stock
+                coming soon!
               </span>
             )}
             {Object.keys(hoodies).map((product) => {
@@ -32,15 +31,14 @@ const Hoodies = ({hoodies}) => {
                     className="block relative rounded overflow-hidden"
                   >
                     <div className="image w-full h-[40vh] border">
-
-                    <img
-                      alt="ecommerce"
-                      className="object-top w-full h-full block mx-auto"
-                      src={hoodies[product].img}
-                      width={300}
-                      height={400}
+                      <img
+                        alt="ecommerce"
+                        className="object-top w-full h-full block mx-auto"
+                        src={hoodies[product].mainImage}
+                        width={300}
+                        height={400}
                       />
-                      </div>
+                    </div>
                   </Link>
                   {!hoodies[product].availableQty < 1 ? (
                     <div className="text-center text-white font-firasans mt-4 text-xl absolute top-0 -left-2 bg-yellow-600 px-2 py-1 rounded-md">
@@ -125,11 +123,11 @@ const Hoodies = ({hoodies}) => {
       </section>
     </div>
   );
-}
+};
 
 export async function getServerSideProps(context) {
   if (!mongoose.connections[0].readyState) {
-    await mongoose.connect(process.env.MONGO_URI);
+    mongoose.connect(process.env.MONGO_URI);
   }
 
   let products = await Product.find({ category: "hoodies" });
@@ -168,4 +166,4 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default Hoodies
+export default Hoodies;

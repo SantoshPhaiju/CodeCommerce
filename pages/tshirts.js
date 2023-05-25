@@ -6,7 +6,7 @@ import Product from "../models/Product";
 import Variants from "../models/Variants";
 
 const Tshirts = ({ tshirts }) => {
-  console.log(tshirts);
+  // console.log(tshirts);
   return (
     <div>
       <h2 className="text-center mt-10 font-firasans text-3xl -mb-10 text-purple-900/75 font-semibold">
@@ -37,7 +37,7 @@ const Tshirts = ({ tshirts }) => {
                       <img
                         alt="ecommerce"
                         className="object-top w-full h-full block mx-auto"
-                        src={tshirts[product].img[0]}
+                        src={tshirts[product].mainImage}
                         width={300}
                         height={400}
                       />
