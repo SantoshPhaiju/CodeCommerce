@@ -22,6 +22,7 @@ import { Pagination, Navigation } from "swiper";
 const AllProducts = () => {
   const ref = useRef(null);
   console.log("just checking");
+  console.log("haha");
 
   const [showSideBar, setShowSidebar] = useState(true);
   const [showSlider, setShowSlider] = useState(false);
@@ -41,7 +42,11 @@ const AllProducts = () => {
     dispatch(fetchProducts());
   }, []);
   const handleDelete = (id) => {
-    if (confirm("Do you want to delete this product? Deleting this product will delete all the variants of this product!")) {
+    if (
+      confirm(
+        "Do you want to delete this product? Deleting this product will delete all the variants of this product!"
+      )
+    ) {
       dispatch(deleteProduct({ id, toast }));
     }
   };
@@ -85,7 +90,6 @@ const AllProducts = () => {
               Total Products: {products?.length}
             </span>
           </div>
-          
 
           <div className="flex justify-center items-center">
             {showSlider === true && (
@@ -142,110 +146,116 @@ const AllProducts = () => {
           </div>
 
           {/* Creating table to show the products details */}
-          {products.length !== 0 ? 
-          <div className="overflow-x-auto shadow-md shadow-gray-500/30 mb-3 mx-10">
-            <table className="table">
-              <thead className="table_head">
-                <tr>
-                  <th scope="col" className="table_heading">
-                    S.N.
-                  </th>
-                  <th scope="col" className="table_heading">
-                    Product Id
-                  </th>
-                  <th scope="col" className="table_heading">
-                    Title
-                  </th>
-                  <th scope="col" className="table_heading">
-                    Price
-                  </th>
-                  <th scope="col" className="table_heading">
-                    Variants
-                  </th>
-                  <th scope="col" className="table_heading">
-                    Image
-                  </th>
-                  <th scope="col" className="table_heading">
-                    Stock
-                  </th>
-                  <th scope="col" className="table_heading">
-                    Category
-                  </th>
-                  <th scope="col" className="table_heading">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="">
-                {products
-                  .filter((product) => {
-                    return product.title
-                      .toLowerCase()
-                      .includes(query.toLowerCase());
-                  })
-                  .map((item, index) => {
-                    // console.log(item);
-                    return (
-                      <tr key={index} className="table_body_tr">
-                        <td className="table_data">{index + 1}</td>
-                        <td
-                          scope="row"
-                          className="table_data font-medium text-gray-900 whitespace-nowrap  hover:text-blue-500 hover:underline border-gray-700"
-                        >
-                          # {item?._id}
-                        </td>
-                        <td className="table_data">{item?.title}</td>
-                        <td className="table_data">Rs.{item?.price}</td>
-                        <td className="table_data">{item?.variants.length}</td>
-                        <td className="table_data">
-                          <img
-                            onClick={() => {
-                              showAllImages(index);
-                              // ref.current?.scrollIntoView({
-                              //   behavior: "smooth",
-                              // });
-                              window.scroll(0, 0)
-                            }}
-                            className="w-auto h-[100px] mx-auto"
-                            src={item?.mainImage}
-                            alt="This is the product image here"
-                          />
-                        </td>
-                        <td className="table_data w-[170px]">
-                          {item.availableQty !== 0 ? (
-                            item.availableQty
-                          ) : (
-                            <span className="py-1 px-4 text-center bg-red-600 text-white">
-                              Out of Stock
-                            </span>
-                          )}
-                        </td>
-                        <td className="table_data">{item?.category}</td>
-                        <td className="table_data">
-                          <div className="flex space-x-3">
-                            <Link
-                              href={"/admin/product?id=" + item?._id}
-                              className="view_btn"
-                            >
-                              <AiOutlineEye className="text-lg" />
-                              <span>View</span>
-                            </Link>
-                            <button
-                              onClick={() => handleDelete(item?._id)}
-                              className="delete_btn"
-                            >
-                              <AiOutlineDelete className="text-lg" />
-                              <span>Delete</span>
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-              </tbody>
-            </table>
-          </div>
-          : <div className="text-center text-gray-600 text-2xl font-ubuntu">No products to show!</div>}
+          {products.length !== 0 ? (
+            <div className="overflow-x-auto shadow-md shadow-gray-500/30 mb-3 mx-10">
+              <table className="table">
+                <thead className="table_head">
+                  <tr>
+                    <th scope="col" className="table_heading">
+                      S.N.
+                    </th>
+                    <th scope="col" className="table_heading">
+                      Product Id
+                    </th>
+                    <th scope="col" className="table_heading">
+                      Title
+                    </th>
+                    <th scope="col" className="table_heading">
+                      Price
+                    </th>
+                    <th scope="col" className="table_heading">
+                      Variants
+                    </th>
+                    <th scope="col" className="table_heading">
+                      Image
+                    </th>
+                    <th scope="col" className="table_heading">
+                      Stock
+                    </th>
+                    <th scope="col" className="table_heading">
+                      Category
+                    </th>
+                    <th scope="col" className="table_heading">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="">
+                  {products
+                    .filter((product) => {
+                      return product.title
+                        .toLowerCase()
+                        .includes(query.toLowerCase());
+                    })
+                    .map((item, index) => {
+                      // console.log(item);
+                      return (
+                        <tr key={index} className="table_body_tr">
+                          <td className="table_data">{index + 1}</td>
+                          <td
+                            scope="row"
+                            className="table_data font-medium text-gray-900 whitespace-nowrap  hover:text-blue-500 hover:underline border-gray-700"
+                          >
+                            # {item?._id}
+                          </td>
+                          <td className="table_data">{item?.title}</td>
+                          <td className="table_data">Rs.{item?.price}</td>
+                          <td className="table_data">
+                            {item?.variants.length}
+                          </td>
+                          <td className="table_data">
+                            <img
+                              onClick={() => {
+                                showAllImages(index);
+                                // ref.current?.scrollIntoView({
+                                //   behavior: "smooth",
+                                // });
+                                window.scroll(0, 0);
+                              }}
+                              className="w-auto h-[100px] mx-auto"
+                              src={item?.mainImage}
+                              alt="This is the product image here"
+                            />
+                          </td>
+                          <td className="table_data w-[170px]">
+                            {item.availableQty !== 0 ? (
+                              item.availableQty
+                            ) : (
+                              <span className="py-1 px-4 text-center bg-red-600 text-white">
+                                Out of Stock
+                              </span>
+                            )}
+                          </td>
+                          <td className="table_data">{item?.category}</td>
+                          <td className="table_data">
+                            <div className="flex space-x-3">
+                              <Link
+                                href={"/admin/product?id=" + item?._id}
+                                className="view_btn"
+                              >
+                                <AiOutlineEye className="text-lg" />
+                                <span>View</span>
+                              </Link>
+                              <button
+                                onClick={() => handleDelete(item?._id)}
+                                className="delete_btn"
+                              >
+                                <AiOutlineDelete className="text-lg" />
+                                <span>Delete</span>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="text-center text-gray-600 text-2xl font-ubuntu">
+              No products to show!
+            </div>
+          )}
         </div>
       </div>
     </>
