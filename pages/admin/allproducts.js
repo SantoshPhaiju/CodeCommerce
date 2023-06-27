@@ -23,6 +23,8 @@ const AllProducts = () => {
   const ref = useRef(null);
   console.log("just checking");
   console.log("haha");
+  console.log("again haha");
+  console.log("just checking again");
 
   const [showSideBar, setShowSidebar] = useState(true);
   const [showSlider, setShowSlider] = useState(false);
