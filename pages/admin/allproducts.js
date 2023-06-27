@@ -21,10 +21,7 @@ import { Pagination, Navigation } from "swiper";
 
 const AllProducts = () => {
   const ref = useRef(null);
-  console.log("just checking");
-  console.log("haha");
-  console.log("again haha");
-  console.log("just checking again");
+  console.log("All Products");
 
   const [showSideBar, setShowSidebar] = useState(true);
   const [showSlider, setShowSlider] = useState(false);
