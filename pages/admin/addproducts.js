@@ -388,7 +388,7 @@ const AddProducts = () => {
                     <option value={"inactive"}>InActive</option>
                   </select>
                 </div>
-                {data.category === "Tshirts" && (
+                {data.category === "tshirts" && (
                   <div className="formGroup">
                     <label htmlFor="color" className="label text-lg">
                       Color:-
@@ -404,7 +404,7 @@ const AddProducts = () => {
                     />
                   </div>
                 )}
-                {data.category === "Tshirts" && (
+                {data.category === "tshirts" && (
                   <div className="formGroup">
                     <label htmlFor="size" className="label text-lg">
                       Size:-

@@ -15,6 +15,7 @@ const handler = async (req, res) => {
       let orders = await Order.find({ email: user.email })
         .skip(page * dataLimit)
         .limit(dataLimit);
+        console.log("orders", orders);
       if (dataLimit > orders.length) {
         res
           .status(200)
