@@ -181,7 +181,7 @@ export async function getServerSideProps(context) {
   }
   let tshirts;
 
-  let products = await Product.find({ category: "Tshirts" }).populate({
+  let products = await Product.find({ category: "tshirts" }).populate({
     path: "variants",
     model: Variants,
     options: { lean: true },

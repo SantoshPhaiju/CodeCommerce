@@ -177,8 +177,8 @@ const OrderPage = ({ order }) => {
           </h2>
 
           <div className="overflow-x-auto shadow-md shadow-gray-500/30 mb-10">
-            <table className="border-collapse border border-gray-900 w-full text-sm text-left text-gray-500 dark:text-gray-400">
-              <thead className="text-base font-firasans text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+            <table className="border-collapse border border-gray-900 w-full text-sm text-left text-gray-500 ">
+              <thead className="text-base font-firasans text-gray-700 uppercase ">
                 <tr>
                   <th
                     scope="col"
@@ -237,7 +237,7 @@ const OrderPage = ({ order }) => {
                     return (
                       <tr
                         key={index}
-                        className="bg-white dark:bg-gray-800 dark:border-gray-700 font-firasans text-base"
+                        className="bg-white  font-firasans text-base"
                       >
                         <td className="py-4 px-6 border-2 border-gray-700">
                           {index + 1}
